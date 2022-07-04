@@ -521,6 +521,8 @@ const data = [
   },
 ];
 
+// maybe fetch from mongodb here?
+
 export default async (req, res) => {
   try {
     const { query } = req;
