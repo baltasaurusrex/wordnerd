@@ -6,7 +6,7 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import SearchIcon from "@mui/icons-material/Search";
 import { useState } from "react";
-import axios from "axios";
+import { search } from "./api/index.js";
 
 const list = ["abc", "def", "ghi"];
 
@@ -23,9 +23,9 @@ const Searchbar = () => {
     console.log(input);
     setLoading(true);
     if (input) {
-      const filteredList = list.filter((item) => item.includes(input));
-      if (filteredList.length > 0) {
-        setSuggestions([...filteredList]);
+      const results = await search(input);
+      if (results.length > 0) {
+        setSuggestions([...results]);
       } else {
         setSuggestions([input]);
       }

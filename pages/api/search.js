@@ -529,7 +529,7 @@ export default async (req, res) => {
       includeScore: true,
       keys: ["title"],
     };
-    console.log(data);
+
     const fuse = new Fuse(data, options);
     let result = fuse.search(query.q);
     result = result.slice(0, 5);
