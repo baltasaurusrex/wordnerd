@@ -1,4 +1,6 @@
 import Fuse from "fuse.js";
+import { connectMongoDB } from "../../utils/mongoose.js";
+// import Phrase from "../../models/Phrase.js";
 
 const data = [
   {
@@ -521,11 +523,15 @@ const data = [
   },
 ];
 
-// maybe fetch from mongodb here?
-
 export default async (req, res) => {
   try {
     const { query } = req;
+
+    // await connectMongoDB();
+
+    // const phrases = await Phrase.find({});
+
+    console.log(phrases.length);
 
     const options = {
       includeScore: true,
@@ -536,8 +542,9 @@ export default async (req, res) => {
     let result = fuse.search(query.q);
     result = result.slice(0, 5);
     result = result.map(({ item }) => item.title);
+
     res.status(200).json(result);
   } catch (err) {
-    res.status(400).message(err);
+    res.status(400).send(err);
   }
 };
