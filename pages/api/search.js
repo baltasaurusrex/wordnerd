@@ -1,6 +1,6 @@
 import Fuse from "fuse.js";
 import { connectMongoDB } from "../../utils/mongoose.js";
-// import Phrase from "../../models/Phrase.js";
+import Phrase from "../../models/Phrase.js";
 
 const data = [
   {
@@ -527,9 +527,9 @@ export default async (req, res) => {
   try {
     const { query } = req;
 
-    // await connectMongoDB();
+    await connectMongoDB();
 
-    // const phrases = await Phrase.find({});
+    const phrases = await Phrase.find({});
 
     console.log(phrases.length);
 
@@ -538,7 +538,7 @@ export default async (req, res) => {
       keys: ["title"],
     };
 
-    const fuse = new Fuse(data, options);
+    const fuse = new Fuse(phrases, options);
     let result = fuse.search(query.q);
     result = result.slice(0, 5);
     result = result.map(({ item }) => item.title);

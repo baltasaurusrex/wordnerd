@@ -4,11 +4,11 @@ import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
 import SearchIcon from "@mui/icons-material/Search";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { debounce } from "lodash";
 import { search } from "./api/index.js";
-
-const list = ["abc", "def", "ghi"];
 
 const Searchbar = () => {
   const handleSubmit = (e) => {
@@ -35,6 +35,8 @@ const Searchbar = () => {
     }
   };
 
+  const debouncedHandleChange = useMemo(() => debounce(handleChange, 500), []);
+
   return (
     <Box
       sx={{
@@ -58,7 +60,7 @@ const Searchbar = () => {
           sx={{ ml: 1, flex: 1 }}
           placeholder="Search for your phrase"
           inputProps={{ "aria-label": "search for your phrase" }}
-          onChange={handleChange}
+          onChange={debouncedHandleChange}
         />
         <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
           <SearchIcon />
@@ -74,7 +76,9 @@ const Searchbar = () => {
         >
           <List>
             {suggestions.map((suggestion, i) => (
-              <ListItem key={i}>{suggestion}</ListItem>
+              <ListItemButton key={i} button={true}>
+                {suggestion}
+              </ListItemButton>
             ))}
           </List>
         </Paper>
