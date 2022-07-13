@@ -15,7 +15,7 @@ const Phrase = (props) => {
       <Typography variant="body1">{props.description}</Typography>
 
       <Link href="/">
-        <Button>Go back to home</Button>
+        <Button>Go back home</Button>
       </Link>
     </div>
   );

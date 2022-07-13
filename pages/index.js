@@ -13,6 +13,8 @@ export default function Home() {
 
       <main className={styles.main}>
         <Searchbar />
+
+        <div>some search result here</div>
       </main>
     </div>
   );

@@ -74,6 +74,8 @@ const Searchbar = () => {
           sx={{
             borderRadius:
               (loading || suggestions.length) < 1 ? "4px" : "0px 0px 4px 4px",
+            position: "absolute",
+            width: "inherit",
           }}
         >
           <List>
