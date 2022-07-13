@@ -3,9 +3,11 @@ import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import SearchIcon from "@mui/icons-material/Search";
+
+import Link from "next/link";
+
 import { useState, useMemo } from "react";
 import { debounce } from "lodash";
 import { search } from "./api/index.js";
@@ -76,9 +78,11 @@ const Searchbar = () => {
         >
           <List>
             {suggestions.map((suggestion, i) => (
-              <ListItemButton key={i} button={true}>
-                {suggestion}
-              </ListItemButton>
+              <Link href={`/phrase/${encodeURIComponent(suggestion.id)}`}>
+                <ListItemButton key={i} button={true}>
+                  {suggestion.title}
+                </ListItemButton>
+              </Link>
             ))}
           </List>
         </Paper>

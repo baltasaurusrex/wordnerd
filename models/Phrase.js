@@ -18,11 +18,19 @@ import mongoose from "mongoose";
 //   },
 //   { timestamps: { createdAt: "created_at", updatedAt: `updated_at` } }
 // );
-const PhraseSchema = new mongoose.Schema({
-  title: { type: String, required: true },
-  description: { type: String, default: "" },
-});
 
-const Phrase = mongoose.model("Phrase", PhraseSchema);
+const PhraseSchema = new mongoose.Schema(
+  {
+    title: { type: String, required: true },
+    type: { type: String, enum: ["word", "idiom", "proverb", "quote"] },
+    sampleSentences: { type: [String], default: [] },
+    author: { type: String, default: "" },
+    description: { type: String, default: "" },
+    keywords: { type: [String], default: [] },
+  },
+  { timestamps: { createdAt: "created_at", updatedAt: `updated_at` } }
+);
+
+const Phrase = mongoose.models.Phrase || mongoose.model("Phrase", PhraseSchema);
 
 export default Phrase;

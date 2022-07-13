@@ -541,7 +541,7 @@ export default async (req, res) => {
     const fuse = new Fuse(phrases, options);
     let result = fuse.search(query.q);
     result = result.slice(0, 5);
-    result = result.map(({ item }) => item.title);
+    result = result.map(({ item }) => ({ title: item.title, id: item._id }));
 
     res.status(200).json(result);
   } catch (err) {
