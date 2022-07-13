@@ -12,6 +12,8 @@ import { useState, useMemo } from "react";
 import { debounce } from "lodash";
 import { search } from "./api/index.js";
 
+import styles from "./Searchbar.module.css";
+
 const Searchbar = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,15 +23,16 @@ const Searchbar = () => {
   const [loading, setLoading] = useState(false);
 
   const handleChange = async (e) => {
-    const input = e.target.value;
-    console.log(input);
+    const value = e.target.value;
+    console.log(value);
     setLoading(true);
-    if (input) {
-      const results = await search(input);
+
+    if (value) {
+      const results = await search(value);
       if (results.length > 0) {
-        setSuggestions([...results]);
+        setSuggestions([value, ...results]);
       } else {
-        setSuggestions([input]);
+        setSuggestions([value]);
       }
 
       setLoading(false);
@@ -39,27 +42,40 @@ const Searchbar = () => {
 
   const debouncedHandleChange = useMemo(() => debounce(handleChange, 500), []);
 
+  const list = suggestions.map((suggestion, i) => {
+    return typeof suggestion === "string" ? (
+      <ListItemButton
+        style={{ backgroundColor: "#f5f5f5" }}
+        key={i}
+        button={true}
+      >
+        <italic>Search for "{suggestion}"</italic>
+      </ListItemButton>
+    ) : (
+      <Link href={`/phrase/${encodeURIComponent(suggestion.id)}`}>
+        <ListItemButton key={i} button={true}>
+          {suggestion.title ? suggestion.title : suggestion}
+        </ListItemButton>
+      </Link>
+    );
+  });
+
   return (
-    <Box
-      sx={{
-        width: 500,
-        maxWidth: "100%",
-      }}
-    >
+    <Box className={styles.container}>
       <Paper
         component="form"
         sx={{
-          p: "2px 4px",
+          p: "2px 4px 2px 16px",
           display: "flex",
           alignItems: "center",
           width: "100%",
           borderRadius:
-            loading || suggestions.length < 1 ? "4px" : "4px 4px 0px 0px",
+            loading || suggestions.length < 1 ? "25px" : "25px 25px 0px 0px",
         }}
         onSubmit={handleSubmit}
       >
         <InputBase
-          sx={{ ml: 1, flex: 1 }}
+          sx={{ flex: 1 }}
           placeholder="Search for your phrase"
           inputProps={{ "aria-label": "search for your phrase" }}
           onChange={debouncedHandleChange}
@@ -73,20 +89,14 @@ const Searchbar = () => {
         <Paper
           sx={{
             borderRadius:
-              (loading || suggestions.length) < 1 ? "4px" : "0px 0px 4px 4px",
+              (loading || suggestions.length) < 1
+                ? "25px"
+                : "0px 0px 25px 25px",
             position: "absolute",
             width: "inherit",
           }}
         >
-          <List>
-            {suggestions.map((suggestion, i) => (
-              <Link href={`/phrase/${encodeURIComponent(suggestion.id)}`}>
-                <ListItemButton key={i} button={true}>
-                  {suggestion.title}
-                </ListItemButton>
-              </Link>
-            ))}
-          </List>
+          <List className={styles.list}>{list}</List>
         </Paper>
       )}
     </Box>
