@@ -1,0 +1,65 @@
+.nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.nav > * {
+  padding: 0 1rem;
+}
+
+.logo {
+}
+
+.searchbar {
+  padding: 0 3rem;
+  width: 700px;
+}
+
+.main {
+  padding: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .searchbar {
+    width: 100%;
+  }
+}
+
+@media (min-width: 769px) {
+  .logoSmall {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .logoBig {
+    display: none;
+  }
+  .searchbar {
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav {
+    display: block;
+    padding: 0.5rem;
+    text-align: center;
+  }
+
+  .logoSmall {
+    display: none;
+  }
+  .logoBig {
+    display: block;
+  }
+  .searchbar {
+    display: inline-block;
+  }
+  .menu {
+    display: inline-block;
+  }
+}
