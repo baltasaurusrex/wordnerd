@@ -20,8 +20,8 @@ export default async (req, res) => {
     result = result.slice(0, 5);
     result = result.map(({ item }) => ({ title: item.title, id: item._id }));
 
-    res.status(200).json(result);
+    return res.status(200).json(result);
   } catch (err) {
-    res.status(400).send(err);
+    return res.status(400).send(err);
   }
 };

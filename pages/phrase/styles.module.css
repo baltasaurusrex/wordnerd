@@ -2,10 +2,6 @@
   padding: 1rem;
 }
 
-.container > * {
-  margin: 1rem;
-}
-
 @media (max-width: 768px) {
   .container {
     padding: 1rem;
