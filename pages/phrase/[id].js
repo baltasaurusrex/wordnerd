@@ -1,6 +1,9 @@
 import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
+import Button from "@mui/material/Button";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import AddEntryDialog from "../../components/AddEntryDialog.js";
 
 import { getPhraseInfo } from "../../controllers/phrases.js";
 
@@ -11,11 +14,13 @@ import Link from "next/link";
 const Phrase = (props) => {
   console.log("props: ", props);
   const parsed = JSON.parse(props.data);
+  console.log("parsed: ", parsed);
   console.log("parsed.relations: ", parsed.relations);
 
   const relations = parsed.relations.map((rel, i) => {
     console.log("rel: ", rel);
-    const entry = origin._id === rel._id ? rel.entry : rel.origin;
+    const { origin, entry: related } = rel;
+    const entry = parsed._id === origin._id ? related : origin;
 
     return (
       <Link href={`/phrase/${encodeURIComponent(entry._id)}`} key={i}>
@@ -37,6 +42,7 @@ const Phrase = (props) => {
       </div>
       <div className={styles.relations}>
         <List>{relations}</List>
+        <AddEntryDialog />
       </div>
     </div>
   );

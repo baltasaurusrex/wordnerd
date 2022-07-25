@@ -1,0 +1,9 @@
+.suggestions {
+  overflow: hidden;
+  position: absolute;
+  width: 100%;
+}
+
+.list {
+  padding-top: 0;
+}
