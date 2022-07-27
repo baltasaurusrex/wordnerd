@@ -1,9 +1,18 @@
 import Searchbar from "./Searchbar.js";
 import styles from "./Layout.module.css";
-import { Typography } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
 
 const Layout = ({ children }) => {
+  const { data: session } = useSession();
+
+  if (session) {
+    console.log("session: ", session);
+  } else {
+    console.log("no session");
+  }
+
   return (
     <>
       <nav className={styles.nav}>
@@ -20,7 +29,14 @@ const Layout = ({ children }) => {
         <div className={styles.searchbar}>
           <Searchbar />
         </div>
-        <div className={styles.menu}>Menu</div>
+        <div className={styles.menu}>
+          {session && <Button onClick={signOut}>Sign out</Button>}
+          {!session && (
+            <Link href="/login">
+              <Button>Sign in</Button>
+            </Link>
+          )}
+        </div>
       </nav>
       <main className={styles.main}>{children}</main>
     </>

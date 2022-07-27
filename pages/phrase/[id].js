@@ -1,8 +1,6 @@
 import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
-import Button from "@mui/material/Button";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import AddEntryDialog from "../../components/AddEntryDialog.js";
 
 import { getPhraseInfo } from "../../controllers/phrases.js";
@@ -33,15 +31,20 @@ const Phrase = (props) => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.entry}>
-        <Typography variant="h3" component="h1">
+      <div className={styles.phrase}>
+        <Typography variant="h4" component="h1">
           {parsed.title}
         </Typography>
-        <Typography variant="subtitle1">{parsed.type}</Typography>
+        <Typography variant="subtitle1" style={{ margin: "0 1rem" }}>
+          <i>{parsed.type}</i>
+        </Typography>
         <Typography variant="body1">{parsed.description}</Typography>
       </div>
       <div className={styles.relations}>
-        <List>{relations}</List>
+        <Typography variant="h6" component="h2">
+          Related phrases:
+        </Typography>
+        <List className={styles.list}>{relations}</List>
         <AddEntryDialog />
       </div>
     </div>

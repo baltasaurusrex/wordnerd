@@ -3,7 +3,9 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding: 2rem 1rem;
+  padding: 1rem 1rem;
+  box-shadow: rgba(0, 0, 0, 0.16) 0 4px 2px -2px;
+  margin-bottom: 2rem;
 }
 
 .nav > * {
@@ -19,7 +21,7 @@
 }
 
 .main {
-  padding: 1rem;
+  padding: 2rem 1rem;
 }
 
 @media (max-width: 1024px) {
@@ -48,6 +50,10 @@
     display: block;
     padding: 0.5rem;
     text-align: center;
+  }
+
+  .nav > * {
+    padding: 0.5rem 0;
   }
 
   .logoSmall {
