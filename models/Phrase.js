@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Relation from "./Relation.js";
 
 const PhraseSchema = new mongoose.Schema(
   {
