@@ -73,7 +73,7 @@ const Layout = ({ children }) => {
   return (
     <>
       <nav className={styles.nav}>
-        <div id="start">
+        <div className={styles.start}>
           <Link href="/" passHref>
             <a className={styles.logo}>
               <Typography variant="h4" className={styles.logoBig}>
@@ -85,12 +85,12 @@ const Layout = ({ children }) => {
             </a>
           </Link>
         </div>
-        <div id="center">
+        <div className={styles.center}>
           <div className={styles.searchbar}>
             <Searchbar />
           </div>
         </div>
-        <div id="end">
+        <div className={styles.end}>
           <div className={styles.menu}>
             {session && sessionBar}
             {!session && (

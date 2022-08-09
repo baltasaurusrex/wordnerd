@@ -12,16 +12,25 @@
   padding: 0 1rem;
 }
 
-.logo {
+.start {
+  flex-basis: 200px;
+}
+
+.center {
+  flex-basis: 700px;
+}
+
+.end {
+  flex-basis: 200px;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .searchbar {
-  padding: 0 3rem;
-  width: 700px;
 }
 
 .main {
-  padding: 2rem 1rem;
+  padding: 1rem;
 }
 
 @media (max-width: 1024px) {
@@ -41,7 +50,6 @@
     display: none;
   }
   .searchbar {
-    padding: 0 1rem;
   }
 }
 
