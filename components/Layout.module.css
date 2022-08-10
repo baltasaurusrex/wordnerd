@@ -1,7 +1,7 @@
 .nav {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: stretch;
   justify-content: space-between;
   padding: 1rem;
   box-shadow: rgba(0, 0, 0, 0.16) 0 4px 2px -2px;
@@ -9,11 +9,17 @@
 }
 
 .nav > * {
-  padding: 0 1rem;
 }
 
 .start {
   flex-basis: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.start > a {
+  margin: 0 1rem;
 }
 
 .center {
@@ -23,10 +29,19 @@
 .end {
   flex-basis: 200px;
   display: flex;
+}
+
+.sessionBar {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  flex-wrap: nowrap;
   justify-content: flex-end;
 }
 
-.searchbar {
+.sessionBar button {
+  margin: 0 1rem;
+  padding: 10px;
 }
 
 .main {
@@ -36,6 +51,9 @@
 @media (max-width: 1024px) {
   .searchbar {
     width: 100%;
+  }
+  .sessionBar button {
+    margin: 0 0.5rem;
   }
 }
 
@@ -49,7 +67,8 @@
   .logoBig {
     display: none;
   }
-  .searchbar {
+  .sessionBar button {
+    margin: 0;
   }
 }
 
@@ -59,6 +78,8 @@
     padding: 0.5rem;
     text-align: center;
   }
+
+  /* this is where the searchbar should become minimized & responsive & toggle-able */
 
   .nav > * {
     padding: 0.5rem 0;

@@ -36,7 +36,7 @@ const Layout = ({ children }) => {
   };
 
   const sessionBar = (
-    <div>
+    <div className={styles.sessionBar}>
       <Tooltip title="Add new entry">
         <IconButton aria-label="add new entry">
           <AddCircleOutlineIcon />
@@ -91,14 +91,12 @@ const Layout = ({ children }) => {
           </div>
         </div>
         <div className={styles.end}>
-          <div className={styles.menu}>
-            {session && sessionBar}
-            {!session && (
-              <Link href="/login">
-                <Button>Sign in</Button>
-              </Link>
-            )}
-          </div>
+          {session && sessionBar}
+          {!session && (
+            <Link href="/login">
+              <Button>Sign in</Button>
+            </Link>
+          )}
         </div>
       </nav>
       <main className={styles.main}>{children}</main>
