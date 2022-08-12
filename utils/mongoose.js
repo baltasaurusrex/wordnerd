@@ -12,3 +12,7 @@ export async function connectMongoDB() {
     return err;
   }
 }
+
+export async function generateMongoId() {
+  return new mongoose.Types.ObjectId();
+}

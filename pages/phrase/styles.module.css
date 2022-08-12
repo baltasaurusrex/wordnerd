@@ -1,9 +1,19 @@
 .container {
-  padding: 1rem;
 }
 
 @media (max-width: 768px) {
   .container {
-    padding: 1rem;
   }
+}
+
+.phrase {
+  padding: 1rem;
+}
+
+.relations {
+  padding: 1rem;
+}
+
+.list {
+  margin-bottom: 1rem;
 }

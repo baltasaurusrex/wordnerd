@@ -32,6 +32,7 @@ function SimpleDialog(props) {
   const [input, setInput] = useState("");
   const [suggestionsOpen, setSuggestionsOpen] = useState(false);
   const firstRender = useRef(true);
+  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     console.log("suggestions: ", suggestions);
@@ -58,6 +59,7 @@ function SimpleDialog(props) {
     }
     setInput(text);
     setSuggestionsOpen(false);
+    setSelected(text);
   };
 
   const handleSuggestions = async (e) => {
@@ -84,7 +86,14 @@ function SimpleDialog(props) {
   );
 
   const handleClose = () => {
+    setInput("");
+    setSuggestionsOpen(false);
     onClose();
+    setSelected(null);
+  };
+
+  const handleSubmit = () => {
+    // send api request that has the entry and or its id
   };
 
   const list = suggestions.map((suggestion, i) => {
@@ -117,27 +126,38 @@ function SimpleDialog(props) {
           If that entry already exists, selecting it here would be considered an
           upvote of that relation.
         </DialogContentText>
-        <Box style={{ position: "relative" }}>
+        <Box className={styles.box}>
           <TextField
             autoFocus
             autoComplete="off"
+            multiline
             margin="dense"
             id="phrase"
             label="input related phrase here"
             fullWidth
             value={input}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  {input && input.length > 0 && (
+                    <IconButton
+                      disableRipple
+                      onClick={() => {
+                        setInput("");
+                        setSuggestionsOpen(false);
+                      }}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                  )}
+                </InputAdornment>
+              ),
+            }}
             onChange={(e) => {
               changeInput(e);
               debouncedHandleSuggestions(e);
             }}
             variant="standard"
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton onClick={() => setInput("")}>
-                  <CloseIcon />
-                </IconButton>
-              </InputAdornment>
-            }
           />
           {!suggestionsOpen ? null : (
             <Paper className={styles.suggestions}>
@@ -145,6 +165,8 @@ function SimpleDialog(props) {
             </Paper>
           )}
         </Box>
+        <Button onClick={handleClose}>Close</Button>
+        <Button onClick={handleSubmit}>Submit</Button>
       </DialogContent>
     </Dialog>
   );
