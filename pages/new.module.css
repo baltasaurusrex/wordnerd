@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.form {
+  text-align: center;
+}
+
+.form > * > * {
+  margin: 1rem;
+}
+
+.textfield {
+  width: 50%;
+  margin: 1rem;
+}
+
+.textfieldInput {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.formData {
+  color: #4c4f4d;
+  font-style: italic;
+  display: flex;
+  flex-direction: column;
+}
+
+.formData > * {
+  margin: 0.5rem;
+}
+
+.formData .type {
+  align-self: center;
+  padding: 0.5rem 1rem;
+}
+
+.navigation {
+  text-align: center;
+}

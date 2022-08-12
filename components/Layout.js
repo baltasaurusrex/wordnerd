@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useSession, signOut } from "next-auth/react";
 
 import {
@@ -18,6 +19,7 @@ import Searchbar from "./Searchbar.js";
 import styles from "./Layout.module.css";
 
 const Layout = ({ children }) => {
+  const router = useRouter();
   const { data: session } = useSession();
   const [anchorEl, setAnchorEl] = useState(null);
   const menuOpen = Boolean(anchorEl);
@@ -38,7 +40,10 @@ const Layout = ({ children }) => {
   const sessionBar = (
     <div className={styles.sessionBar}>
       <Tooltip title="Add new entry">
-        <IconButton aria-label="add new entry">
+        <IconButton
+          aria-label="add new entry"
+          onClick={() => router.push("/new")}
+        >
           <AddCircleOutlineIcon />
         </IconButton>
       </Tooltip>
@@ -71,7 +76,7 @@ const Layout = ({ children }) => {
   );
 
   return (
-    <>
+    <div className={styles.wrapper}>
       <nav className={styles.nav}>
         <div className={styles.start}>
           <Link href="/" passHref>
@@ -100,7 +105,7 @@ const Layout = ({ children }) => {
         </div>
       </nav>
       <main className={styles.main}>{children}</main>
-    </>
+    </div>
   );
 };
 

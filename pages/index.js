@@ -1,8 +1,8 @@
 import Head from "next/head";
 import styles from "./index.module.css";
-import Searchbar from "../components/Searchbar.js";
 
 export default function Home() {
+  console.log("home page rendered");
   return (
     <>
       <Head>
@@ -11,7 +11,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <div>some search result here</div>
+        <div>Home Page</div>
       </main>
     </>
   );

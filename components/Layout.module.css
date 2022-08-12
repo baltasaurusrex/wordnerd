@@ -1,3 +1,9 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
 .nav {
   display: flex;
   flex-direction: row;
@@ -6,9 +12,6 @@
   padding: 1rem;
   box-shadow: rgba(0, 0, 0, 0.16) 0 4px 2px -2px;
   margin-bottom: 2rem;
-}
-
-.nav > * {
 }
 
 .start {
@@ -29,6 +32,7 @@
 .end {
   flex-basis: 200px;
   display: flex;
+  justify-content: flex-end;
 }
 
 .sessionBar {
@@ -45,7 +49,9 @@
 }
 
 .main {
+  flex-grow: 1;
   padding: 1rem;
+  display: flex;
 }
 
 @media (max-width: 1024px) {
