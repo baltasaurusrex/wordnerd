@@ -73,7 +73,7 @@ const Layout = ({ children }) => {
 
   const sessionBar = (
     <div className={styles.sessionBar}>
-      {!searchbarOpen && searchIconGroup}
+      {!searchbarOpen && mobile && searchIconGroup}
       <Tooltip title="Add new entry">
         <IconButton
           aria-label="add new entry"
@@ -112,38 +112,28 @@ const Layout = ({ children }) => {
 
   const maximizedSB = (
     <>
-      <div className={styles.start}>
-        <Tooltip title="Toggle searchbar">
-          <IconButton
-            aria-label="Toggle searchbar"
-            onClick={() => setSearchbarOpen((prev) => !prev)}
-          >
-            <ArrowBackIcon />
-          </IconButton>
-        </Tooltip>
-      </div>
       <div className={styles.center}>
         <div className={styles.searchbar}>
           <Searchbar />
         </div>
       </div>
+      {!mobile && (
+        <div className={styles.end}>
+          {session && sessionBar}
+          {!session && (
+            <>
+              <Link href="/login">
+                <Button style={{ "white-space": "nowrap" }}>Sign in</Button>
+              </Link>
+            </>
+          )}
+        </div>
+      )}
     </>
   );
 
   const collapsedSB = (
     <>
-      <div className={styles.start}>
-        <Link href="/" passHref>
-          <a className={styles.logo}>
-            <Typography variant="h4" className={styles.logoBig}>
-              WordNerd
-            </Typography>
-            <Typography variant="h4" className={styles.logoSmall}>
-              WN
-            </Typography>
-          </a>
-        </Link>
-      </div>
       <div className={styles.center}></div>
       <div className={styles.end}>
         {session && sessionBar}
@@ -159,9 +149,38 @@ const Layout = ({ children }) => {
     </>
   );
 
+  const logo = (
+    <Link href="/" passHref>
+      <a className={styles.logo}>
+        <Typography variant="h4" className={styles.logoBig}>
+          WordNerd
+        </Typography>
+        <Typography variant="h4" className={styles.logoSmall}>
+          WN
+        </Typography>
+      </a>
+    </Link>
+  );
+
+  const backButton = (
+    <>
+      <Tooltip title="Toggle searchbar">
+        <IconButton
+          aria-label="Toggle searchbar"
+          onClick={() => setSearchbarOpen((prev) => !prev)}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+      </Tooltip>
+    </>
+  );
+
   return (
     <div className={styles.wrapper}>
       <nav className={`${styles.nav}`}>
+        <div className={styles.start}>
+          {searchbarOpen ? (mobile ? backButton : logo) : logo}
+        </div>
         {searchbarOpen ? maximizedSB : collapsedSB}
       </nav>
       <main className={styles.main}>{children}</main>

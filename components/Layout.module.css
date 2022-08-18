@@ -7,11 +7,12 @@
 .nav {
   display: flex;
   flex-direction: row;
-  align-items: stretch;
+  align-items: center;
   justify-content: space-between;
   padding: 1rem;
   box-shadow: rgba(0, 0, 0, 0.16) 0 4px 2px -2px;
   margin-bottom: 2rem;
+  height: 80px;
 }
 
 .red {
@@ -84,7 +85,7 @@
 
 @media (max-width: 480px) {
   .nav {
-    padding: 0.5rem;
+    /* padding: 0.5rem; */
     text-align: center;
   }
 
