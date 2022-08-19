@@ -1,14 +1,19 @@
 import styles from "./search.module.css";
 import { searchPhrases } from "../controllers/phrases.js";
+import SearchResult from "../components/SearchResult.js";
 
-const Search = ({ q, results }) => {
-  console.log("results: ", JSON.parse(results));
+const Search = ({ q, JSONresults }) => {
+  console.log("results: ", JSON.parse(JSONresults));
+  const results = JSON.parse(JSONresults);
 
-  if (results.length > 0) {
-  }
+  let mappedResults = results.map((result, i) => (
+    <SearchResult key={i} data={result} />
+  ));
+
   return (
     <div className={styles.container}>
-      your query string is: "{q}"{JSON.stringify(results)}
+      <div style={{ margin: "0 1rem" }}>Search results for: "{q}"</div>
+      <div>{mappedResults}</div>
     </div>
   );
 };
@@ -25,7 +30,7 @@ export async function getServerSideProps(ctx) {
   // if results
 
   return {
-    props: { q: query.q, results: JSON.stringify(results) },
+    props: { q: query.q, JSONresults: JSON.stringify(results) },
   };
 }
 
