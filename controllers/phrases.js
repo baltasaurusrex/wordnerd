@@ -55,6 +55,10 @@ export async function searchPhrases(query) {
 
     const phrases = await Phrase.find({}).select("title _id");
 
+    console.log("length: ", phrases.length);
+
+    console.log("phrases: ", phrases.slice(0, 5));
+
     const options = {
       includeScore: true,
       keys: ["title"],
@@ -64,7 +68,7 @@ export async function searchPhrases(query) {
     };
 
     const fuse = new Fuse(phrases, options);
-    let result = fuse.search(query.q);
+    let result = fuse.search(query);
     result = result.slice(0, 5);
     console.log("result: ", result);
     result = result.map(({ item }) => ({ title: item.title, id: item._id }));
