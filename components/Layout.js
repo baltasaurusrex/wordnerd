@@ -32,19 +32,15 @@ const Layout = ({ children }) => {
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   console.log("mobile: ", mobile);
-  const [searchbarOpen, setSearchbarOpen] = useState(mobile ? false : true);
-  console.log("searchbarOpen: ", searchbarOpen);
+
+  const [searchbarOpen, setSearchbarOpen] = useState(false);
 
   useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
-      return;
-    }
     setSearchbarOpen(mobile ? false : true);
   }, [mobile]);
 
   useEffect(() => {
-    // console.log("searchbarOpen: ", searchbarOpen);
+    console.log("searchbarOpen: ", searchbarOpen);
   }, [searchbarOpen]);
 
   if (session) {
@@ -123,7 +119,7 @@ const Layout = ({ children }) => {
           {!session && (
             <>
               <Link href="/login">
-                <Button style={{ "white-space": "nowrap" }}>Sign in</Button>
+                <Button style={{ whiteSpace: "nowrap" }}>Sign in</Button>
               </Link>
             </>
           )}
@@ -141,7 +137,7 @@ const Layout = ({ children }) => {
           <>
             {searchIconGroup}
             <Link href="/login">
-              <Button style={{ "white-space": "nowrap" }}>Sign in</Button>
+              <Button style={{ whiteSpace: "nowrap" }}>Sign in</Button>
             </Link>
           </>
         )}
