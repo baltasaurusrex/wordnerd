@@ -1,6 +1,16 @@
-.container {
+.containerMobile {
   width: 100%;
+}
+
+.container {
   position: relative;
+  width: 100%;
+}
+
+.searchMobile {
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
 .search {
@@ -14,11 +24,19 @@
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
-.suggestions {
-  overflow: hidden;
+.suggestionsMobile {
   position: absolute;
+  top: 50px;
+  left: 0;
+  right: 0;
+  overflow: hidden;
   width: 100%;
-  border-radius: 0px 0px 25px 25px;
+}
+
+.suggestionsMobile {
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
 }
 
 .list {

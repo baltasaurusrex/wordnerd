@@ -109,9 +109,7 @@ const Layout = ({ children }) => {
   const maximizedSB = (
     <>
       <div className={styles.center}>
-        <div className={styles.searchbar}>
-          <Searchbar />
-        </div>
+        <Searchbar mobile={mobile} />
       </div>
       {!mobile && (
         <div className={styles.end}>

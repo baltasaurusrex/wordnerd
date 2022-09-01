@@ -17,7 +17,8 @@ import { search } from "./api/index.js";
 
 import styles from "./Searchbar.module.css";
 
-const Searchbar = () => {
+const Searchbar = ({ mobile }) => {
+  console.log("Searchbar > mobile: ", mobile);
   const router = useRouter();
   const firstRender = useRef(true);
 
@@ -106,47 +107,89 @@ const Searchbar = () => {
     );
   });
 
-  return (
-    <ClickAwayListener onClickAway={() => setOpen(false)}>
-      <Box className={styles.container}>
-        <Paper
-          component="form"
-          className={styles.search}
-          sx={{
-            borderRadius: !open ? "25px" : "25px 25px 0px 0px",
-          }}
-          onSubmit={handleSubmit}
-        >
-          <InputBase
-            sx={{ flex: 1 }}
-            placeholder="Search for your phrase"
-            inputProps={{ "aria-label": "search for your phrase" }}
-            value={query}
-            onChange={(e) => {
-              changeQuery(e);
-              debouncedHandleChange(e);
-            }}
-          />
+  if (mobile) {
+    return (
+      <ClickAwayListener onClickAway={() => setOpen(false)}>
+        <Box className={styles.container}>
+          <Paper
+            component="form"
+            className={styles.searchMobile}
+            onSubmit={handleSubmit}
+          >
+            <InputBase
+              sx={{ flex: 1 }}
+              placeholder="Search for your phrase"
+              inputProps={{ "aria-label": "search for your phrase" }}
+              value={query}
+              onChange={(e) => {
+                changeQuery(e);
+                debouncedHandleChange(e);
+              }}
+            />
 
-          {query && query.length > 0 && (
-            <IconButton onClick={() => setQuery("")}>
-              <CloseIcon />
+            {query && query.length > 0 && (
+              <IconButton onClick={() => setQuery("")}>
+                <CloseIcon />
+              </IconButton>
+            )}
+
+            <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
+              <SearchIcon />
             </IconButton>
-          )}
-
-          <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
-            <SearchIcon />
-          </IconButton>
-        </Paper>
-
-        {!open ? null : (
-          <Paper className={styles.suggestions}>
-            <List className={styles.list}>{list}</List>
           </Paper>
-        )}
-      </Box>
-    </ClickAwayListener>
-  );
+          {!open ? null : (
+            <Paper className={styles.suggestions}>
+              <List className={styles.list}>{list}</List>
+            </Paper>
+          )}
+        </Box>
+      </ClickAwayListener>
+    );
+  } else {
+    return (
+      <ClickAwayListener onClickAway={() => setOpen(false)}>
+        <Box className={styles.container}>
+          <Paper
+            component="form"
+            className={styles.search}
+            sx={{
+              borderRadius: !open ? "25px" : "25px 25px 0px 0px",
+            }}
+            onSubmit={handleSubmit}
+          >
+            <InputBase
+              sx={{ flex: 1 }}
+              placeholder="Search for your phrase"
+              inputProps={{ "aria-label": "search for your phrase" }}
+              value={query}
+              onChange={(e) => {
+                changeQuery(e);
+                debouncedHandleChange(e);
+              }}
+            />
+
+            {query && query.length > 0 && (
+              <IconButton onClick={() => setQuery("")}>
+                <CloseIcon />
+              </IconButton>
+            )}
+
+            <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
+              <SearchIcon />
+            </IconButton>
+          </Paper>
+          {!open ? null : (
+            <Paper
+              className={styles.suggestions}
+              sx={{ borderRadius: "0px 0px 25px 25px" }}
+            >
+              <List className={styles.list}>{list}</List>
+            </Paper>
+          )}
+        </Box>
+      </ClickAwayListener>
+    );
+  }
 };
 
 export default Searchbar;

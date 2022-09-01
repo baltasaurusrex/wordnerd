@@ -9,14 +9,9 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem;
   box-shadow: rgba(0, 0, 0, 0.16) 0 4px 2px -2px;
   margin-bottom: 2rem;
-  height: 80px;
-}
-
-.red {
-  background-color: red;
+  height: 50px;
 }
 
 .start {
@@ -60,9 +55,6 @@
 }
 
 @media (max-width: 1024px) {
-  .searchbar {
-    width: 100%;
-  }
   .sessionBar button {
     margin: 0 0.5rem;
   }
@@ -89,20 +81,11 @@
     text-align: center;
   }
 
-  /* this is where the searchbar should become minimized & responsive & toggle-able */
-
-  .nav > * {
-    padding: 0.5rem 0;
-  }
-
   .logoSmall {
     display: none;
   }
   .logoBig {
     display: block;
-  }
-  .searchbar {
-    display: inline-block;
   }
   .menu {
     display: inline-block;
