@@ -11,7 +11,7 @@
   justify-content: space-between;
   box-shadow: rgba(0, 0, 0, 0.16) 0 4px 2px -2px;
   margin-bottom: 2rem;
-  height: 50px;
+  min-height: 50px;
 }
 
 .start {
@@ -19,14 +19,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.start > a {
-  margin: 0 1rem;
+  height: 100%;
 }
 
 .center {
   flex-basis: 700px;
+  height: 100%;
+  align-items: center;
 }
 
 .end {

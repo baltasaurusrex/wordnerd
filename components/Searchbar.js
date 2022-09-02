@@ -110,14 +110,16 @@ const Searchbar = ({ mobile }) => {
   if (mobile) {
     return (
       <ClickAwayListener onClickAway={() => setOpen(false)}>
-        <Box className={styles.container}>
+        <Box className={styles.containerMobile}>
           <Paper
             component="form"
-            className={styles.searchMobile}
+            className={styles.paperMobile}
+            elevation={0}
+            square={true}
             onSubmit={handleSubmit}
           >
             <InputBase
-              sx={{ flex: 1 }}
+              className={styles.inputBaseMobile}
               placeholder="Search for your phrase"
               inputProps={{ "aria-label": "search for your phrase" }}
               value={query}
@@ -126,19 +128,17 @@ const Searchbar = ({ mobile }) => {
                 debouncedHandleChange(e);
               }}
             />
-
             {query && query.length > 0 && (
               <IconButton onClick={() => setQuery("")}>
                 <CloseIcon />
               </IconButton>
             )}
-
-            <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
-              <SearchIcon />
-            </IconButton>
           </Paper>
+          <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
+            <SearchIcon />
+          </IconButton>
           {!open ? null : (
-            <Paper className={styles.suggestions}>
+            <Paper className={styles.suggestionsMobile}>
               <List className={styles.list}>{list}</List>
             </Paper>
           )}

@@ -1,4 +1,17 @@
 .containerMobile {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  padding: 0 0.5rem;
+}
+
+.paperMobile {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.inputBaseMobile {
   width: 100%;
 }
 
@@ -29,14 +42,13 @@
   top: 50px;
   left: 0;
   right: 0;
-  overflow: hidden;
-  width: 100%;
 }
 
-.suggestionsMobile {
-  position: absolute;
+.suggestions {
   overflow: hidden;
+  position: absolute;
   width: 100%;
+  border-radius: 0px 0px 25px 25px;
 }
 
 .list {
