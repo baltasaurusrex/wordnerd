@@ -171,7 +171,7 @@ const Layout = ({ children }) => {
 
   return (
     <div className={styles.wrapper}>
-      <nav className={`${styles.nav}`}>
+      <nav className={`${mobile ? styles.navMobile : styles.nav}`}>
         <div className={styles.start}>
           {searchbarOpen ? (mobile ? backButton : logo) : logo}
         </div>
