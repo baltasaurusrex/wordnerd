@@ -1,6 +1,8 @@
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
+import TextField from "@mui/material/TextField";
+import Input from "@mui/material/Input";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -14,6 +16,19 @@ import { useRouter } from "next/router";
 import { useState, useMemo, useEffect, useRef } from "react";
 import { debounce } from "lodash";
 import { search } from "./api/index.js";
+
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+const theme = createTheme({
+  palette: {
+    wordnerdred: {
+      main: "#64748B",
+    },
+    black: {
+      main: "#1B1717",
+    },
+  },
+});
 
 import styles from "./Searchbar.module.css";
 
@@ -109,41 +124,59 @@ const Searchbar = ({ mobile }) => {
 
   if (mobile) {
     return (
-      <ClickAwayListener onClickAway={() => setOpen(false)}>
-        <Box className={styles.containerMobile}>
-          <Paper
-            component="form"
-            className={styles.paperMobile}
-            elevation={0}
-            square={true}
-            onSubmit={handleSubmit}
-          >
-            <InputBase
-              className={styles.inputBaseMobile}
-              placeholder="Search for your phrase"
-              inputProps={{ "aria-label": "search for your phrase" }}
-              value={query}
-              onChange={(e) => {
-                changeQuery(e);
-                debouncedHandleChange(e);
-              }}
-            />
-            {query && query.length > 0 && (
+      <ThemeProvider theme={theme}>
+        <ClickAwayListener onClickAway={() => setOpen(false)}>
+          <Box className={styles.container_mobile}>
+            <Paper
+              component="form"
+              className={styles.paper_mobile}
+              elevation={0}
+              square={true}
+              onSubmit={handleSubmit}
+            >
+              <Input
+                className={styles.inputBaseMobile}
+                placeholder="Search for your phrase"
+                inputProps={{ "aria-label": "search for your phrase" }}
+                variant="standard"
+                color="black"
+                value={query}
+                onChange={(e) => {
+                  changeQuery(e);
+                  debouncedHandleChange(e);
+                }}
+                endAdornment={
+                  query &&
+                  query.length > 0 && (
+                    <IconButton
+                      onClick={() => {
+                        setQuery("");
+                        setOpen(false);
+                      }}
+                      sx={{ padding: "0 0.25rem 0 1rem" }}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                  )
+                }
+              />
+              {/* {query && query.length > 0 && (
               <IconButton onClick={() => setQuery("")}>
                 <CloseIcon />
               </IconButton>
-            )}
-          </Paper>
-          <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
-            <SearchIcon />
-          </IconButton>
-          {!open ? null : (
-            <Paper className={styles.suggestionsMobile}>
-              <List className={styles.list}>{list}</List>
+            )} */}
             </Paper>
-          )}
-        </Box>
-      </ClickAwayListener>
+            <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
+              <SearchIcon />
+            </IconButton>
+            {!open ? null : (
+              <Paper className={styles.suggestionsMobile}>
+                <List className={styles.list}>{list}</List>
+              </Paper>
+            )}
+          </Box>
+        </ClickAwayListener>
+      </ThemeProvider>
     );
   } else {
     return (
@@ -169,7 +202,12 @@ const Searchbar = ({ mobile }) => {
             />
 
             {query && query.length > 0 && (
-              <IconButton onClick={() => setQuery("")}>
+              <IconButton
+                onClick={() => {
+                  setQuery("");
+                  setOpen(false);
+                }}
+              >
                 <CloseIcon />
               </IconButton>
             )}

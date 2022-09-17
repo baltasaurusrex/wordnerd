@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSession, signOut } from "next-auth/react";
+import Image from "next/image";
 
 import {
   Typography,
@@ -33,15 +34,15 @@ const Layout = ({ children }) => {
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   console.log("mobile: ", mobile);
 
-  const [searchbarOpen, setSearchbarOpen] = useState(false);
+  const [searchbar_open, setSearchbarOpen] = useState(false);
 
   useEffect(() => {
     setSearchbarOpen(mobile ? false : true);
   }, [mobile]);
 
   useEffect(() => {
-    console.log("searchbarOpen: ", searchbarOpen);
-  }, [searchbarOpen]);
+    console.log("searchbar_open: ", searchbar_open);
+  }, [searchbar_open]);
 
   if (session) {
     console.log("session: ", session);
@@ -69,7 +70,7 @@ const Layout = ({ children }) => {
 
   const sessionBar = (
     <div className={styles.sessionBar}>
-      {!searchbarOpen && mobile && searchIconGroup}
+      {!searchbar_open && mobile && searchIconGroup}
       <Tooltip title="Add new entry">
         <IconButton
           aria-label="add new entry"
@@ -106,7 +107,7 @@ const Layout = ({ children }) => {
     </div>
   );
 
-  const maximizedSB = (
+  const searchbar_max = (
     <>
       <div className={styles.center}>
         <Searchbar mobile={mobile} />
@@ -126,7 +127,7 @@ const Layout = ({ children }) => {
     </>
   );
 
-  const collapsedSB = (
+  const searchbar_coll = (
     <>
       <div className={styles.center}></div>
       <div className={styles.end}>
@@ -146,17 +147,22 @@ const Layout = ({ children }) => {
   const logo = (
     <Link href="/" passHref>
       <a className={styles.logo}>
-        <Typography variant="h4" className={styles.logoBig}>
+        {/* <Typography variant="h4" className={styles.logoBig}>
           WordNerd
         </Typography>
         <Typography variant="h4" className={styles.logoSmall}>
           WN
-        </Typography>
+        </Typography> */}
+        <Image
+          src="/WordNerd Logo Transparent.png"
+          width="100%"
+          height="100%"
+        />
       </a>
     </Link>
   );
 
-  const backButton = (
+  const btn_back = (
     <>
       <Tooltip title="Toggle searchbar">
         <IconButton
@@ -171,11 +177,11 @@ const Layout = ({ children }) => {
 
   return (
     <div className={styles.wrapper}>
-      <nav className={`${mobile ? styles.navMobile : styles.nav}`}>
-        <div className={styles.start}>
-          {searchbarOpen ? (mobile ? backButton : logo) : logo}
+      <nav className={`${mobile ? styles.nav_mobile : styles.nav}`}>
+        <div className={`${mobile ? styles.start_mobile : styles.nav}`}>
+          {searchbar_open ? (mobile ? btn_back : logo) : logo}
         </div>
-        {searchbarOpen ? maximizedSB : collapsedSB}
+        {searchbar_open ? searchbar_max : searchbar_coll}
       </nav>
       <main className={styles.main}>{children}</main>
     </div>

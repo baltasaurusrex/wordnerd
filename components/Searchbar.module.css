@@ -1,11 +1,11 @@
-.containerMobile {
+.container_mobile {
   height: 100%;
   width: 100%;
   display: flex;
   padding: 0 0.5rem;
 }
 
-.paperMobile {
+.paper_mobile {
   display: flex;
   align-items: center;
   flex: 1;

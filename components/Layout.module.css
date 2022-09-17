@@ -4,7 +4,7 @@
   height: 100vh;
 }
 
-.navMobile {
+.nav_mobile {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -32,6 +32,18 @@
   height: 100%;
   padding: 0 1rem;
 }
+
+.start_mobile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 1rem;
+}
+
+/* .logo {
+  padding: 0 1rem;
+} */
 
 @media (max-width: 600px) {
   .start h4 {
