@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import Head from "next/head";
 import {
   Box,
   Button,
@@ -14,6 +15,19 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 
 import styles from "./new.module.css";
+
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+const theme = createTheme({
+  palette: {
+    wordnerdred: {
+      main: "#64748B",
+    },
+    black: {
+      main: "#1B1717",
+    },
+  },
+});
 
 export default function New() {
   const [formData, setFormData] = useState({
@@ -105,32 +119,42 @@ export default function New() {
   };
 
   return (
-    <Box className={styles.container}>
-      <Box component="form" className={styles.form}>
-        {renderForm()}
-      </Box>
-      <Box className={styles.navigation}>
-        {page > 0 && (
+    <>
+      <Head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap"
+          rel="stylesheet"
+        />
+      </Head>
+      <Box className={styles.container}>
+        <Box component="form" className={styles.form}>
+          {renderForm()}
+        </Box>
+        <Box className={styles.navigation}>
+          {page > 0 && (
+            <Button
+              onClick={() => {
+                setPage((prev) => prev - 1);
+                setValid(true);
+              }}
+            >
+              Previous
+            </Button>
+          )}
           <Button
             onClick={() => {
-              setPage((prev) => prev - 1);
-              setValid(true);
+              setPage((prev) => prev + 1);
+              setValid(false);
             }}
+            disabled={!valid}
           >
-            Previous
+            Next
           </Button>
-        )}
-        <Button
-          onClick={() => {
-            setPage((prev) => prev + 1);
-            setValid(false);
-          }}
-          disabled={!valid}
-        >
-          Next
-        </Button>
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 }
 
@@ -190,7 +214,7 @@ const First = ({ formData, setFormData, setValid }) => {
 
   return (
     <Box>
-      <Typography variant="h4">What's the phrase?</Typography>
+      <Typography variant="h5">What's the phrase?</Typography>
       <TextField
         error={error}
         helperText={errorHelperText}

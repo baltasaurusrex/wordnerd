@@ -1,8 +1,8 @@
 .container {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  flex-grow: 1;
+  width: 100%;
+  font-family: "Noto Serif", serif;
 }
 
 .form {
@@ -14,12 +14,11 @@
 }
 
 .textfield {
-  width: 50%;
-  margin: 1rem;
+  width: 90%;
 }
 
 .textfieldInput {
-  font-size: 1.5rem;
+  font-size: 1rem;
   text-align: center;
 }
 
@@ -41,4 +40,5 @@
 
 .navigation {
   text-align: center;
+  margin-top: 50px;
 }

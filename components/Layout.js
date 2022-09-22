@@ -147,16 +147,11 @@ const Layout = ({ children }) => {
   const logo = (
     <Link href="/" passHref>
       <a className={styles.logo}>
-        {/* <Typography variant="h4" className={styles.logoBig}>
-          WordNerd
-        </Typography>
-        <Typography variant="h4" className={styles.logoSmall}>
-          WN
-        </Typography> */}
         <Image
           src="/WordNerd Logo Transparent.png"
-          width="100%"
-          height="100%"
+          width={40}
+          height={40}
+          layout="fixed"
         />
       </a>
     </Link>
@@ -178,7 +173,7 @@ const Layout = ({ children }) => {
   return (
     <div className={styles.wrapper}>
       <nav className={`${mobile ? styles.nav_mobile : styles.nav}`}>
-        <div className={`${mobile ? styles.start_mobile : styles.nav}`}>
+        <div className={`${mobile ? styles.start_mobile : styles.start}`}>
           {searchbar_open ? (mobile ? btn_back : logo) : logo}
         </div>
         {searchbar_open ? searchbar_max : searchbar_coll}

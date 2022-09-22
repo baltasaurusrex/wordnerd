@@ -28,9 +28,13 @@
   flex-basis: 200px;
   display: flex;
   align-items: center;
-  justify-content: center;
   height: 100%;
   padding: 0 1rem;
+}
+
+.start > * {
+  flex-grow: 1;
+  text-align: center;
 }
 
 .start_mobile {
@@ -41,9 +45,9 @@
   padding: 0 1rem;
 }
 
-/* .logo {
-  padding: 0 1rem;
-} */
+.center {
+  flex-basis: 700px;
+}
 
 @media (max-width: 600px) {
   .start h4 {
@@ -51,11 +55,11 @@
   }
 }
 
-.center {
+/* .center {
   flex-basis: 700px;
   height: 100%;
   align-items: center;
-}
+} */
 
 .end {
   flex-basis: 200px;
