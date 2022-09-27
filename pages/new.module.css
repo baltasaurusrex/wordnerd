@@ -2,18 +2,33 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  padding-top: 10%;
+  align-items: center;
 }
 
 .container * {
   font-family: "Noto Serif", serif;
 }
 
+.grid {
+  justify-content: center;
+}
+
+.preview_card {
+  padding: 1rem;
+  margin-bottom: 5rem;
+}
+
+.preview_card > * {
+  margin: 1rem 0;
+}
+
 .form {
   text-align: center;
 }
 
-.form > * > * {
-  margin: 1rem;
+.form h5 {
+  margin-bottom: 2rem;
 }
 
 .textfield {
