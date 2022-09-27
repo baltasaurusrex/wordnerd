@@ -10,6 +10,7 @@ import {
   Select,
   MenuItem,
   Paper,
+  Grid,
 } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
@@ -51,7 +52,7 @@ export default function New() {
     switch (page) {
       case 0:
         return (
-          <First
+          <TitleForm
             formData={formData}
             setFormData={setFormData}
             setValid={setValid}
@@ -59,7 +60,7 @@ export default function New() {
         );
       case 1:
         return (
-          <Second
+          <TypeForm
             formData={formData}
             setFormData={setFormData}
             setValid={setValid}
@@ -67,7 +68,7 @@ export default function New() {
         );
       case 2:
         return (
-          <Third
+          <DescriptionForm
             formData={formData}
             setFormData={setFormData}
             setValid={setValid}
@@ -75,7 +76,7 @@ export default function New() {
         );
       case 3:
         return (
-          <Fourth
+          <SentencesForm
             formData={formData}
             setFormData={setFormData}
             setValid={setValid}
@@ -83,7 +84,7 @@ export default function New() {
         );
       case 4:
         return (
-          <Fifth
+          <KeywordsForm
             formData={formData}
             setFormData={setFormData}
             setValid={setValid}
@@ -91,7 +92,7 @@ export default function New() {
         );
       case 5:
         return (
-          <Sixth
+          <RelatedEntriesForm
             formData={formData}
             setFormData={setFormData}
             setValid={setValid}
@@ -120,49 +121,75 @@ export default function New() {
     setFormData({ ...formData, keywords });
   };
 
+  const previewCard = (
+    <Paper elevation={1} className={styles.preview_card}>
+      <Grid
+        container
+        style={{ justifyContent: "space-between", alignItems: "center" }}
+      >
+        {page > 0 && (
+          <Grid item>
+            <Typography variant="h5">{formData.title}</Typography>
+          </Grid>
+        )}
+        {page > 1 && (
+          <Grid item>
+            <Paper component="span" style={{ padding: "0.5rem" }}>
+              {formData.type}
+            </Paper>
+          </Grid>
+        )}
+      </Grid>
+      {page > 2 && (
+        <Grid style={{ margin: "1rem 0" }}>
+          <Typography variant="subtitle">{formData.description}</Typography>
+        </Grid>
+      )}
+    </Paper>
+  );
+
   return (
     <>
       <Head>
         <title>WordNerd Beta</title>
         <link rel="icon" href="/WordNerd Logo Transparent.png" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap"
-          rel="stylesheet"
-        />
       </Head>
       <Box className={styles.container}>
-        <Box component="form" className={styles.form}>
-          {renderForm()}
-        </Box>
-        <Box className={styles.navigation}>
-          {page > 0 && (
-            <Button
-              onClick={() => {
-                setPage((prev) => prev - 1);
-                setValid(true);
-              }}
-            >
-              Previous
-            </Button>
-          )}
-          <Button
-            onClick={() => {
-              setPage((prev) => prev + 1);
-              setValid(false);
-            }}
-            disabled={!valid}
-          >
-            Next
-          </Button>
-        </Box>
+        <Grid container className={styles.grid}>
+          <Grid item lg={6} md={8} sm={12} xs={12}>
+            {page > 0 && previewCard}
+            <Box component="form" className={styles.form}>
+              {renderForm()}
+            </Box>
+            <Box className={styles.navigation}>
+              {page > 0 && (
+                <Button
+                  onClick={() => {
+                    setPage((prev) => prev - 1);
+                    setValid(true);
+                  }}
+                >
+                  Previous
+                </Button>
+              )}
+              <Button
+                onClick={() => {
+                  setPage((prev) => prev + 1);
+                  setValid(false);
+                }}
+                disabled={!valid}
+              >
+                Next
+              </Button>
+            </Box>
+          </Grid>
+        </Grid>
       </Box>
     </>
   );
 }
 
-const First = ({ formData, setFormData, setValid }) => {
+const TitleForm = ({ formData, setFormData, setValid }) => {
   const [error, setError] = useState(false);
   const [errorHelperText, setErrorHelperText] = useState("");
 
@@ -218,7 +245,7 @@ const First = ({ formData, setFormData, setValid }) => {
   };
 
   return (
-    <Box>
+    <div>
       <Typography variant="h5" className="animate__animated animate__fadeIn">
         What's the phrase?
       </Typography>
@@ -247,21 +274,17 @@ const First = ({ formData, setFormData, setValid }) => {
         }}
       />
       {/* suggestion */}
-    </Box>
+    </div>
   );
 };
 
-const Second = ({ formData, setFormData, setValid }) => {
+const TypeForm = ({ formData, setFormData, setValid }) => {
   setValid(true);
   const handleChange = (e) => {
     setFormData({ ...formData, ["type"]: e.target.value });
   };
   return (
     <Box className="animate__animated animate__fadeIn">
-      {/* put phrase text here (should've been validated first) */}
-      <div className={styles.formData}>
-        <Typography>" {formData.title} "</Typography>
-      </div>
       <Typography variant="h5">What category does it fall under? </Typography>
       {/* drop down here */}
       <Select
@@ -282,7 +305,7 @@ const Second = ({ formData, setFormData, setValid }) => {
   );
 };
 
-const Third = ({ formData, setFormData, setValid }) => {
+const DescriptionForm = ({ formData, setFormData, setValid }) => {
   const [error, setError] = useState(false);
   const [errorHelperText, setErrorHelperText] = useState("");
 
@@ -293,12 +316,10 @@ const Third = ({ formData, setFormData, setValid }) => {
   const firstRender = useRef(true);
 
   useEffect(() => {
-    if (firstRender.current) {
+    if (firstRender.current && formData.description.length == 0) {
       firstRender.current = false;
       return;
     }
-
-    console.log("title changed to: ", formData.title);
 
     function test(value) {
       // if value has no text
@@ -337,12 +358,6 @@ const Third = ({ formData, setFormData, setValid }) => {
 
   return (
     <Box className="animate__animated animate__fadeIn">
-      <div className={styles.formData}>
-        {/* put phrase text here (should've been validated first) */}
-        <Typography>" {formData.title} "</Typography>
-        {/* put phrase type here */}
-        <Paper className={styles.type}>{formData.type}</Paper>
-      </div>
       <Typography variant="h5">What does it mean? </Typography>
       <TextField
         error={error}
@@ -372,31 +387,21 @@ const Third = ({ formData, setFormData, setValid }) => {
   );
 };
 
-const Fourth = ({ formData, setFormData }) => (
-  <Box>
-    {/* put phrase text here (should've been validated first) */}
-    {/* put phrase type here */}
-    <Typography variant="h4">Any sample sentences? </Typography>
-    {/* sentences input
-     */}
+const SentencesForm = ({ formData, setFormData }) => (
+  <Box className="animate__animated animate__fadeIn">
+    <Typography variant="h5">Any sample sentences? </Typography>
   </Box>
 );
-const Fifth = ({ formData, setFormData }) => (
+
+const KeywordsForm = ({ formData, setFormData }) => (
   <Box>
-    {/* put phrase text here (should've been validated first) */}
-    {/* put phrase type here */}
-    {/* put sample sentences here */}
     <Typography variant="h4">Any keywords? </Typography>
     {/* keywords input box (in a paper) */}
   </Box>
 );
 
-const Sixth = ({ formData, setFormData }) => (
+const RelatedEntriesForm = ({ formData, setFormData }) => (
   <Box>
-    {/* put phrase text here (should've been validated first) */}
-    {/* put phrase type here */}
-    {/* put sample sentences here */}
-    {/* put keywords here */}
     <Typography variant="h4">Any related entries? </Typography>
     {/* add related entries like adding keywords (all in one paper) */}
   </Box>
