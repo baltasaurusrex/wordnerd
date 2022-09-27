@@ -2,6 +2,9 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+}
+
+.container * {
   font-family: "Noto Serif", serif;
 }
 
@@ -31,6 +34,10 @@
 
 .formData > * {
   margin: 0.5rem;
+}
+
+.select li {
+  font-family: "Noto Serif", serif;
 }
 
 .formData .type {

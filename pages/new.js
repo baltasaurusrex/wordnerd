@@ -14,6 +14,8 @@ import {
 
 import CloseIcon from "@mui/icons-material/Close";
 
+import "animate.css";
+
 import styles from "./new.module.css";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -121,6 +123,8 @@ export default function New() {
   return (
     <>
       <Head>
+        <title>WordNerd Beta</title>
+        <link rel="icon" href="/WordNerd Logo Transparent.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -169,6 +173,7 @@ const First = ({ formData, setFormData, setValid }) => {
   };
 
   const firstRender = useRef(true);
+
   useEffect(() => {
     if (firstRender.current) {
       firstRender.current = false;
@@ -214,7 +219,9 @@ const First = ({ formData, setFormData, setValid }) => {
 
   return (
     <Box>
-      <Typography variant="h5">What's the phrase?</Typography>
+      <Typography variant="h5" className="animate__animated animate__fadeIn">
+        What's the phrase?
+      </Typography>
       <TextField
         error={error}
         helperText={errorHelperText}
@@ -250,14 +257,18 @@ const Second = ({ formData, setFormData, setValid }) => {
     setFormData({ ...formData, ["type"]: e.target.value });
   };
   return (
-    <Box>
+    <Box className="animate__animated animate__fadeIn">
       {/* put phrase text here (should've been validated first) */}
       <div className={styles.formData}>
-        <Typography variant="h5">" {formData.title} "</Typography>
+        <Typography>" {formData.title} "</Typography>
       </div>
-      <Typography variant="h4">What category does it fall under? </Typography>
+      <Typography variant="h5">What category does it fall under? </Typography>
       {/* drop down here */}
-      <Select value={formData.type} onChange={handleChange}>
+      <Select
+        className={styles.select}
+        value={formData.type}
+        onChange={handleChange}
+      >
         <MenuItem value="word">Word</MenuItem>
         <MenuItem value="idiom">Idiom</MenuItem>
         <MenuItem value="proverb">Proverb</MenuItem>
@@ -271,18 +282,96 @@ const Second = ({ formData, setFormData, setValid }) => {
   );
 };
 
-const Third = ({ formData, setFormData }) => (
-  <Box>
-    <div className={styles.formData}>
-      {/* put phrase text here (should've been validated first) */}
-      <Typography variant="h5">" {formData.title} "</Typography>
-      {/* put phrase type here */}
-      <Paper className={styles.type}>{formData.type}</Paper>
-    </div>
-    <Typography variant="h4">What does it mean? </Typography>
-    {/* textbox */}
-  </Box>
-);
+const Third = ({ formData, setFormData, setValid }) => {
+  const [error, setError] = useState(false);
+  const [errorHelperText, setErrorHelperText] = useState("");
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, ["description"]: e.target.value });
+  };
+
+  const firstRender = useRef(true);
+
+  useEffect(() => {
+    if (firstRender.current) {
+      firstRender.current = false;
+      return;
+    }
+
+    console.log("title changed to: ", formData.title);
+
+    function test(value) {
+      // if value has no text
+      if (/^\s*$/.test(value)) {
+        setError(true);
+        setErrorHelperText("Value has no text.");
+        return false;
+      }
+      // if has quotation marks or extra spaces on either side
+      if (/^["'\s]/.test(value) || /["'\s]$/.test(value)) {
+        setError(true);
+        setErrorHelperText(
+          "Please clear quotation marks or extra spaces on either side."
+        );
+
+        return false;
+      }
+
+      setError(false);
+      setErrorHelperText(null);
+
+      return true;
+    }
+
+    // if passes formatting tests
+    if (test(formData.description)) {
+      setValid(true);
+    } else {
+      setValid(false);
+    }
+  }, [formData.description]);
+
+  const handleClear = () => {
+    setFormData({ ...formData, ["description"]: "" });
+  };
+
+  return (
+    <Box className="animate__animated animate__fadeIn">
+      <div className={styles.formData}>
+        {/* put phrase text here (should've been validated first) */}
+        <Typography>" {formData.title} "</Typography>
+        {/* put phrase type here */}
+        <Paper className={styles.type}>{formData.type}</Paper>
+      </div>
+      <Typography variant="h5">What does it mean? </Typography>
+      <TextField
+        error={error}
+        helperText={errorHelperText}
+        className={styles.textfield}
+        variant="standard"
+        multiline
+        name="description"
+        onChange={handleChange}
+        value={formData.description}
+        InputProps={{
+          classes: {
+            input: styles.textfieldInput,
+          },
+          endAdornment: (
+            <InputAdornment position="end">
+              {formData.title.length > 0 ? (
+                <IconButton onClick={handleClear}>
+                  <CloseIcon />
+                </IconButton>
+              ) : null}
+            </InputAdornment>
+          ),
+        }}
+      />
+    </Box>
+  );
+};
+
 const Fourth = ({ formData, setFormData }) => (
   <Box>
     {/* put phrase text here (should've been validated first) */}
