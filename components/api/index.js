@@ -8,3 +8,13 @@ export async function search(q) {
     return err;
   }
 }
+
+export async function get_keywords(q) {
+  try {
+    const results = (await axios.get("/api/get_keywords", { params: { q } }))
+      .data;
+    return results;
+  } catch (err) {
+    return err;
+  }
+}
