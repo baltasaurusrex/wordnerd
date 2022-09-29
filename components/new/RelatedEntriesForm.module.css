@@ -6,3 +6,15 @@
   font-size: 1rem;
   text-align: center;
 }
+
+.dialog {
+  width: 50%;
+}
+
+.dialog_box {
+  padding: 1rem;
+}
+
+.dialog_box * {
+  font-family: "Noto Serif", serif;
+}
