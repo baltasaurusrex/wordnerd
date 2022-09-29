@@ -24,6 +24,7 @@ import TypeForm from "../components/new/TypeForm.js";
 import DescriptionForm from "../components/new/DescriptionForm.js";
 import SentencesForm from "../components/new/SentencesForm.js";
 import KeywordsForm from "../components/new/KeywordsForm.js";
+import RelatedEntriesForm from "../components/new/RelatedEntriesForm.js";
 
 export default function New() {
   const [formData, setFormData] = useState({
@@ -34,7 +35,7 @@ export default function New() {
     keywords: [],
     relations: [],
   });
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(5);
   const [valid, setValid] = useState(false);
 
   const goToNextPage = () => {
@@ -105,6 +106,7 @@ export default function New() {
             formData={formData}
             setFormData={setFormData}
             setValid={setValid}
+            valid={valid}
           />
         );
       default:
@@ -119,12 +121,12 @@ export default function New() {
         style={{ justifyContent: "space-between", alignItems: "center" }}
       >
         {page > 0 && (
-          <Grid item>
+          <Grid item className="animate__animated animate__fadeIn">
             <Typography variant="h5">{formData.title}</Typography>
           </Grid>
         )}
         {page > 1 && (
-          <Grid item>
+          <Grid item className="animate__animated animate__fadeIn">
             <Paper component="span" style={{ padding: "0.5rem" }}>
               {formData.type}
             </Paper>
@@ -132,15 +134,30 @@ export default function New() {
         )}
       </Grid>
       {page > 2 && (
-        <Grid style={{ margin: "1rem 0" }}>
+        <Grid
+          style={{ margin: "1rem 0" }}
+          className="animate__animated animate__fadeIn"
+        >
           <Typography>{formData.description}</Typography>
         </Grid>
       )}
       {page > 3 && (
-        <Grid style={{ margin: "1rem 0" }}>
+        <Grid
+          style={{ margin: "1rem 0" }}
+          className="animate__animated animate__fadeIn"
+        >
           <Typography variant="subtitle1" style={{ fontStyle: "italic" }}>
             "{formData.sampleSentences[0]}"
           </Typography>
+        </Grid>
+      )}
+      {page > 4 && (
+        <Grid
+          className={`${styles.keywords_grid} animate__animated animate__fadeIn`}
+        >
+          {formData.keywords?.map((keyword) => (
+            <Paper component="span">{keyword}</Paper>
+          ))}
         </Grid>
       )}
     </Paper>
@@ -156,9 +173,7 @@ export default function New() {
         <Grid container className={styles.grid}>
           <Grid item lg={6} md={8} sm={12} xs={12}>
             {page > 0 && previewCard}
-            <Box component="form" className={styles.form}>
-              {renderForm()}
-            </Box>
+            <Box className={styles.form}>{renderForm()}</Box>
             <Box className={styles.navigation}>
               {page > 0 && <Button onClick={goToPrevPage}>Previous</Button>}
               <Button onClick={goToNextPage} disabled={!valid}>
@@ -171,13 +186,6 @@ export default function New() {
     </>
   );
 }
-
-const RelatedEntriesForm = ({ formData, setFormData }) => (
-  <Box>
-    <Typography variant="h5">Any related entries? </Typography>
-    {/* add related entries like adding keywords (all in one paper) */}
-  </Box>
-);
 
 const Review = ({ formData, setFormData }) => {
   <Box>

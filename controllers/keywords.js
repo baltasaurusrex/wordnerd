@@ -14,7 +14,7 @@ export const getKeywords = async (query) => {
     console.log("keywords found: ", keywords);
     return keywords;
   } catch (err) {
-    res.status(400).send(err.message);
+    return err;
   }
 };
 

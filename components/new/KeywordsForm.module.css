@@ -7,7 +7,7 @@
   padding: 10px 0;
   display: flex;
   flex-wrap: wrap;
-  border-bottom: solid lightgray;
+  border-bottom: 1px solid #cecece;
   width: 90%;
 }
 .keyword {
@@ -31,4 +31,12 @@
 .input {
   display: inline-block;
   padding: 5px;
+}
+
+.popper {
+  font-family: "Noto Serif", serif;
+}
+
+.popper li {
+  font-family: "Noto Serif", serif;
 }

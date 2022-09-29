@@ -7,6 +7,10 @@ import {
   Grid,
   IconButton,
   Input,
+  Popper,
+  MenuList,
+  MenuItem,
+  CircularProgress,
 } from "@mui/material";
 
 import ClearIcon from "@mui/icons-material/Clear";
@@ -19,11 +23,17 @@ import { get_keywords } from "../api";
 import { debounce } from "lodash";
 
 function KeywordsForm({ formData, setFormData, setValid }) {
+  //
+  setValid(true);
   const [keywords, setKeywords] = useState([...formData.keywords]);
   const [input, setInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setFormData({ ...formData, ["keywords"]: [...keywords] });
+  }, [keywords]);
 
   const removeKeyword = (indexToRemove) => {
     setKeywords(keywords.filter((keyword, index) => index !== indexToRemove));
@@ -34,9 +44,10 @@ function KeywordsForm({ formData, setFormData, setValid }) {
   const popperRef = useRef();
 
   const getKeywords = async (keyword) => {
-    const { data } = await get_keywords(keyword);
+    const suggestions = await get_keywords(keyword);
+    console.log("suggestions: ", suggestions);
 
-    setSuggestions(data);
+    setSuggestions(suggestions);
     setLoading(false);
   };
 
@@ -66,6 +77,12 @@ function KeywordsForm({ formData, setFormData, setValid }) {
       // and close the suggestions
       setOpen(false);
     }
+  };
+
+  const handleSelect = (sugg) => {
+    setKeywords((prev) => [...prev, sugg]);
+    setInput("");
+    setOpen(false);
   };
 
   const mappedKeywords = keywords.map((keyword, index) => {
@@ -121,6 +138,66 @@ function KeywordsForm({ formData, setFormData, setValid }) {
           }}
           onKeyUp={handleInput}
         />
+        <Popper
+          style={{ zIndex: 999 }}
+          open={open}
+          ref={popperRef}
+          className={styles.popper}
+          anchorEl={inputRef.current}
+          placement="bottom-start"
+          modifiers={{
+            flip: {
+              enabled: false,
+            },
+            preventOverflow: {
+              enabled: true,
+              boundariesElement: "scrollParent",
+            },
+            arrow: {
+              enabled: true,
+              element: inputRef.current,
+            },
+          }}
+        >
+          <Paper>
+            <MenuList
+              open={open}
+              autoFocus={false}
+              onClose={() => setOpen(false)}
+              style={{
+                maxHeight: "150px",
+                overflow: "scroll",
+              }}
+            >
+              {!suggestions.includes(input) && (
+                <MenuItem
+                  key={input}
+                  onClick={(e) => {
+                    handleSelect(input);
+                  }}
+                >
+                  Add new "{input}"
+                </MenuItem>
+              )}
+              {loading ? (
+                <div style={{ textAlign: "center" }}>
+                  <CircularProgress size="1rem" />
+                </div>
+              ) : (
+                suggestions.map((sugg) => (
+                  <MenuItem
+                    key={sugg}
+                    onClick={(e) => {
+                      handleSelect(sugg);
+                    }}
+                  >
+                    {sugg}
+                  </MenuItem>
+                ))
+              )}
+            </MenuList>
+          </Paper>
+        </Popper>
       </div>
     </Box>
   );

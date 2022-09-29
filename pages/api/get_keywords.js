@@ -6,6 +6,7 @@ export default async (req, res) => {
 
     console.log("query: ", query);
     const result = await getKeywords(query.q);
+    console.log("result: ", result);
 
     return res.status(200).json(result);
   } catch (err) {
