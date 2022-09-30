@@ -17,6 +17,10 @@ import styles from "./RelatedEntriesForm.module.css";
 import CardAdd from "../Phrase/CardAdd.js";
 import { truncate } from "lodash";
 
+function Suggestions() {
+  return;
+}
+
 function RelatedEntriesDialog({
   input,
   handleInput,
@@ -25,7 +29,19 @@ function RelatedEntriesDialog({
   handleClose,
 }) {
   return (
-    <Dialog open={open} onClose={handleClose} className={styles.dialog}>
+    <Dialog
+      open={open}
+      onClose={handleClose}
+      className={styles.dialog}
+      sx={{
+        "& .MuiDialog-container": {
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "flex-start",
+        },
+        "& .MuiDialog-paper": { width: "90vw", maxWidth: "90vw" },
+      }}
+    >
       <Box className={styles.dialog_box}>
         <Typography variant="h5">Any related entries? </Typography>
         {/* add related entries like adding keywords (all in one paper) */}

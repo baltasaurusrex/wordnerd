@@ -11,6 +11,7 @@ import {
   Tooltip,
   Menu,
   MenuItem,
+  Backdrop,
 } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -34,21 +35,21 @@ const Layout = ({ children }) => {
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   console.log("mobile: ", mobile);
 
-  const [searchbar_open, setSearchbarOpen] = useState(false);
+  const [searchbarOpen, setSearchbarOpen] = useState(false);
+  const [backdropOpen, setBackdropOpen] = useState(mobile && searchbarOpen);
 
   useEffect(() => {
     setSearchbarOpen(mobile ? false : true);
   }, [mobile]);
 
   useEffect(() => {
-    console.log("searchbar_open: ", searchbar_open);
-  }, [searchbar_open]);
+    console.log("searchbarOpen: ", searchbarOpen);
+    setBackdropOpen(searchbarOpen);
+  }, [searchbarOpen]);
 
-  if (session) {
-    console.log("session: ", session);
-  } else {
-    console.log("no session");
-  }
+  useEffect(() => {
+    setBackdropOpen(false);
+  }, [router.asPath]);
 
   const handleMenuOpen = (e) => {
     setAnchorEl(e.currentTarget);
@@ -70,7 +71,7 @@ const Layout = ({ children }) => {
 
   const sessionBar = (
     <div className={styles.sessionBar}>
-      {!searchbar_open && mobile && searchIconGroup}
+      {!searchbarOpen && mobile && searchIconGroup}
       <Tooltip title="Add new entry">
         <IconButton
           aria-label="add new entry"
@@ -174,10 +175,17 @@ const Layout = ({ children }) => {
     <div className={styles.wrapper}>
       <nav className={`${mobile ? styles.nav_mobile : styles.nav}`}>
         <div className={`${mobile ? styles.start_mobile : styles.start}`}>
-          {searchbar_open ? (mobile ? btn_back : logo) : logo}
+          {searchbarOpen ? (mobile ? btn_back : logo) : logo}
         </div>
-        {searchbar_open ? searchbar_max : searchbar_coll}
+        {searchbarOpen ? searchbar_max : searchbar_coll}
       </nav>
+      <Backdrop
+        open={backdropOpen}
+        onClick={() => {
+          setSearchbarOpen(false);
+        }}
+        sx={{ zIndex: "50" }}
+      ></Backdrop>
       <main className={styles.main}>{children}</main>
     </div>
   );

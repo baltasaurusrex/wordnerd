@@ -8,13 +8,24 @@
 }
 
 .dialog {
-  width: 50%;
+  width: 100vw;
+}
+
+.dialog .MuiDialog-container {
+  width: 90vw;
 }
 
 .dialog_box {
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .dialog_box * {
   font-family: "Noto Serif", serif;
+}
+
+.dialog_box > * {
+  margin: 0.5rem;
 }
