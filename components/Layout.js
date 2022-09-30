@@ -36,17 +36,19 @@ const Layout = ({ children }) => {
   console.log("mobile: ", mobile);
 
   const [searchbarOpen, setSearchbarOpen] = useState(false);
-  const [backdropOpen, setBackdropOpen] = useState(mobile && searchbarOpen);
+  const [backdropOpen, setBackdropOpen] = useState(false);
 
   useEffect(() => {
     setSearchbarOpen(mobile ? false : true);
   }, [mobile]);
 
+  // toggle backdrop alongside searchbar, but only if on mobile
   useEffect(() => {
     console.log("searchbarOpen: ", searchbarOpen);
-    setBackdropOpen(searchbarOpen);
+    setBackdropOpen(mobile && searchbarOpen);
   }, [searchbarOpen]);
 
+  // close backdrop when user navigates away from the page
   useEffect(() => {
     setBackdropOpen(false);
   }, [router.asPath]);

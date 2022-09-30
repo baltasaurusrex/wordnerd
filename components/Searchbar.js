@@ -15,7 +15,7 @@ import { useRouter } from "next/router";
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import { debounce } from "lodash";
-import { search } from "./api/index.js";
+import { get_phrases } from "./api/index.js";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -67,7 +67,7 @@ const Searchbar = ({ mobile }) => {
     setLoading(true);
 
     if (value) {
-      const results = await search(value);
+      const results = await get_phrases(value);
       if (results.length > 0) {
         setSuggestions([value, ...results]);
       } else {

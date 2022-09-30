@@ -1,4 +1,4 @@
-import { searchPhrases } from "../../controllers/phrases.js";
+import { searchPhrases } from "../../../controllers/phrases.js";
 
 export default async (req, res) => {
   try {

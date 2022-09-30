@@ -1,8 +1,9 @@
 import axios from "axios";
 
-export async function search(q) {
+export async function get_phrases(q) {
   try {
-    const results = (await axios.get("/api/search", { params: { q } })).data;
+    const results = (await axios.get("/api/phrase/search", { params: { q } }))
+      .data;
     return results;
   } catch (err) {
     return err;

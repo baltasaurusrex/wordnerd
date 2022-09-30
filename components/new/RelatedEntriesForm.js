@@ -6,6 +6,7 @@ import {
   InputAdornment,
   IconButton,
   Dialog,
+  CircularProgress,
 } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
@@ -15,10 +16,27 @@ import "animate.css";
 import styles from "./RelatedEntriesForm.module.css";
 
 import CardAdd from "../Phrase/CardAdd.js";
-import { truncate } from "lodash";
 
 function Suggestions() {
-  return;
+  const [suggestions, setSuggestions] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useState(() => {
+    setSuggestions([
+      { title: "first suggestion" },
+      { title: "second suggestion" },
+      {
+        title:
+          "third super long suggestion or quote lorem Velit duis ex nulla eu eiusmod est dolor qui. Tempor ullamco sit consectetur et aliquip Lorem ex deserunt. Duis sit voluptate ex et est aliquip reprehenderit tempor do aute sit voluptate. Commodo dolor et pariatur sit. In sint officia sint quis sit sit.",
+      },
+    ]);
+  }, []);
+
+  const mappedSuggestions = suggestions.map((suggestion, i) => {
+    return <CardAdd key={i} entry={suggestion} />;
+  });
+
+  return loading ? <CircularProgress /> : <div>{mappedSuggestions}</div>;
 }
 
 function RelatedEntriesDialog({
@@ -65,6 +83,9 @@ function RelatedEntriesDialog({
             ),
           }}
         />
+      </Box>
+      <Box>
+        <Suggestions />
       </Box>
     </Dialog>
   );
