@@ -1,19 +1,6 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
-import {
-  Box,
-  Button,
-  Typography,
-  TextField,
-  InputAdornment,
-  IconButton,
-  Select,
-  MenuItem,
-  Paper,
-  Grid,
-} from "@mui/material";
-
-import CloseIcon from "@mui/icons-material/Close";
+import { Box, Button, Typography, Paper, Grid } from "@mui/material";
 
 import "animate.css";
 
@@ -32,6 +19,13 @@ const theme = createTheme({
   },
 });
 
+import TitleForm from "../components/new/TitleForm.js";
+import TypeForm from "../components/new/TypeForm.js";
+import DescriptionForm from "../components/new/DescriptionForm.js";
+import SentencesForm from "../components/new/SentencesForm.js";
+import KeywordsForm from "../components/new/KeywordsForm.js";
+import RelatedEntriesForm from "../components/new/RelatedEntriesForm.js";
+
 export default function New() {
   const [formData, setFormData] = useState({
     title: "",
@@ -41,8 +35,18 @@ export default function New() {
     keywords: [],
     relations: [],
   });
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(5);
   const [valid, setValid] = useState(false);
+
+  const goToNextPage = () => {
+    setPage((prev) => prev + 1);
+    setValid(false);
+  };
+
+  const goToPrevPage = () => {
+    setPage((prev) => prev - 1);
+    setValid(true);
+  };
 
   useEffect(() => {
     console.log("formData: ", formData);
@@ -55,6 +59,8 @@ export default function New() {
           <TitleForm
             formData={formData}
             setFormData={setFormData}
+            valid={valid}
+            goToNextPage={goToNextPage}
             setValid={setValid}
           />
         );
@@ -71,6 +77,8 @@ export default function New() {
           <DescriptionForm
             formData={formData}
             setFormData={setFormData}
+            valid={valid}
+            goToNextPage={goToNextPage}
             setValid={setValid}
           />
         );
@@ -79,6 +87,8 @@ export default function New() {
           <SentencesForm
             formData={formData}
             setFormData={setFormData}
+            valid={valid}
+            goToNextPage={goToNextPage}
             setValid={setValid}
           />
         );
@@ -96,29 +106,12 @@ export default function New() {
             formData={formData}
             setFormData={setFormData}
             setValid={setValid}
+            valid={valid}
           />
         );
       default:
         return "last";
     }
-  };
-
-  const handleChange = (event) => {
-    let { value, name } = event.target;
-
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSentenceChange = (e, index) => {
-    const { value } = e.target;
-    const sentences = [...formData.sampleSentences];
-    sentences[index] = value;
-
-    setFormData((prev) => ({ ...prev, sampleSentences: [...sentences] }));
-  };
-
-  const handleKeywordChange = (keywords) => {
-    setFormData({ ...formData, keywords });
   };
 
   const previewCard = (
@@ -128,12 +121,12 @@ export default function New() {
         style={{ justifyContent: "space-between", alignItems: "center" }}
       >
         {page > 0 && (
-          <Grid item>
+          <Grid item className="animate__animated animate__fadeIn">
             <Typography variant="h5">{formData.title}</Typography>
           </Grid>
         )}
         {page > 1 && (
-          <Grid item>
+          <Grid item className="animate__animated animate__fadeIn">
             <Paper component="span" style={{ padding: "0.5rem" }}>
               {formData.type}
             </Paper>
@@ -141,8 +134,30 @@ export default function New() {
         )}
       </Grid>
       {page > 2 && (
-        <Grid style={{ margin: "1rem 0" }}>
-          <Typography variant="subtitle">{formData.description}</Typography>
+        <Grid
+          style={{ margin: "1rem 0" }}
+          className="animate__animated animate__fadeIn"
+        >
+          <Typography>{formData.description}</Typography>
+        </Grid>
+      )}
+      {page > 3 && (
+        <Grid
+          style={{ margin: "1rem 0" }}
+          className="animate__animated animate__fadeIn"
+        >
+          <Typography variant="subtitle1" style={{ fontStyle: "italic" }}>
+            "{formData.sampleSentences[0]}"
+          </Typography>
+        </Grid>
+      )}
+      {page > 4 && (
+        <Grid
+          className={`${styles.keywords_grid} animate__animated animate__fadeIn`}
+        >
+          {formData.keywords?.map((keyword) => (
+            <Paper component="span">{keyword}</Paper>
+          ))}
         </Grid>
       )}
     </Paper>
@@ -158,27 +173,10 @@ export default function New() {
         <Grid container className={styles.grid}>
           <Grid item lg={6} md={8} sm={12} xs={12}>
             {page > 0 && previewCard}
-            <Box component="form" className={styles.form}>
-              {renderForm()}
-            </Box>
+            <Box className={styles.form}>{renderForm()}</Box>
             <Box className={styles.navigation}>
-              {page > 0 && (
-                <Button
-                  onClick={() => {
-                    setPage((prev) => prev - 1);
-                    setValid(true);
-                  }}
-                >
-                  Previous
-                </Button>
-              )}
-              <Button
-                onClick={() => {
-                  setPage((prev) => prev + 1);
-                  setValid(false);
-                }}
-                disabled={!valid}
-              >
+              {page > 0 && <Button onClick={goToPrevPage}>Previous</Button>}
+              <Button onClick={goToNextPage} disabled={!valid}>
                 Next
               </Button>
             </Box>
@@ -188,224 +186,6 @@ export default function New() {
     </>
   );
 }
-
-const TitleForm = ({ formData, setFormData, setValid }) => {
-  const [error, setError] = useState(false);
-  const [errorHelperText, setErrorHelperText] = useState("");
-
-  const handleChange = (e) => {
-    let { value, name } = e.target;
-
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const firstRender = useRef(true);
-
-  useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
-      return;
-    }
-
-    console.log("title changed to: ", formData.title);
-
-    function test(value) {
-      // if value has no text
-      if (/^\s*$/.test(value)) {
-        setError(true);
-        setErrorHelperText("Value has no text.");
-        return false;
-      }
-      // if has quotation marks or extra spaces on either side
-      if (/^["'\s]/.test(value) || /["'\s]$/.test(value)) {
-        setError(true);
-        setErrorHelperText(
-          "Please clear quotation marks or extra spaces on either side."
-        );
-
-        return false;
-      }
-
-      setError(false);
-      setErrorHelperText(null);
-
-      return true;
-    }
-
-    // if passes formatting tests
-    if (test(formData.title)) {
-      setValid(true);
-    } else {
-      setValid(false);
-    }
-  }, [formData.title]);
-
-  const handleClear = () => {
-    setFormData({ ...formData, ["title"]: "" });
-  };
-
-  return (
-    <div>
-      <Typography variant="h5" className="animate__animated animate__fadeIn">
-        What's the phrase?
-      </Typography>
-      <TextField
-        error={error}
-        helperText={errorHelperText}
-        className={styles.textfield}
-        variant="standard"
-        multiline
-        name="title"
-        onChange={handleChange}
-        value={formData.title}
-        InputProps={{
-          classes: {
-            input: styles.textfieldInput,
-          },
-          endAdornment: (
-            <InputAdornment position="end">
-              {formData.title.length > 0 ? (
-                <IconButton onClick={handleClear}>
-                  <CloseIcon />
-                </IconButton>
-              ) : null}
-            </InputAdornment>
-          ),
-        }}
-      />
-      {/* suggestion */}
-    </div>
-  );
-};
-
-const TypeForm = ({ formData, setFormData, setValid }) => {
-  setValid(true);
-  const handleChange = (e) => {
-    setFormData({ ...formData, ["type"]: e.target.value });
-  };
-  return (
-    <Box className="animate__animated animate__fadeIn">
-      <Typography variant="h5">What category does it fall under? </Typography>
-      {/* drop down here */}
-      <Select
-        className={styles.select}
-        value={formData.type}
-        onChange={handleChange}
-      >
-        <MenuItem value="word">Word</MenuItem>
-        <MenuItem value="idiom">Idiom</MenuItem>
-        <MenuItem value="proverb">Proverb</MenuItem>
-        <MenuItem value="quote">Quote</MenuItem>
-      </Select>
-
-      {/* explanation of what the diff of each is */}
-      {/* popover menu with (?) */}
-      {/* if something with an author is selected, create a dropdown for the author */}
-    </Box>
-  );
-};
-
-const DescriptionForm = ({ formData, setFormData, setValid }) => {
-  const [error, setError] = useState(false);
-  const [errorHelperText, setErrorHelperText] = useState("");
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, ["description"]: e.target.value });
-  };
-
-  const firstRender = useRef(true);
-
-  useEffect(() => {
-    if (firstRender.current && formData.description.length == 0) {
-      firstRender.current = false;
-      return;
-    }
-
-    function test(value) {
-      // if value has no text
-      if (/^\s*$/.test(value)) {
-        setError(true);
-        setErrorHelperText("Value has no text.");
-        return false;
-      }
-      // if has quotation marks or extra spaces on either side
-      if (/^["'\s]/.test(value) || /["'\s]$/.test(value)) {
-        setError(true);
-        setErrorHelperText(
-          "Please clear quotation marks or extra spaces on either side."
-        );
-
-        return false;
-      }
-
-      setError(false);
-      setErrorHelperText(null);
-
-      return true;
-    }
-
-    // if passes formatting tests
-    if (test(formData.description)) {
-      setValid(true);
-    } else {
-      setValid(false);
-    }
-  }, [formData.description]);
-
-  const handleClear = () => {
-    setFormData({ ...formData, ["description"]: "" });
-  };
-
-  return (
-    <Box className="animate__animated animate__fadeIn">
-      <Typography variant="h5">What does it mean? </Typography>
-      <TextField
-        error={error}
-        helperText={errorHelperText}
-        className={styles.textfield}
-        variant="standard"
-        multiline
-        name="description"
-        onChange={handleChange}
-        value={formData.description}
-        InputProps={{
-          classes: {
-            input: styles.textfieldInput,
-          },
-          endAdornment: (
-            <InputAdornment position="end">
-              {formData.title.length > 0 ? (
-                <IconButton onClick={handleClear}>
-                  <CloseIcon />
-                </IconButton>
-              ) : null}
-            </InputAdornment>
-          ),
-        }}
-      />
-    </Box>
-  );
-};
-
-const SentencesForm = ({ formData, setFormData }) => (
-  <Box className="animate__animated animate__fadeIn">
-    <Typography variant="h5">Any sample sentences? </Typography>
-  </Box>
-);
-
-const KeywordsForm = ({ formData, setFormData }) => (
-  <Box>
-    <Typography variant="h4">Any keywords? </Typography>
-    {/* keywords input box (in a paper) */}
-  </Box>
-);
-
-const RelatedEntriesForm = ({ formData, setFormData }) => (
-  <Box>
-    <Typography variant="h4">Any related entries? </Typography>
-    {/* add related entries like adding keywords (all in one paper) */}
-  </Box>
-);
 
 const Review = ({ formData, setFormData }) => {
   <Box>

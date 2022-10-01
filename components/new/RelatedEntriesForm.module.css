@@ -1,0 +1,43 @@
+.textfield {
+  width: 90%;
+}
+
+.textfieldInput {
+  font-size: 1rem;
+  text-align: center;
+}
+
+.dialog {
+  width: 100vw;
+}
+
+.dialog .MuiDialog-container {
+  width: 90vw;
+}
+
+.dialog_box {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dialog_box * {
+  font-family: "Noto Serif", serif;
+}
+
+.dialog_box > * {
+  margin: 0.5rem;
+}
+
+.suggestions {
+  font-family: "Noto Serif", serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 2rem;
+}

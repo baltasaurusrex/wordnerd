@@ -1,0 +1,42 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.div {
+  padding: 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #cecece;
+  width: 90%;
+}
+.keyword {
+  transition: 50ms;
+  display: inline-block;
+  max-width: 100%;
+  padding: 5px;
+  margin: 0 0.5rem 0.5rem 0;
+  font-size: 1rem;
+  overflow-wrap: break-word;
+  white-space: nowrap;
+}
+.clear {
+  cursor: pointer;
+  margin-left: 5px;
+  font-size: 1rem;
+}
+.margin {
+  margin: 1rem;
+}
+.input {
+  display: inline-block;
+  padding: 5px;
+}
+
+.popper {
+  font-family: "Noto Serif", serif;
+}
+
+.popper li {
+  font-family: "Noto Serif", serif;
+}

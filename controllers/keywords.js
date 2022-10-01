@@ -1,18 +1,20 @@
 import Keyword from "../models/Keywords.js";
+import { connectMongoDB, generateMongoId } from "../utils/mongoose.js";
 
-export const getKeywords = async (req, res) => {
+export const getKeywords = async (query) => {
   try {
-    const { keyword } = req.query;
-    console.log("keyword: ", keyword);
-    const regex = `^${keyword}`;
+    await connectMongoDB();
+    console.log("getKeywords controller: ", query);
+
+    const regex = `^${query}`;
     const searchResults = await Keyword.find({
       keyword: { $regex: regex, $options: "im" },
     });
     const keywords = searchResults.map((doc) => doc.keyword);
     console.log("keywords found: ", keywords);
-    res.status(200).json(keywords);
+    return keywords;
   } catch (err) {
-    res.status(400).send(err.message);
+    return err;
   }
 };
 
