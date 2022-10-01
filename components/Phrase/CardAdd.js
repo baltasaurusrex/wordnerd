@@ -16,9 +16,15 @@ import "animate.css";
 
 import styles from "./CardAdd.module.css";
 
-function CardAdd({ entry }) {
+function CardAdd({ entry, selected, handleClick }) {
   return (
-    <ListItemButton className={`${styles.card}`}>{entry.title}</ListItemButton>
+    <ListItemButton
+      disabled={selected}
+      className={`${styles.card}`}
+      onClick={handleClick}
+    >
+      {entry.title}
+    </ListItemButton>
   );
 }
 

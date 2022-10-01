@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {
   Box,
   Typography,
@@ -17,26 +17,60 @@ import styles from "./RelatedEntriesForm.module.css";
 
 import CardAdd from "../Phrase/CardAdd.js";
 
-function Suggestions() {
+import { get_phrases } from "../api";
+import { debounce } from "lodash";
+
+function Suggestions({ input, selectedEntries, setSelectedEntries }) {
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
-  useState(() => {
-    setSuggestions([
-      { title: "first suggestion" },
-      { title: "second suggestion" },
-      {
-        title:
-          "third super long suggestion or quote lorem Velit duis ex nulla eu eiusmod est dolor qui. Tempor ullamco sit consectetur et aliquip Lorem ex deserunt. Duis sit voluptate ex et est aliquip reprehenderit tempor do aute sit voluptate. Commodo dolor et pariatur sit. In sint officia sint quis sit sit.",
-      },
-    ]);
-  }, []);
+  useEffect(() => {
+    console.log("input changed");
+    setLoading(true);
+    const handleInputChange = async (e) => {
+      if (input) {
+        const results = await get_phrases(input);
+
+        if (results.length > 0) {
+          setSuggestions([...results]);
+        } else {
+          setSuggestions([]);
+          setMessage("None found :(");
+        }
+      } else {
+        // no input, clear suggestions
+        setSuggestions([]);
+        setMessage("Search for an entry!");
+      }
+
+      setLoading(false);
+    };
+
+    const debouncedHandleInputChange = debounce(handleInputChange, 1000);
+
+    debouncedHandleInputChange();
+  }, [input]);
 
   const mappedSuggestions = suggestions.map((suggestion, i) => {
-    return <CardAdd key={i} entry={suggestion} />;
+    return (
+      <CardAdd
+        key={i}
+        entry={suggestion}
+        selected={selectedEntries.find((entry) => entry.id === suggestion.id)}
+      />
+    );
   });
 
-  return loading ? <CircularProgress /> : <div>{mappedSuggestions}</div>;
+  if (suggestions.length == 0) {
+    return (
+      <div className={styles.suggestions}>
+        {loading ? <CircularProgress /> : `${message}`}
+      </div>
+    );
+  } else {
+    return <div className={styles.suggestions}>{mappedSuggestions}</div>;
+  }
 }
 
 function RelatedEntriesDialog({
@@ -45,6 +79,8 @@ function RelatedEntriesDialog({
   handleClear,
   open,
   handleClose,
+  selectedEntries,
+  setSelectedEntries,
 }) {
   return (
     <Dialog
@@ -85,7 +121,11 @@ function RelatedEntriesDialog({
         />
       </Box>
       <Box>
-        <Suggestions />
+        <Suggestions
+          input={input}
+          selectedEntries={selectedEntries}
+          setSelectedEntries={setSelectedEntries}
+        />
       </Box>
     </Dialog>
   );
@@ -94,6 +134,12 @@ function RelatedEntriesDialog({
 const RelatedEntriesForm = ({ formData, setFormData, setValid }) => {
   const [input, setInput] = useState("");
   const [open, setOpen] = useState(false);
+  const [selectedEntries, setSelectedEntries] = useState([
+    {
+      id: "6134846f2607b80023caed77",
+      title: "History is written by the victors",
+    },
+  ]);
 
   setValid(true);
 
@@ -102,6 +148,7 @@ const RelatedEntriesForm = ({ formData, setFormData, setValid }) => {
   };
 
   const handleInput = (value) => {
+    console.log("in handleInput");
     setInput(value);
   };
 
@@ -141,7 +188,10 @@ const RelatedEntriesForm = ({ formData, setFormData, setValid }) => {
         handleClear={handleClear}
         open={open}
         handleClose={handleClose}
+        selectedEntries={selectedEntries}
+        setSelectedEntries={setSelectedEntries}
       />
+      {/* selected entries list */}
     </Box>
   );
 };

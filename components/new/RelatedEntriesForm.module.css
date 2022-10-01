@@ -29,3 +29,15 @@
 .dialog_box > * {
   margin: 0.5rem;
 }
+
+.suggestions {
+  font-family: "Noto Serif", serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 2rem;
+}
