@@ -155,8 +155,10 @@ export default function New() {
         <Grid
           className={`${styles.keywords_grid} animate__animated animate__fadeIn`}
         >
-          {formData.keywords?.map((keyword) => (
-            <Paper component="span">{keyword}</Paper>
+          {formData.keywords?.map((keyword, i) => (
+            <Paper key={i} component="span">
+              {keyword}
+            </Paper>
           ))}
         </Grid>
       )}
