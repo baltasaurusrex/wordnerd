@@ -151,7 +151,7 @@ const Layout = ({ children }) => {
     <Link href="/" passHref>
       <a className={styles.logo}>
         <Image
-          src="/WordNerd Logo Transparent.png"
+          src="/wn_logo_transparent.png"
           width={40}
           height={40}
           layout="fixed"
