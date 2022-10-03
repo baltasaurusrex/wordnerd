@@ -7,6 +7,14 @@
   text-align: center;
 }
 
+.selected_container {
+  padding: 1rem;
+}
+
+.selected_container > * {
+  margin-bottom: 1rem;
+}
+
 .dialog {
   width: 100vw;
 }

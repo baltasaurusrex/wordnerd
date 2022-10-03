@@ -7,6 +7,7 @@ import {
   IconButton,
   Dialog,
   CircularProgress,
+  Grid,
 } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
@@ -20,7 +21,12 @@ import CardAdd from "../Phrase/CardAdd.js";
 import { get_phrases } from "../api";
 import { debounce } from "lodash";
 
-function Suggestions({ input, selectedEntries, setSelectedEntries }) {
+function Suggestions({
+  input,
+  selectedEntries,
+  setSelectedEntries,
+  handleClick,
+}) {
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -53,11 +59,17 @@ function Suggestions({ input, selectedEntries, setSelectedEntries }) {
   }, [input]);
 
   const mappedSuggestions = suggestions.map((suggestion, i) => {
+    const selected = selectedEntries.find((entry) => entry.id === suggestion.id)
+      ? true
+      : false;
+
     return (
       <CardAdd
         key={i}
         entry={suggestion}
-        selected={selectedEntries.find((entry) => entry.id === suggestion.id)}
+        disabled={selected}
+        selected={selected}
+        handleClick={handleClick}
       />
     );
   });
@@ -81,6 +93,7 @@ function RelatedEntriesDialog({
   handleClose,
   selectedEntries,
   setSelectedEntries,
+  handleClick,
 }) {
   return (
     <Dialog
@@ -102,6 +115,7 @@ function RelatedEntriesDialog({
         <TextField
           variant="standard"
           className={styles.textfield}
+          autocomplete
           value={input}
           onChange={(e) => handleInput(e.target.value)}
           InputProps={{
@@ -117,6 +131,7 @@ function RelatedEntriesDialog({
                 ) : null}
               </InputAdornment>
             ),
+            autoComplete: "off",
           }}
         />
       </Box>
@@ -125,6 +140,7 @@ function RelatedEntriesDialog({
           input={input}
           selectedEntries={selectedEntries}
           setSelectedEntries={setSelectedEntries}
+          handleClick={handleClick}
         />
       </Box>
     </Dialog>
@@ -155,6 +171,36 @@ const RelatedEntriesForm = ({ formData, setFormData, setValid }) => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleClick = (entry, selected) => {
+    if (selected) {
+      // take entry out of selectedEntries
+      const filtered = selectedEntries?.filter((el) => el.id != entry.id);
+      setSelectedEntries([...filtered]);
+    } else {
+      // if not selected
+      // add entry to selectedEntries
+      setSelectedEntries([...selectedEntries, entry]);
+    }
+  };
+
+  const mappedSelected = selectedEntries.map((entry, i) => {
+    const selected = selectedEntries.find((entry) => entry.id === entry.id)
+      ? true
+      : false;
+
+    return (
+      <Grid item key={i} xs={12}>
+        <CardAdd
+          key={i}
+          entry={entry}
+          selected={selected}
+          outlined={true}
+          handleClick={handleClick}
+        />
+      </Grid>
+    );
+  });
 
   return (
     <Box>
@@ -190,8 +236,13 @@ const RelatedEntriesForm = ({ formData, setFormData, setValid }) => {
         handleClose={handleClose}
         selectedEntries={selectedEntries}
         setSelectedEntries={setSelectedEntries}
+        handleClick={handleClick}
       />
-      {/* selected entries list */}
+      {selectedEntries?.length > 0 && (
+        <Grid container className={styles.selected_container}>
+          {mappedSelected}
+        </Grid>
+      )}
     </Box>
   );
 };
