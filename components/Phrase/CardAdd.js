@@ -26,7 +26,7 @@ function CardAdd({ entry, disabled, selected, handleClick, outlined }) {
       <Paper>
         <ListItemButton
           disabled={disabled}
-          className={`${styles.card}`}
+          className={styles.card}
           onClick={() => handleClick(entry, selected)}
         >
           {entry.title}
@@ -38,7 +38,7 @@ function CardAdd({ entry, disabled, selected, handleClick, outlined }) {
   return (
     <ListItemButton
       disabled={disabled}
-      className={`${styles.card}`}
+      className={styles.card}
       onClick={() => handleClick(entry, selected)}
     >
       {entry.title}
