@@ -151,11 +151,12 @@ const RelatedEntriesForm = ({ formData, setFormData, setValid }) => {
   const [input, setInput] = useState("");
   const [open, setOpen] = useState(false);
   const [selectedEntries, setSelectedEntries] = useState([
-    {
-      id: "6134846f2607b80023caed77",
-      title: "History is written by the victors",
-    },
+    ...formData?.relations,
   ]);
+
+  useEffect(() => {
+    setFormData({ ...formData, ["relations"]: [...selectedEntries] });
+  }, [selectedEntries]);
 
   setValid(true);
 
@@ -238,7 +239,7 @@ const RelatedEntriesForm = ({ formData, setFormData, setValid }) => {
         setSelectedEntries={setSelectedEntries}
         handleClick={handleClick}
       />
-      {selectedEntries?.length > 0 && (
+      {formData?.relations?.length > 0 && (
         <Grid container className={styles.selected_container}>
           {mappedSelected}
         </Grid>

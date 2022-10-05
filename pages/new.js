@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
-import { Box, Button, Typography, Paper, Grid } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  Paper,
+  Grid,
+  Divider,
+  Chip,
+} from "@mui/material";
 
 import "animate.css";
 
@@ -35,7 +43,7 @@ export default function New() {
     keywords: [],
     relations: [],
   });
-  const [page, setPage] = useState(5);
+  const [page, setPage] = useState(0);
   const [valid, setValid] = useState(false);
 
   const goToNextPage = () => {
@@ -46,6 +54,12 @@ export default function New() {
   const goToPrevPage = () => {
     setPage((prev) => prev - 1);
     setValid(true);
+  };
+
+  const submitEntry = () => {
+    // send an api request
+    // if successful, redirect to new entry page
+    // if unsuccessful, redirect to error page
   };
 
   useEffect(() => {
@@ -110,7 +124,7 @@ export default function New() {
           />
         );
       default:
-        return "last";
+        return <></>;
     }
   };
 
@@ -146,8 +160,11 @@ export default function New() {
           style={{ margin: "1rem 0" }}
           className="animate__animated animate__fadeIn"
         >
-          <Typography variant="subtitle1" style={{ fontStyle: "italic" }}>
-            "{formData.sampleSentences[0]}"
+          <Typography
+            variant="subtitle1"
+            style={{ fontStyle: "italic", paddingLeft: "1rem" }}
+          >
+            &#x2022; "{formData.sampleSentences[0]}"
           </Typography>
         </Grid>
       )}
@@ -161,6 +178,22 @@ export default function New() {
             </Paper>
           ))}
         </Grid>
+      )}
+      {page > 5 && formData.relations?.length > 0 && (
+        <>
+          <Divider className={`animate__animated animate__fadeIn`}>
+            <Chip label="Related entries: " />
+          </Divider>
+          <Grid
+            className={`${styles.keywords_grid} animate__animated animate__fadeIn`}
+          >
+            {formData.relations?.map((entry, i) => (
+              <Paper key={i} component="span">
+                {entry.title}
+              </Paper>
+            ))}
+          </Grid>
+        </>
       )}
     </Paper>
   );
@@ -178,9 +211,13 @@ export default function New() {
             <Box className={styles.form}>{renderForm()}</Box>
             <Box className={styles.navigation}>
               {page > 0 && <Button onClick={goToPrevPage}>Previous</Button>}
-              <Button onClick={goToNextPage} disabled={!valid}>
-                Next
-              </Button>
+
+              {page < 6 && (
+                <Button onClick={goToNextPage} disabled={!valid}>
+                  Next
+                </Button>
+              )}
+              {page == 6 && <Button onClick={submitEntry}>Submit</Button>}
             </Box>
           </Grid>
         </Grid>
@@ -188,12 +225,6 @@ export default function New() {
     </>
   );
 }
-
-const Review = ({ formData, setFormData }) => {
-  <Box>
-    <Typography variant="h4">Review your data: </Typography>
-  </Box>;
-};
 
 // when submitted
 // "your phrase has been submitted for approval"

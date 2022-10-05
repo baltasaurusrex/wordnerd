@@ -35,6 +35,7 @@ function CardAdd({ entry, disabled, selected, handleClick, outlined }) {
       </Paper>
     );
   }
+
   return (
     <ListItemButton
       disabled={disabled}
