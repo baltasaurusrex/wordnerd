@@ -1,0 +1,76 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.container * {
+  font-family: "Noto Serif", serif;
+}
+
+.grid {
+  justify-content: center;
+}
+
+.preview_card {
+  padding: 1rem;
+  margin-bottom: 5rem;
+}
+
+.preview_card > * {
+  margin: 1rem 0;
+}
+
+.preview_card .keywords_grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.preview_card .keywords_grid span {
+  padding: 0.5rem;
+  margin: 0.5rem;
+}
+
+.form {
+  text-align: center;
+}
+
+.form h5 {
+  margin-bottom: 2rem;
+}
+
+.textfield {
+  width: 90%;
+}
+
+.textfieldInput {
+  font-size: 1rem;
+  text-align: center;
+}
+
+.formData {
+  color: #4c4f4d;
+  font-style: italic;
+  display: flex;
+  flex-direction: column;
+}
+
+.formData > * {
+  margin: 0.5rem;
+}
+
+.select li {
+  font-family: "Noto Serif", serif;
+}
+
+.formData .type {
+  align-self: center;
+  padding: 0.5rem 1rem;
+}
+
+.navigation {
+  text-align: center;
+  margin-top: 50px;
+}
