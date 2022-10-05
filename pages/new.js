@@ -1,6 +1,14 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
-import { Box, Button, Typography, Paper, Grid } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  Paper,
+  Grid,
+  Divider,
+  Chip,
+} from "@mui/material";
 
 import "animate.css";
 
@@ -35,7 +43,7 @@ export default function New() {
     keywords: [],
     relations: [],
   });
-  const [page, setPage] = useState(5);
+  const [page, setPage] = useState(0);
   const [valid, setValid] = useState(false);
 
   const goToNextPage = () => {
@@ -146,8 +154,11 @@ export default function New() {
           style={{ margin: "1rem 0" }}
           className="animate__animated animate__fadeIn"
         >
-          <Typography variant="subtitle1" style={{ fontStyle: "italic" }}>
-            "{formData.sampleSentences[0]}"
+          <Typography
+            variant="subtitle1"
+            style={{ fontStyle: "italic", paddingLeft: "1rem" }}
+          >
+            &#x2022; "{formData.sampleSentences[0]}"
           </Typography>
         </Grid>
       )}
@@ -161,6 +172,22 @@ export default function New() {
             </Paper>
           ))}
         </Grid>
+      )}
+      {page > 5 && formData.relations?.length > 0 && (
+        <>
+          <Divider className={`animate__animated animate__fadeIn`}>
+            <Chip label="Related entries: " />
+          </Divider>
+          <Grid
+            className={`${styles.keywords_grid} animate__animated animate__fadeIn`}
+          >
+            {formData.relations?.map((entry, i) => (
+              <Paper key={i} component="span">
+                {entry.title}
+              </Paper>
+            ))}
+          </Grid>
+        </>
       )}
     </Paper>
   );
