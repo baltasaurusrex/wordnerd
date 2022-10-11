@@ -1,6 +1,4 @@
-import Typography from "@mui/material/Typography";
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
+import { Typography, List, ListItemButton, Grid } from "@mui/material";
 import AddEntryDialog from "../../components/AddEntryDialog.js";
 
 import { getPhraseInfo } from "../../controllers/phrases.js";
@@ -16,9 +14,11 @@ const Phrase = (props) => {
   console.log("parsed: ", parsed);
 
   return (
-    <div style={{ justifySelf: "center" }}>
-      <PreviewCard data={parsed} />
-    </div>
+    <Grid container className={styles.grid}>
+      <Grid item xs={12} md={10} lg={8}>
+        <PreviewCard data={parsed} />
+      </Grid>
+    </Grid>
   );
 };
 

@@ -17,3 +17,8 @@
 .list {
   margin-bottom: 1rem;
 }
+
+.grid {
+  padding: 1.5rem;
+  justify-content: center;
+}
