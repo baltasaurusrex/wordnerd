@@ -43,11 +43,18 @@ function KeywordsForm({ formData, setFormData, setValid }) {
   const inputRef = useRef();
   const popperRef = useRef();
 
-  const getKeywords = async (keyword) => {
-    const suggestions = await get_keywords(keyword);
+  const getKeywords = async (keyword, formData) => {
+    let suggestions = await get_keywords(keyword);
     console.log("suggestions: ", suggestions);
 
-    setSuggestions(suggestions);
+    let no_repetitions = suggestions.filter((sugg) => {
+      console.log("formData.keywords: ", formData.keywords);
+      return !formData.keywords.includes(sugg);
+    });
+
+    console.log("no_repetitions: ", no_repetitions);
+
+    setSuggestions(no_repetitions);
     setLoading(false);
   };
 
@@ -61,7 +68,7 @@ function KeywordsForm({ formData, setFormData, setValid }) {
 
     // if it has a value, do a debounced search for suggested keywords
     if (e.target.value !== "") {
-      debouncedHandleChange(e.target.value);
+      debouncedHandleChange(e.target.value, formData);
     } else {
       // if input is blank, no suggestions
       setSuggestions([]);
@@ -70,6 +77,11 @@ function KeywordsForm({ formData, setFormData, setValid }) {
 
     // if enter was pressed and there's a value
     if (e.key === "Enter" && e.target.value !== "") {
+      // check first if value already provided
+      if (formData.keywords.includes(e.target.value)) {
+        console.log("already in keywords");
+        return;
+      }
       // add this to the keywords
       setKeywords((prev) => [...prev, e.target.value]);
       // clear the input field
@@ -80,6 +92,11 @@ function KeywordsForm({ formData, setFormData, setValid }) {
   };
 
   const handleSelect = (sugg) => {
+    // check first if value already provided
+    if (formData.keywords.includes(sugg)) {
+      console.log("already in keywords");
+      return;
+    }
     setKeywords((prev) => [...prev, sugg]);
     setInput("");
     setOpen(false);
@@ -139,25 +156,28 @@ function KeywordsForm({ formData, setFormData, setValid }) {
           onKeyUp={handleInput}
         />
         <Popper
+          name="keyword"
           style={{ zIndex: 999 }}
           open={open}
           ref={popperRef}
           className={styles.popper}
           anchorEl={inputRef.current}
           placement="bottom-start"
-          modifiers={{
-            flip: {
-              enabled: false,
-            },
-            preventOverflow: {
-              enabled: true,
-              boundariesElement: "scrollParent",
-            },
-            arrow: {
-              enabled: true,
-              element: inputRef.current,
-            },
-          }}
+          // modifiers={
+          //   {
+          //     // flip: {
+          //     //   enabled: false,
+          //     // },
+          //     // preventOverflow: {
+          //     //   enabled: true,
+          //     //   boundariesElement: "scrollParent",
+          //     // },
+          //     // arrow: {
+          //     //   enabled: true,
+          //     //   element: inputRef.current,
+          //     // },
+          //   }
+          // }
         >
           <Paper>
             <MenuList
