@@ -38,13 +38,19 @@ export default function New() {
   const [formData, setFormData] = useState({
     title: "",
     type: "word",
+    author: "",
     description: "",
     sampleSentences: [""],
     keywords: [],
     relations: [],
   });
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(6);
   const [valid, setValid] = useState(false);
+
+  useEffect(() => {
+    console.log("valid: ", valid);
+  }, [valid]);
 
   const goToNextPage = () => {
     setPage((prev) => prev + 1);
@@ -132,7 +138,11 @@ export default function New() {
     <Paper elevation={1} className={styles.preview_card}>
       <Grid
         container
-        style={{ justifyContent: "space-between", alignItems: "center" }}
+        style={{
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "nowrap",
+        }}
       >
         {page > 0 && (
           <Grid item className="animate__animated animate__fadeIn">

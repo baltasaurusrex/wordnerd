@@ -57,8 +57,6 @@ export async function searchPhrases(query) {
 
     console.log("length: ", phrases.length);
 
-    console.log("phrases: ", phrases.slice(0, 5));
-
     const options = {
       includeScore: true,
       keys: ["title"],

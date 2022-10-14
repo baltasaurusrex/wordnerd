@@ -1,0 +1,7 @@
+.grid {
+  justify-content: center;
+}
+
+.grid > * {
+  margin: 1rem;
+}

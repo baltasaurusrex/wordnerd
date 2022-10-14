@@ -20,3 +20,13 @@ export async function get_keywords(q) {
     return err;
   }
 }
+export async function get_authors(q) {
+  try {
+    const results = (await axios.get("/api/get_authors", { params: { q } }))
+      .data;
+
+    return results;
+  } catch (err) {
+    return err;
+  }
+}
