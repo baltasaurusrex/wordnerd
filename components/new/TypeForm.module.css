@@ -5,3 +5,12 @@
 .grid > * {
   margin: 1rem;
 }
+
+.textfield {
+  width: 90%;
+}
+
+.textfieldInput {
+  font-size: 1rem;
+  text-align: center;
+}

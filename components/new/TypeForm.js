@@ -13,7 +13,12 @@ import {
   Popper,
   MenuList,
   CircularProgress,
+  TextField,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
+
+import CloseIcon from "@mui/icons-material/Close";
 
 import "animate.css";
 
@@ -40,17 +45,17 @@ const TypeForm = ({ formData, setFormData, setValid }) => {
   const [open, setOpen] = useState(false);
 
   const getAuthors = async (author, formData) => {
-    let suggestions = await get_authors(author);
-    console.log("suggestions: ", suggestions);
+    let res = await get_authors(author);
+    console.log("res: ", res);
 
-    let no_repetitions = suggestions?.filter((sugg) => {
+    let no_repetitions = res?.filter((sugg) => {
       console.log("formData.author: ", formData.author);
       return formData.author !== sugg;
     });
 
     console.log("no_repetitions: ", no_repetitions);
 
-    setSuggestions(no_repetitions);
+    setSuggestions([...no_repetitions]);
     setLoading(false);
   };
 
@@ -60,7 +65,7 @@ const TypeForm = ({ formData, setFormData, setValid }) => {
     e.preventDefault();
     setOpen(true);
     setLoading(true);
-    setAuthor(e.target.value.toLowerCase());
+    setAuthor(e.target.value);
 
     // if it has a value, do a debounced search for suggested authors
     if (e.target.value !== "") {
@@ -87,6 +92,16 @@ const TypeForm = ({ formData, setFormData, setValid }) => {
     }
   };
 
+  const handleSelect = (sugg) => {
+    // check first if value already provided
+    if (formData.author == sugg) {
+      console.log("already in keywords");
+      return;
+    }
+    setAuthor(sugg);
+    setOpen(false);
+  };
+
   const authorField = (
     <Grid item>
       <Input
@@ -94,11 +109,10 @@ const TypeForm = ({ formData, setFormData, setValid }) => {
         ref={inputRef}
         style={{ flexGrow: 1 }}
         className={styles.input}
-        disableUnderline
         placeholder="Coined by?"
         onChange={(e) => {
           setWidth(e.target.value.length);
-          setAuthor(e.target.value.toLowerCase());
+          setAuthor(e.target.value);
         }}
         value={author}
         onKeyDown={(e) => {
