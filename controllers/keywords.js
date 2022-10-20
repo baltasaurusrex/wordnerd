@@ -45,9 +45,3 @@ export const saveKeywords = async (keywords) => {
 
   return { fulfilled, rejected };
 };
-
-const tester = async () => {
-  const result = await saveKeywords(["greatness"]);
-
-  console.log("result: ", result);
-};

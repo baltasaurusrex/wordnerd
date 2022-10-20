@@ -2,6 +2,21 @@ import Author from "../models/Author.js";
 import Fuse from "fuse.js";
 import { connectMongoDB, generateMongoId } from "../utils/mongoose.js";
 
+export async function saveAuthor(author) {
+  try {
+    const foundAuthor = await Author.find({ author });
+    if (foundAuthor) {
+      return foundAuthor;
+    } else {
+      let newAuthor = await new Author({ author });
+      newAuthor = await newAuthor.save();
+      return newAuthor;
+    }
+  } catch (err) {
+    throw err;
+  }
+}
+
 export const getAuthors = async (query) => {
   try {
     await connectMongoDB();

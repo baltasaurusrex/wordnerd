@@ -22,10 +22,18 @@ export async function get_keywords(q) {
 }
 export async function get_authors(q) {
   try {
-    const results = (await axios.get("/api/get_authors", { params: { q } }))
-      .data;
+    const res = (await axios.get("/api/get_authors", { params: { q } })).data;
 
-    return results;
+    return res;
+  } catch (err) {
+    return err;
+  }
+}
+
+export async function create_phrase(data) {
+  try {
+    const res = await axios.post("/api/phrase", { ...data });
+    return res;
   } catch (err) {
     return err;
   }

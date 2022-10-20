@@ -67,32 +67,37 @@ RelationSchema.post("findOneAndDelete", async function (relation) {
   console.log("in RelationSchema.post('findOneAndDelete)");
   console.log("relation: ", relation);
 
-  // pull that relation from both the origin
-  const updatedOrigin = await Phrase.findByIdAndUpdate(
-    relation.origin,
-    {
-      $pull: { relations: relation._id },
-    },
-    {
-      select: "title creator relations relation_count",
-      new: true,
-    }
-  );
+  // pull that relation from both the origin (if it exists)
+  let origin = await Phrase.findById(relation.origin);
+  if (origin) {
+    const updatedOrigin = await Phrase.findByIdAndUpdate(
+      relation.origin,
+      {
+        $pull: { relations: relation._id },
+      },
+      {
+        select: "title creator relations relation_count",
+        new: true,
+      }
+    );
+    console.log("updatedOrigin: ", updatedOrigin);
+  }
 
-  // and the entry
-  const updatedEntry = await Phrase.findByIdAndUpdate(
-    relation.entry,
-    {
-      $pull: { relations: relation._id },
-    },
-    {
-      select: "title creator relations relation_count",
-      new: true,
-    }
-  );
-
-  console.log("updatedOrigin: ", updatedOrigin);
-  console.log("updatedEntry: ", updatedEntry);
+  // and the entry (if it exists)
+  let entry = await Phrase.findById(relation.entry);
+  if (entry) {
+    const updatedEntry = await Phrase.findByIdAndUpdate(
+      relation.entry,
+      {
+        $pull: { relations: relation._id },
+      },
+      {
+        select: "title creator relations relation_count",
+        new: true,
+      }
+    );
+    console.log("updatedEntry: ", updatedEntry);
+  }
 
   console.log("decrementing the relation_count property of the user object");
   const user = await User.findByIdAndUpdate(
@@ -105,9 +110,6 @@ RelationSchema.post("findOneAndDelete", async function (relation) {
     }
   );
   console.log("user: ", user);
-
-  // note: in the future I have to do something about the creators
-  // (i.e. should wait for confirmation from creator of entry editor doesn't own)
 });
 
 const Relation =

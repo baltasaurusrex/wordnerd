@@ -27,22 +27,35 @@ import { get_authors } from "../api";
 import styles from "./TypeForm.module.css";
 
 const TypeForm = ({ formData, setFormData, setValid }) => {
-  const handleChange = (e) => {
+  const handleTypeChange = (e) => {
     console.log("handle change");
     if (e.target.value == "quote") {
-      console.log(`(e.target.value == "quote")`);
-      setValid(false);
+      setFormData({ ...formData, ["type"]: e.target.value });
+      // setValid(false);
+    } else {
+      setFormData({ ...formData, ["author"]: "" });
+      setFormData({ ...formData, ["type"]: e.target.value });
     }
-    setFormData({ ...formData, ["type"]: e.target.value });
   };
 
-  const [width, setWidth] = useState(10);
   const inputRef = useRef();
   const popperRef = useRef();
-  const [author, setAuthor] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (formData.type == "quote") {
+      if (formData.author == "") {
+        setValid(false);
+      } else {
+        setValid(true);
+      }
+    } else {
+      setFormData({ ...formData, ["author"]: "" });
+      // setFormData({ ...formData, ["type"]: e.target.value });
+    }
+  }, [formData.type]);
 
   const getAuthors = async (author, formData) => {
     let res = await get_authors(author);
@@ -65,7 +78,7 @@ const TypeForm = ({ formData, setFormData, setValid }) => {
     e.preventDefault();
     setOpen(true);
     setLoading(true);
-    setAuthor(e.target.value);
+    setFormData({ ...formData, ["author"]: e.target.value });
 
     // if it has a value, do a debounced search for suggested authors
     if (e.target.value !== "") {
@@ -84,9 +97,8 @@ const TypeForm = ({ formData, setFormData, setValid }) => {
         return;
       }
       // add this to the author
-      setAuthor(e.target.value);
-      // clear the input field
-      setAuthor("");
+      setFormData({ ...formData, ["author"]: e.target.value });
+
       // and close the suggestions
       setOpen(false);
     }
@@ -94,12 +106,15 @@ const TypeForm = ({ formData, setFormData, setValid }) => {
 
   const handleSelect = (sugg) => {
     // check first if value already provided
-    if (formData.author == sugg) {
-      console.log("already in keywords");
-      return;
-    }
-    setAuthor(sugg);
+
+    setFormData({ ...formData, ["author"]: sugg });
     setOpen(false);
+    setValid(true);
+  };
+
+  const handleClear = () => {
+    setFormData({ ...formData, ["author"]: "" });
+    setValid(false);
   };
 
   const authorField = (
@@ -111,16 +126,24 @@ const TypeForm = ({ formData, setFormData, setValid }) => {
         className={styles.input}
         placeholder="Coined by?"
         onChange={(e) => {
-          setWidth(e.target.value.length);
-          setAuthor(e.target.value);
+          setFormData({ ...formData, ["author"]: e.target.value });
         }}
-        value={author}
+        value={formData.author}
         onKeyDown={(e) => {
           if (e.key == "Enter") {
             e.preventDefault();
           }
         }}
         onKeyUp={handleInput}
+        endAdornment={
+          <InputAdornment position="end">
+            {formData.author.length > 0 ? (
+              <IconButton onClick={handleClear}>
+                <CloseIcon />
+              </IconButton>
+            ) : null}
+          </InputAdornment>
+        }
       />
       <Popper
         name="keyword"
@@ -141,14 +164,14 @@ const TypeForm = ({ formData, setFormData, setValid }) => {
               overflow: "scroll",
             }}
           >
-            {!suggestions.includes(author) && (
+            {!suggestions.includes(formData.author) && (
               <MenuItem
-                key={author}
+                key={formData.author}
                 onClick={(e) => {
-                  handleSelect(author);
+                  handleSelect(formData.author);
                 }}
               >
-                Add new "{author}"
+                Add new "{formData.author}"
               </MenuItem>
             )}
             {loading ? (
@@ -178,7 +201,10 @@ const TypeForm = ({ formData, setFormData, setValid }) => {
       console.log(`not a quote`);
       setValid(true);
     } else {
-      // if its a quote, input bar should be open
+      // if its a quote
+      // check if author is filled
+      // if author is filled, then its valid
+      // if author is blank, then its not
     }
   }, [formData.type]);
 
@@ -192,7 +218,7 @@ const TypeForm = ({ formData, setFormData, setValid }) => {
             variant="standard"
             className={styles.select}
             value={formData.type}
-            onChange={handleChange}
+            onChange={handleTypeChange}
           >
             <MenuItem value="word">Word</MenuItem>
             <MenuItem value="idiom">Idiom</MenuItem>

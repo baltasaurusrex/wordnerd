@@ -34,6 +34,8 @@ import SentencesForm from "../components/new/SentencesForm.js";
 import KeywordsForm from "../components/new/KeywordsForm.js";
 import RelatedEntriesForm from "../components/new/RelatedEntriesForm.js";
 
+import * as API from "../components/api";
+
 export default function New() {
   const [formData, setFormData] = useState({
     title: "",
@@ -44,7 +46,7 @@ export default function New() {
     keywords: [],
     relations: [],
   });
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(6);
   const [valid, setValid] = useState(false);
 
@@ -62,10 +64,13 @@ export default function New() {
     setValid(true);
   };
 
-  const submitEntry = () => {
-    // send an api request
-    // if successful, redirect to new entry page
-    // if unsuccessful, redirect to error page
+  const submitEntry = async () => {
+    try {
+      const res = await API.create_phrase(formData);
+      console.log("res: ", res);
+    } catch (err) {
+      // if unsuccessful, redirect to error page
+    }
   };
 
   useEffect(() => {
@@ -157,6 +162,11 @@ export default function New() {
           </Grid>
         )}
       </Grid>
+      {page > 1 && formData.type === "quote" && (
+        <Grid container>
+          <Grid item className={styles.author}>{`- ${formData.author}`}</Grid>
+        </Grid>
+      )}
       {page > 2 && (
         <Grid
           style={{ margin: "1rem 0" }}
