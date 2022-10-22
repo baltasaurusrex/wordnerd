@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import Phrase from "./Phrase.js";
 import User from "./User.js";
 
-const RelationSchema = new mongoose.Schema(
+export const RelationSchema = new mongoose.Schema(
   {
     creator: { type: mongoose.SchemaTypes.ObjectId, ref: "User" },
     origin: { type: mongoose.SchemaTypes.ObjectId, ref: "Phrase" },
@@ -59,6 +59,21 @@ RelationSchema.pre("save", async function () {
   // or should I add a pending: Boolean field in the Relation schema?
 
   // doesn't trigger the PhraseSchema.pre("save") middleware, but pushes the relation to both the origin and relatedPhrase
+});
+
+RelationSchema.post("save", async function (relation) {
+  console.log("in Phrase > .post(save) middleware");
+  // update the User's relations, and relations_count properties
+  const user = await User.findByIdAndUpdate(
+    phrase.creator,
+    {
+      $push: { relations: relation },
+      $inc: { relations_count: 1 },
+    },
+    { new: true }
+  );
+
+  console.log("updated user object: ", user);
 });
 
 // when the Relation is deleted, this pulls that relation from it's origin and entry

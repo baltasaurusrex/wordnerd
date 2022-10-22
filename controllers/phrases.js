@@ -42,9 +42,9 @@ export async function createPhrase(data) {
     phrase = await createRelationsFromNewEntry(phrase);
     console.log("phrase after relations: ", phrase);
 
-    phrase = new Phrase({ ...phrase });
+    let phraseToSave = new Phrase({ ...phrase });
 
-    const newPhrase = await phrase.save((err) => err);
+    const newPhrase = await phraseToSave.save();
 
     console.log("newPhrase: ", newPhrase);
 
@@ -62,28 +62,21 @@ export async function createPhrase(data) {
   }
 }
 
-export async function deletePhrase(id) {
+export async function getPhraseInfo(id) {
   try {
+    console.log("getPhraseInfo: ", id);
     await connectMongoDB();
-    // find phrase by id
-    let phrase = await Phrase.findById(id);
-    if (!phrase) {
-      throw { errCode: 404, message: "Phrase doesn't exist." };
-    }
-    // if phrase exists, delete it, as well as all its accompanying relations
-    // deleteRelations
-    if (phrase.relations.length > 0) {
-      const deleted_relations = await Promise.all(
-        phrase.relations.map((relation) => deleteRelation(relation))
-      );
-
-      console.log("deleted_relations: ", deleted_relations);
-    }
-
-    // deletePhrase
-    return Phrase.findByIdAndDelete(phrase._id);
+    const phrase = await Phrase.findById(id)
+      .populate({
+        path: "relations",
+        populate: {
+          path: "origin entry",
+        },
+      })
+      .lean();
+    return phrase;
   } catch (err) {
-    throw err;
+    return err;
   }
 }
 
@@ -116,20 +109,27 @@ export async function searchPhrases(query) {
   }
 }
 
-export async function getPhraseInfo(id) {
+export async function deletePhrase(id) {
   try {
-    console.log("getPhraseInfo: ", id);
     await connectMongoDB();
-    const phrase = await Phrase.findById(id)
-      .populate({
-        path: "relations",
-        populate: {
-          path: "origin entry",
-        },
-      })
-      .lean();
-    return phrase;
+    // find phrase by id
+    let phrase = await Phrase.findById(id);
+    if (!phrase) {
+      throw { errCode: 404, message: "Phrase doesn't exist." };
+    }
+    // if phrase exists, delete it, as well as all its accompanying relations
+    // deleteRelations
+    if (phrase.relations.length > 0) {
+      const deleted_relations = await Promise.all(
+        phrase.relations.map((relation) => deleteRelation(relation))
+      );
+
+      console.log("deleted_relations: ", deleted_relations);
+    }
+
+    // deletePhrase
+    return Phrase.findByIdAndDelete(phrase._id);
   } catch (err) {
-    return err;
+    throw err;
   }
 }

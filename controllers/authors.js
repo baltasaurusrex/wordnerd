@@ -4,7 +4,7 @@ import { connectMongoDB, generateMongoId } from "../utils/mongoose.js";
 
 export async function saveAuthor(author) {
   try {
-    const foundAuthor = await Author.find({ author });
+    const foundAuthor = await Author.findOne({ author });
     if (foundAuthor) {
       return foundAuthor;
     } else {

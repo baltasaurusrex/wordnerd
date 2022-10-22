@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import Relation from "./Relation.js";
 import User from "./User.js";
 
-const PhraseSchema = new mongoose.Schema(
+export const PhraseSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
     type: { type: String, enum: ["word", "idiom", "proverb", "quote"] },
@@ -56,12 +56,13 @@ const PhraseSchema = new mongoose.Schema(
 // });
 
 PhraseSchema.post("save", async function (phrase) {
-  console.log("in post(save) middleware");
+  console.log("in Phrase > .post(save) middleware");
 
-  console.log("incrementing User phrase_count property");
+  // update the User's phrases, and phrase_count properties
   const user = await User.findByIdAndUpdate(
     phrase.creator,
     {
+      $push: { phrases: phrase },
       $inc: { phrases_count: 1 },
     },
     { new: true }
@@ -71,13 +72,13 @@ PhraseSchema.post("save", async function (phrase) {
 });
 
 PhraseSchema.post("findOneAndDelete", async function (deletedPhrase) {
-  console.log("in findOneAndDelete middleware");
+  console.log("in Phrase > .post(findOneAndDelete) middleware");
 
-  // update the User's phrase_count property
-  console.log("decrementing User phrase_count property");
+  // update the User's phrases, and phrase_count properties
   const user = await User.findByIdAndUpdate(
     deletedPhrase.creator,
     {
+      $pull: { phrases: deletedPhrase },
       $inc: { phrases_count: -1 },
     },
     { new: true }
