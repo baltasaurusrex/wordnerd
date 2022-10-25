@@ -63,7 +63,6 @@ PhraseSchema.post("save", async function (phrase) {
     phrase.creator,
     {
       $push: { phrases: phrase },
-      $inc: { phrases_count: 1 },
     },
     { new: true }
   );
@@ -79,7 +78,6 @@ PhraseSchema.post("findOneAndDelete", async function (deletedPhrase) {
     deletedPhrase.creator,
     {
       $pull: { phrases: deletedPhrase },
-      $inc: { phrases_count: -1 },
     },
     { new: true }
   );

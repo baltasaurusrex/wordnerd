@@ -22,22 +22,12 @@ const UserSchema = new mongoose.Schema({
   lastName: { type: String, required: true },
   image: String,
   phrases: {
-    type: [PhraseSchema],
+    type: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Phrase" }],
     default: [],
-  },
-  phrases_count: {
-    type: Number,
-    default: 0,
-    min: 0,
   },
   relations: {
-    type: [RelationSchema],
+    type: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Relation" }],
     default: [],
-  },
-  relations_count: {
-    type: Number,
-    default: 0,
-    min: 0,
   },
 });
 
