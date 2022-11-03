@@ -71,36 +71,39 @@ PhraseSchema.post("save", async function (phrase) {
 });
 
 PhraseSchema.post("findOneAndDelete", async function (deletedPhrase) {
-  console.log("in Phrase > .post(findOneAndDelete) middleware");
+  try {
+    console.log("in Phrase > .post(findOneAndDelete) middleware");
+    console.log("deletedPhrase: ", deletedPhrase);
 
-  // update the User's phrases, and phrase_count properties
-  const user = await User.findByIdAndUpdate(
-    deletedPhrase.creator,
-    {
-      $pull: { phrases: deletedPhrase },
-    },
-    { new: true }
-  );
+    // update the User's phrases, and phrase_count properties
+    const user = await User.findByIdAndUpdate(
+      deletedPhrase.creator,
+      {
+        $pull: { phrases: deletedPhrase._id },
+      },
+      { new: true }
+    );
 
-  console.log("updated user object: ", user);
+    // get the deleted phrase's relations
+    // const { relations } = deletedPhrase;
+    // console.log("relations: ", relations);
+    // // loop through each Relation
+    // relations.forEach(async (relation) => {
+    //   console.log("relation: ", relation);
+    //   const { creator } = await Relation.findById(relation);
+    //   console.log("creator: ", creator);
+    //   // delete that relation outright if it's creator is the same as the deleted phrase's creator
+    //   if (JSON.stringify(deletedPhrase.creator) === JSON.stringify(creator)) {
+    //     console.log(`relations creator === deletePhrase's creator`);
+    //     await Relation.findByIdAndDelete(relation);
+    //   } else {
+    //   }
+    // });
 
-  // get the deleted phrase's relations
-  // const { relations } = deletedPhrase;
-  // console.log("relations: ", relations);
-  // // loop through each Relation
-  // relations.forEach(async (relation) => {
-  //   console.log("relation: ", relation);
-  //   const { creator } = await Relation.findById(relation);
-  //   console.log("creator: ", creator);
-  //   // delete that relation outright if it's creator is the same as the deleted phrase's creator
-  //   if (JSON.stringify(deletedPhrase.creator) === JSON.stringify(creator)) {
-  //     console.log(`relations creator === deletePhrase's creator`);
-  //     await Relation.findByIdAndDelete(relation);
-  //   } else {
-  //   }
-  // });
-
-  // if not, send a delete notification, but still continue with delete
+    // if not, send a delete notification, but still continue with delete
+  } catch (err) {
+    console.log("err: ", err);
+  }
 });
 
 const Phrase = mongoose.models.Phrase || mongoose.model("Phrase", PhraseSchema);
