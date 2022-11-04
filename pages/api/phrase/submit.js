@@ -7,7 +7,7 @@ export default async function (req, res) {
   try {
     console.log("req.method: ", req.method);
     if (req.method !== "POST") {
-      // throw { code: 400, message: "Not signed in." };
+      throw { code: 400, message: "Not signed in." };
     }
 
     const token = await getToken({ req, secret });
@@ -21,7 +21,7 @@ export default async function (req, res) {
 
     // let phrase = await createPhrase(req.body);
 
-    res.status(200).send("ok");
+    return res.status(200).json({ ...req.body });
   } catch (err) {
     res.status(err.code).send(err.message);
   }

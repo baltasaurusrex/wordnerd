@@ -1,6 +1,9 @@
 import Phrase from "../models/Phrase.js";
 import Fuse from "fuse.js";
 import { connectMongoDB, generateMongoId } from "../utils/mongoose.js";
+import { createRelationsFromNewEntry, deleteRelation } from "./relations.js";
+import { saveAuthor } from "./authors.js";
+import { saveKeywords } from "./keywords.js";
 
 export async function createPhrase(data) {
   try {
@@ -19,13 +22,11 @@ export async function createPhrase(data) {
       likes = [],
     } = data;
 
-    console.log("data.body: ", data.body);
-
     var originId = await generateMongoId();
     console.log("originId", originId);
 
     // ObjectId "_id" gets added here
-    const phrase = new Phrase({
+    let phrase = {
       _id: originId,
       title,
       type,
@@ -36,15 +37,46 @@ export async function createPhrase(data) {
       relations,
       creator,
       likes,
-    });
+    };
 
-    const newPhrase = await phrase.save();
+    phrase = await createRelationsFromNewEntry(phrase);
+    console.log("phrase after relations: ", phrase);
 
-    const keywordsSaved = await saveKeywords(keywords);
+    let phraseToSave = new Phrase({ ...phrase });
 
-    res.status(200).json(newPhrase);
+    const newPhrase = await phraseToSave.save();
+
+    console.log("newPhrase: ", newPhrase);
+
+    if (phrase.author.length > 0) {
+      const savedAuthor = await saveAuthor(phrase.author);
+    }
+
+    if (phrase.keywords) {
+      const keywordsSaved = await saveKeywords(keywords);
+    }
+
+    return newPhrase;
   } catch (err) {
-    res.status(400).send(err.message);
+    throw err;
+  }
+}
+
+export async function getPhraseInfo(id) {
+  try {
+    console.log("getPhraseInfo: ", id);
+    await connectMongoDB();
+    const phrase = await Phrase.findById(id)
+      .populate({
+        path: "relations",
+        populate: {
+          path: "origin entry",
+        },
+      })
+      .lean();
+    return phrase;
+  } catch (err) {
+    return err;
   }
 }
 
@@ -56,8 +88,6 @@ export async function searchPhrases(query) {
     const phrases = await Phrase.find({}).select("title _id");
 
     console.log("length: ", phrases.length);
-
-    console.log("phrases: ", phrases.slice(0, 5));
 
     const options = {
       includeScore: true,
@@ -79,20 +109,27 @@ export async function searchPhrases(query) {
   }
 }
 
-export async function getPhraseInfo(id) {
+export async function deletePhrase(id) {
   try {
-    console.log("getPhraseInfo: ", id);
     await connectMongoDB();
-    const phrase = await Phrase.findById(id)
-      .populate({
-        path: "relations",
-        populate: {
-          path: "origin entry",
-        },
-      })
-      .lean();
-    return phrase;
+    // find phrase by id
+    let phrase = await Phrase.findById(id);
+    if (!phrase) {
+      throw { errCode: 404, message: "Phrase doesn't exist." };
+    }
+    // if phrase exists, delete it, as well as all its accompanying relations
+    // deleteRelations
+    if (phrase.relations.length > 0) {
+      const deleted_relations = await Promise.all(
+        phrase.relations.map((relation) => deleteRelation(relation))
+      );
+
+      console.log("deleted_relations: ", deleted_relations);
+    }
+
+    // deletePhrase
+    return Phrase.findByIdAndDelete(phrase._id);
   } catch (err) {
-    return err;
+    throw err;
   }
 }

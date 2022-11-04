@@ -8,7 +8,11 @@ import {
   Grid,
   Divider,
   Chip,
+  Snackbar,
 } from "@mui/material";
+import { SnackbarProvider, useSnackbar } from "notistack";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 import "animate.css";
 
@@ -34,32 +38,75 @@ import SentencesForm from "../components/new/SentencesForm.js";
 import KeywordsForm from "../components/new/KeywordsForm.js";
 import RelatedEntriesForm from "../components/new/RelatedEntriesForm.js";
 
+import * as API from "../components/api";
+
 export default function New() {
   const [formData, setFormData] = useState({
     title: "",
     type: "word",
+    author: "",
     description: "",
     sampleSentences: [""],
     keywords: [],
     relations: [],
   });
   const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(6);
   const [valid, setValid] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
+  const router = useRouter();
+
+  useEffect(() => {
+    console.log("valid: ", valid);
+  }, [valid]);
 
   const goToNextPage = () => {
-    setPage((prev) => prev + 1);
-    setValid(false);
+    if (formData.type === "quote") {
+      if (page === 1) {
+        setPage(4);
+        return;
+      } else {
+        setPage((prev) => prev + 1);
+      }
+    } else {
+      setPage((prev) => prev + 1);
+      setValid(false);
+    }
   };
 
   const goToPrevPage = () => {
-    setPage((prev) => prev - 1);
-    setValid(true);
+    if (formData.type === "quote") {
+      if (page === 4) {
+        setPage(1);
+        return;
+      } else {
+        setPage((prev) => prev - 1);
+        setValid(true);
+      }
+    } else {
+      setPage((prev) => prev - 1);
+      setValid(true);
+    }
   };
 
-  const submitEntry = () => {
-    // send an api request
-    // if successful, redirect to new entry page
-    // if unsuccessful, redirect to error page
+  const submitEntry = async () => {
+    try {
+      enqueueSnackbar("Creating entry...", { autoHideDuration: 3000 });
+      const { status, data } = await API.create_phrase(formData);
+
+      if (status === 200) {
+        enqueueSnackbar("Entry created!", {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
+
+        router.push(`phrase/${encodeURIComponent(data._doc._id)}`);
+      } else {
+        enqueueSnackbar("Something went wrong.");
+      }
+    } catch (err) {
+      // if unsuccessful, redirect to error page
+    }
   };
 
   useEffect(() => {
@@ -132,7 +179,11 @@ export default function New() {
     <Paper elevation={1} className={styles.preview_card}>
       <Grid
         container
-        style={{ justifyContent: "space-between", alignItems: "center" }}
+        style={{
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "nowrap",
+        }}
       >
         {page > 0 && (
           <Grid item className="animate__animated animate__fadeIn">
@@ -147,7 +198,13 @@ export default function New() {
           </Grid>
         )}
       </Grid>
-      {page > 2 && (
+      {page > 1 && formData.type === "quote" && (
+        <Grid container>
+          <Grid item className={styles.author}>{`- ${formData.author}`}</Grid>
+        </Grid>
+      )}
+
+      {page > 2 && formData.type !== "quote" && (
         <Grid
           style={{ margin: "1rem 0" }}
           className="animate__animated animate__fadeIn"
@@ -155,7 +212,7 @@ export default function New() {
           <Typography>{formData.description}</Typography>
         </Grid>
       )}
-      {page > 3 && (
+      {page > 3 && formData.type !== "quote" && (
         <Grid
           style={{ margin: "1rem 0" }}
           className="animate__animated animate__fadeIn"
@@ -204,6 +261,7 @@ export default function New() {
         <title>WordNerd Beta</title>
         <link rel="icon" href="/WordNerd Logo Transparent.png" />
       </Head>
+
       <Box className={styles.container}>
         <Grid container className={styles.grid}>
           <Grid item lg={6} md={8} sm={12} xs={12}>

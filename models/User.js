@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import { PhraseSchema } from "./Phrase.js";
+import { RelationSchema } from "./Relation.js";
 
 const UserSchema = new mongoose.Schema({
   googleId: String, // create a new User upon successful sign on w/ OAuth
@@ -19,15 +21,13 @@ const UserSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   image: String,
-  phrases_count: {
-    type: Number,
-    default: 0,
-    min: 0,
+  phrases: {
+    type: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Phrase" }],
+    default: [],
   },
-  relations_count: {
-    type: Number,
-    default: 0,
-    min: 0,
+  relations: {
+    type: [{ type: mongoose.SchemaTypes.ObjectId, ref: "Relation" }],
+    default: [],
   },
 });
 

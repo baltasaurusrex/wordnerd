@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import Phrase from "./Phrase.js";
 import User from "./User.js";
 
-const RelationSchema = new mongoose.Schema(
+export const RelationSchema = new mongoose.Schema(
   {
     creator: { type: mongoose.SchemaTypes.ObjectId, ref: "User" },
     origin: { type: mongoose.SchemaTypes.ObjectId, ref: "Phrase" },
@@ -61,38 +61,58 @@ RelationSchema.pre("save", async function () {
   // doesn't trigger the PhraseSchema.pre("save") middleware, but pushes the relation to both the origin and relatedPhrase
 });
 
+RelationSchema.post("save", async function (relation) {
+  console.log("in Phrase > .post(save) middleware");
+  // update the User's relations, and relations_count properties
+  const user = await User.findByIdAndUpdate(
+    phrase.creator,
+    {
+      $push: { relations: relation },
+      $inc: { relations_count: 1 },
+    },
+    { new: true }
+  );
+
+  console.log("updated user object: ", user);
+});
+
 // when the Relation is deleted, this pulls that relation from it's origin and entry
 // btw, before it gets here, there's already been a checkpoint checking that this relation was created by the editor
 RelationSchema.post("findOneAndDelete", async function (relation) {
   console.log("in RelationSchema.post('findOneAndDelete)");
   console.log("relation: ", relation);
 
-  // pull that relation from both the origin
-  const updatedOrigin = await Phrase.findByIdAndUpdate(
-    relation.origin,
-    {
-      $pull: { relations: relation._id },
-    },
-    {
-      select: "title creator relations relation_count",
-      new: true,
-    }
-  );
+  // pull that relation from both the origin (if it exists)
+  let origin = await Phrase.findById(relation.origin);
+  if (origin) {
+    const updatedOrigin = await Phrase.findByIdAndUpdate(
+      relation.origin,
+      {
+        $pull: { relations: relation._id },
+      },
+      {
+        select: "title creator relations relation_count",
+        new: true,
+      }
+    );
+    console.log("updatedOrigin: ", updatedOrigin);
+  }
 
-  // and the entry
-  const updatedEntry = await Phrase.findByIdAndUpdate(
-    relation.entry,
-    {
-      $pull: { relations: relation._id },
-    },
-    {
-      select: "title creator relations relation_count",
-      new: true,
-    }
-  );
-
-  console.log("updatedOrigin: ", updatedOrigin);
-  console.log("updatedEntry: ", updatedEntry);
+  // and the entry (if it exists)
+  let entry = await Phrase.findById(relation.entry);
+  if (entry) {
+    const updatedEntry = await Phrase.findByIdAndUpdate(
+      relation.entry,
+      {
+        $pull: { relations: relation._id },
+      },
+      {
+        select: "title creator relations relation_count",
+        new: true,
+      }
+    );
+    console.log("updatedEntry: ", updatedEntry);
+  }
 
   console.log("decrementing the relation_count property of the user object");
   const user = await User.findByIdAndUpdate(
@@ -105,9 +125,6 @@ RelationSchema.post("findOneAndDelete", async function (relation) {
     }
   );
   console.log("user: ", user);
-
-  // note: in the future I have to do something about the creators
-  // (i.e. should wait for confirmation from creator of entry editor doesn't own)
 });
 
 const Relation =
