@@ -10,6 +10,9 @@ import {
   Chip,
   Snackbar,
 } from "@mui/material";
+import { SnackbarProvider, useSnackbar } from "notistack";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 import "animate.css";
 
@@ -50,25 +53,57 @@ export default function New() {
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(6);
   const [valid, setValid] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
+  const router = useRouter();
 
   useEffect(() => {
     console.log("valid: ", valid);
   }, [valid]);
 
   const goToNextPage = () => {
-    setPage((prev) => prev + 1);
-    setValid(false);
+    if (formData.type === "quote") {
+      if (page === 1) {
+        setPage(4);
+        return;
+      } else {
+        setPage((prev) => prev + 1);
+      }
+    } else {
+      setPage((prev) => prev + 1);
+      setValid(false);
+    }
   };
 
   const goToPrevPage = () => {
-    setPage((prev) => prev - 1);
-    setValid(true);
+    if (formData.type === "quote") {
+      if (page === 4) {
+        setPage(1);
+        return;
+      } else {
+        setPage((prev) => prev - 1);
+        setValid(true);
+      }
+    } else {
+      setPage((prev) => prev - 1);
+      setValid(true);
+    }
   };
 
   const submitEntry = async () => {
     try {
-      const res = await API.create_phrase(formData);
-      console.log("res: ", res);
+      enqueueSnackbar("Creating entry...", { autoHideDuration: 3000 });
+      const { status, data } = await API.create_phrase(formData);
+
+      if (status === 200) {
+        enqueueSnackbar("Entry created!", {
+          variant: "success",
+          autoHideDuration: 3000,
+        });
+
+        router.push(`phrase/${encodeURIComponent(data._doc._id)}`);
+      } else {
+        enqueueSnackbar("Something went wrong.");
+      }
     } catch (err) {
       // if unsuccessful, redirect to error page
     }
@@ -168,7 +203,8 @@ export default function New() {
           <Grid item className={styles.author}>{`- ${formData.author}`}</Grid>
         </Grid>
       )}
-      {page > 2 && (
+
+      {page > 2 && formData.type !== "quote" && (
         <Grid
           style={{ margin: "1rem 0" }}
           className="animate__animated animate__fadeIn"
@@ -176,7 +212,7 @@ export default function New() {
           <Typography>{formData.description}</Typography>
         </Grid>
       )}
-      {page > 3 && (
+      {page > 3 && formData.type !== "quote" && (
         <Grid
           style={{ margin: "1rem 0" }}
           className="animate__animated animate__fadeIn"
@@ -225,6 +261,7 @@ export default function New() {
         <title>WordNerd Beta</title>
         <link rel="icon" href="/WordNerd Logo Transparent.png" />
       </Head>
+
       <Box className={styles.container}>
         <Grid container className={styles.grid}>
           <Grid item lg={6} md={8} sm={12} xs={12}>
