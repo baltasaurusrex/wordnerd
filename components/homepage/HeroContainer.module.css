@@ -1,0 +1,9 @@
+.section {
+  height: 100vh;
+  display: grid;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: 1fr;
+  font-family: "Noto Serif", serif;
+}
