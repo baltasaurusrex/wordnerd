@@ -1,4 +1,38 @@
+.card {
+  position: relative;
+}
+
 .paper {
-  margin-top: 1rem;
-  height: 100px;
+  margin-top: 1em;
+  min-height: 100px;
+  padding: 0.5em;
+}
+
+.grid {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title,
+.type {
+  padding: 0.5em;
+  margin: 0;
+}
+
+/* responsiveness for length of titles */
+
+.word {
+  font-size: 1.375em;
+}
+
+.idiom {
+  font-size: 1.25em;
+}
+
+.proverb {
+  font-size: 1.125em;
+}
+
+.sentence_long {
+  font-size: 1em;
 }

@@ -1,18 +1,20 @@
 import Head from "next/head";
 import styles from "./index.module.css";
 import { Paper } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-
 import CircleIcon from "@mui/icons-material/Circle";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useEffect } from "react";
 import HeroContainer from "../components/homepage/HeroContainer.js";
+import PhraseCard from "../components/homepage/PhraseCard.js";
 
 export default function Home() {
   useEffect(() => {
     AOS.init({ duration: 500 });
   }, []);
+
+  // establish dummy variables (this is what the server will return)
+
   return (
     <>
       <Head>
@@ -34,9 +36,12 @@ export default function Home() {
               <CircleIcon />
               <p>user created: </p>
             </div>
-            <div className={styles.card}>
-              <Paper className={styles.paper}></Paper>
-            </div>
+            <PhraseCard
+              phrase={{
+                title: "Dolor",
+                type: "word",
+              }}
+            />
           </div>
         </HeroContainer>
         <HeroContainer>
@@ -46,9 +51,9 @@ export default function Home() {
               <CircleIcon />
               <p>user thinks this is related to: </p>
             </div>
-            <div className={styles.card}>
-              <Paper className={styles.paper}></Paper>
-            </div>
+            <PhraseCard
+              phrase={{ title: "Enim quis ea minim culpa", type: "idiom" }}
+            />
             <div className={styles.line}></div>
           </div>
         </HeroContainer>
@@ -59,9 +64,13 @@ export default function Home() {
               <CircleIcon />
               <p>user thinks this is related to: </p>
             </div>
-            <div className={styles.card}>
-              <Paper className={styles.paper}></Paper>
-            </div>
+            <PhraseCard
+              phrase={{
+                title:
+                  "Enim quis ea minim culpa Adipisicing reprehenderit magna cupidatat magna ipsum elit sunt nulla aute officia amet.",
+                type: "proverb",
+              }}
+            />
             <div className={styles.line}></div>
           </div>
         </HeroContainer>
@@ -72,9 +81,13 @@ export default function Home() {
               <CircleIcon />
               <p>user thinks this is related to: </p>
             </div>
-            <div className={styles.card}>
-              <Paper className={styles.paper}></Paper>
-            </div>
+            <PhraseCard
+              phrase={{
+                title:
+                  "Labore sit magna ad laborum velit exercitation. Ad amet aliqua quis ut labore proident eiusmod Lorem sunt irure do. Ea duis aliqua ex sunt ullamco cupidatat consequat veniam quis. Pariatur incididunt fugiat officia veniam in in enim non nostrud non sunt sint. Ad sunt in ullamco",
+                type: "quote",
+              }}
+            />
             <div className={styles.line}></div>
           </div>
         </HeroContainer>
