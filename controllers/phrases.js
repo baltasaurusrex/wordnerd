@@ -85,7 +85,7 @@ export async function searchPhrases(query) {
     console.log("searchPhrases controller: ", query);
     await connectMongoDB();
 
-    const phrases = await Phrase.find({}).select("title _id");
+    const phrases = await Phrase.find({}).select("title _id type");
 
     console.log("length: ", phrases.length);
 
@@ -101,7 +101,11 @@ export async function searchPhrases(query) {
     let result = fuse.search(query);
     result = result.slice(0, 5);
     console.log("result: ", result);
-    result = result.map(({ item }) => ({ title: item.title, id: item._id }));
+    result = result.map(({ item }) => ({
+      title: item.title,
+      id: item._id,
+      type: item.type,
+    }));
 
     return result;
   } catch (err) {

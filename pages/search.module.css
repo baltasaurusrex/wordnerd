@@ -1,8 +1,18 @@
 .container {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 1fr;
+  font-family: "Noto Serif", serif;
 }
 
-.container > * {
-  margin: 1rem 0;
+@media screen and (min-device-width: 768px) {
+  .container {
+    grid-template-columns: 80%;
+  }
+}
+
+@media screen and (min-device-width: 1024px) {
+  .container {
+    grid-template-columns: 60%;
+  }
 }
