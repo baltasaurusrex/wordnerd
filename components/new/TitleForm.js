@@ -82,10 +82,8 @@ const TitleForm = ({
   };
 
   return (
-    <div>
-      <Typography variant="h5" className="animate__animated animate__fadeIn">
-        What's the phrase?
-      </Typography>
+    <div className={styles.wrapper}>
+      <h1 className="animate__animated animate__fadeIn">What's the phrase?</h1>
       <TextField
         error={error}
         helperText={errorHelperText}
@@ -111,7 +109,6 @@ const TitleForm = ({
           ),
         }}
       />
-      {/* suggestion */}
     </div>
   );
 };
