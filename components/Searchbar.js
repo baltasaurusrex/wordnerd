@@ -110,7 +110,9 @@ const Searchbar = ({ mobile }) => {
     return typeof suggestion === "string" ? (
       <Link href={`/search?q=${encodeURIComponent(suggestion)}`} key={i}>
         <ListItemButton style={{ backgroundColor: "#f5f5f5" }} key={i}>
-          <i>Search for "{suggestion}"</i>
+          <span style={{ fontFamily: "Roboto" }}>
+            Search for "{suggestion}"
+          </span>
         </ListItemButton>
       </Link>
     ) : (

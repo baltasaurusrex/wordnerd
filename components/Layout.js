@@ -16,7 +16,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import SearchIcon from "@mui/icons-material/Search";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useTheme } from "@mui/material/styles";
+import { createTheme, useTheme, ThemeProvider } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 import Searchbar from "./Searchbar.js";
@@ -27,11 +27,10 @@ const Layout = ({ children }) => {
   const router = useRouter();
   const { data: session } = useSession();
   const [anchorEl, setAnchorEl] = useState(null);
-  const firstRender = useRef(true);
   const menuOpen = Boolean(anchorEl);
 
-  const theme = useTheme();
-  const mobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const usedTheme = useTheme();
+  const mobile = useMediaQuery(usedTheme.breakpoints.down("sm"));
   console.log("mobile: ", mobile);
 
   const [searchbarOpen, setSearchbarOpen] = useState(false);
@@ -173,22 +172,24 @@ const Layout = ({ children }) => {
   );
 
   return (
-    <div className={styles.wrapper}>
-      <nav className={`${mobile ? styles.nav_mobile : styles.nav}`}>
-        <div className={`${mobile ? styles.start_mobile : styles.start}`}>
-          {searchbarOpen ? (mobile ? btn_back : logo) : logo}
-        </div>
-        {searchbarOpen ? searchbar_max : searchbar_coll}
-      </nav>
-      <Backdrop
-        open={backdropOpen}
-        onClick={() => {
-          setSearchbarOpen(false);
-        }}
-        sx={{ zIndex: "50" }}
-      ></Backdrop>
-      <main className={styles.main}>{children}</main>
-    </div>
+    <ThemeProvider theme={usedTheme}>
+      <div className={styles.wrapper}>
+        <nav className={`${mobile ? styles.nav_mobile : styles.nav}`}>
+          <div className={`${mobile ? styles.start_mobile : styles.start}`}>
+            {searchbarOpen ? (mobile ? btn_back : logo) : logo}
+          </div>
+          {searchbarOpen ? searchbar_max : searchbar_coll}
+        </nav>
+        <Backdrop
+          open={backdropOpen}
+          onClick={() => {
+            setSearchbarOpen(false);
+          }}
+          sx={{ zIndex: "50" }}
+        ></Backdrop>
+        <main className={styles.main}>{children}</main>
+      </div>
+    </ThemeProvider>
   );
 };
 
