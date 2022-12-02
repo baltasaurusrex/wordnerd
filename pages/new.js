@@ -21,6 +21,9 @@ import styles from "./new.module.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const theme = createTheme({
+  typography: {
+    fontFamily: "Noto Serif, serif",
+  },
   palette: {
     wordnerdred: {
       main: "#64748B",
@@ -261,25 +264,26 @@ export default function New() {
         <title>WordNerd Beta</title>
         <link rel="icon" href="/WordNerd Logo Transparent.png" />
       </Head>
+      <ThemeProvider theme={theme}>
+        <div className={styles.wrapper}>
+          <Grid container className={styles.grid}>
+            <Grid item lg={6} md={8} sm={12} xs={12}>
+              {page > 0 && previewCard}
+              <Box className={styles.form}>{renderForm()}</Box>
+              <Box className={styles.navigation}>
+                {page > 0 && <Button onClick={goToPrevPage}>Previous</Button>}
 
-      <Box className={styles.container}>
-        <Grid container className={styles.grid}>
-          <Grid item lg={6} md={8} sm={12} xs={12}>
-            {page > 0 && previewCard}
-            <Box className={styles.form}>{renderForm()}</Box>
-            <Box className={styles.navigation}>
-              {page > 0 && <Button onClick={goToPrevPage}>Previous</Button>}
-
-              {page < 6 && (
-                <Button onClick={goToNextPage} disabled={!valid}>
-                  Next
-                </Button>
-              )}
-              {page == 6 && <Button onClick={submitEntry}>Submit</Button>}
-            </Box>
+                {page < 6 && (
+                  <Button onClick={goToNextPage} disabled={!valid}>
+                    Next
+                  </Button>
+                )}
+                {page == 6 && <Button onClick={submitEntry}>Submit</Button>}
+              </Box>
+            </Grid>
           </Grid>
-        </Grid>
-      </Box>
+        </div>
+      </ThemeProvider>
     </>
   );
 }
