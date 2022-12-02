@@ -3,7 +3,7 @@
 }
 
 .grid > * {
-  margin: 1rem;
+  margin: 1rem !important;
 }
 
 .textfield {
