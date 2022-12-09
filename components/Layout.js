@@ -33,6 +33,20 @@ const Layout = ({ children }) => {
   const mobile = useMediaQuery(usedTheme.breakpoints.down("sm"));
   console.log("mobile: ", mobile);
 
+  const theme = createTheme({
+    palette: {
+      wordnerdred: {
+        main: "#64748B",
+      },
+      black: {
+        main: "#1B1717",
+      },
+    },
+    typography: {
+      fontFamily: "Roboto",
+    },
+  });
+
   const [searchbarOpen, setSearchbarOpen] = useState(false);
   const [backdropOpen, setBackdropOpen] = useState(false);
 
@@ -172,7 +186,7 @@ const Layout = ({ children }) => {
   );
 
   return (
-    <ThemeProvider theme={usedTheme}>
+    <ThemeProvider theme={theme}>
       <div className={styles.wrapper}>
         <nav className={`${mobile ? styles.nav_mobile : styles.nav}`}>
           <div className={`${mobile ? styles.start_mobile : styles.start}`}>

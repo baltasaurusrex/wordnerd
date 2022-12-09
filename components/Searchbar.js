@@ -19,6 +19,8 @@ import { get_phrases } from "./api/index.js";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
+import cn from "classnames";
+
 const theme = createTheme({
   palette: {
     wordnerdred: {
@@ -109,15 +111,21 @@ const Searchbar = ({ mobile }) => {
     const text = suggestion.title ? suggestion.title : suggestion;
     return typeof suggestion === "string" ? (
       <Link href={`/search?q=${encodeURIComponent(suggestion)}`} key={i}>
-        <ListItemButton style={{ backgroundColor: "#f5f5f5" }} key={i}>
-          <span style={{ fontFamily: "Roboto" }}>
-            Search for "{suggestion}"
-          </span>
+        <ListItemButton
+          style={{ font: "1rem Noto Serif, serif", backgroundColor: "#f5f5f5" }}
+          key={i}
+        >
+          Search for "{suggestion}"
         </ListItemButton>
       </Link>
     ) : (
       <Link href={`/phrase/${encodeURIComponent(suggestion.id)}`} key={i}>
-        <ListItemButton component="a" onClick={() => handleClick(text)} key={i}>
+        <ListItemButton
+          component="a"
+          style={{ font: "1rem Noto Serif, serif" }}
+          onClick={() => handleClick(text)}
+          key={i}
+        >
           {text}
         </ListItemButton>
       </Link>
@@ -162,11 +170,6 @@ const Searchbar = ({ mobile }) => {
                   )
                 }
               />
-              {/* {query && query.length > 0 && (
-              <IconButton onClick={() => setQuery("")}>
-                <CloseIcon />
-              </IconButton>
-            )} */}
             </Paper>
             <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
               <SearchIcon />
@@ -183,7 +186,7 @@ const Searchbar = ({ mobile }) => {
   } else {
     return (
       <ClickAwayListener onClickAway={() => setOpen(false)}>
-        <Box className={styles.container}>
+        <Box className={cn(styles.container)}>
           <Paper
             component="form"
             className={styles.search}
@@ -193,7 +196,8 @@ const Searchbar = ({ mobile }) => {
             onSubmit={handleSubmit}
           >
             <InputBase
-              sx={{ flex: 1 }}
+              sx={{ "& input": { font: "1rem Noto Serif, serif" } }}
+              className={cn(styles.inputBase)}
               placeholder="Search for your phrase"
               inputProps={{ "aria-label": "search for your phrase" }}
               value={query}
