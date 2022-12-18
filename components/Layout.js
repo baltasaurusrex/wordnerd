@@ -42,9 +42,6 @@ const Layout = ({ children }) => {
         main: "#1B1717",
       },
     },
-    typography: {
-      fontFamily: "Roboto",
-    },
   });
 
   const [searchbarOpen, setSearchbarOpen] = useState(false);
@@ -133,7 +130,14 @@ const Layout = ({ children }) => {
           {!session && (
             <>
               <Link href="/login">
-                <Button style={{ whiteSpace: "nowrap" }}>Sign in</Button>
+                <Button
+                  style={{
+                    whiteSpace: "nowrap",
+                    fontFamily: "Noto Serif",
+                  }}
+                >
+                  Sign in
+                </Button>
               </Link>
             </>
           )}

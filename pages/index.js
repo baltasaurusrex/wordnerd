@@ -7,6 +7,7 @@ import "aos/dist/aos.css";
 import { useEffect } from "react";
 import HeroContainer from "../components/homepage/HeroContainer.js";
 import PhraseCard from "../components/homepage/PhraseCard.js";
+import Layout from "../components/Layout.js";
 
 export default function Home() {
   useEffect(() => {

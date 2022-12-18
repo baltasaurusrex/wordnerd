@@ -1,0 +1,15 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Noto Serif";
+  height: 100vh;
+}
+
+.paper {
+  padding: 1rem;
+}
+
+.logo {
+  font-family: "Indie Flower";
+}

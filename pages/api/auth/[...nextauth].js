@@ -45,4 +45,7 @@ export default NextAuth({
       console.log("user callback test");
     },
   },
+  pages: {
+    signIn: "/auth/signin",
+  },
 });
