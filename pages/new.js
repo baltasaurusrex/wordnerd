@@ -54,7 +54,6 @@ export default function New() {
     relations: [],
   });
   const [page, setPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(6);
   const [valid, setValid] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();

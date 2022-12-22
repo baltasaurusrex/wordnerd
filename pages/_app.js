@@ -4,12 +4,20 @@ import { SessionProvider } from "next-auth/react";
 import { SnackbarProvider, useSnackbar } from "notistack";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
-  return (
+  const getLayout =
+    Component.getLayout ??
+    ((page) => (
+      <SessionProvider session={session}>
+        <SnackbarProvider maxStack={3}>
+          <Layout>{page}</Layout>
+        </SnackbarProvider>
+      </SessionProvider>
+    ));
+
+  return getLayout(
     <SessionProvider session={session}>
       <SnackbarProvider maxStack={3}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <Component {...pageProps} />
       </SnackbarProvider>
     </SessionProvider>
   );
