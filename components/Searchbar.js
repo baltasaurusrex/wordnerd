@@ -134,54 +134,37 @@ const Searchbar = ({ mobile }) => {
 
   if (mobile) {
     return (
-      <ThemeProvider theme={theme}>
-        <ClickAwayListener onClickAway={() => setOpen(false)}>
-          <Box className={styles.container_mobile}>
-            <Paper
-              component="form"
-              className={styles.paper_mobile}
-              elevation={0}
-              square={true}
-              onSubmit={handleSubmit}
-            >
-              <Input
-                className={styles.inputBaseMobile}
-                placeholder="Search for your phrase"
-                inputProps={{ "aria-label": "search for your phrase" }}
-                variant="standard"
-                color="black"
-                value={query}
-                onChange={(e) => {
-                  changeQuery(e);
-                  debouncedHandleChange(e);
-                }}
-                endAdornment={
-                  query &&
-                  query.length > 0 && (
-                    <IconButton
-                      onClick={() => {
-                        setQuery("");
-                        setOpen(false);
-                      }}
-                      sx={{ padding: "0 0.25rem 0 1rem" }}
-                    >
-                      <CloseIcon />
-                    </IconButton>
-                  )
-                }
-              />
+      <ClickAwayListener onClickAway={() => setOpen(false)}>
+        <Box className={styles.container_mobile}>
+          <Paper
+            component="form"
+            className={styles.paper_mobile}
+            elevation={0}
+            square={true}
+            onSubmit={handleSubmit}
+          >
+            <InputBase
+              sx={{ "& input": { font: "1rem Noto Serif, serif" } }}
+              className={cn(styles.inputBase)}
+              placeholder="Search for your phrase"
+              inputProps={{ "aria-label": "search for your phrase" }}
+              value={query}
+              onChange={(e) => {
+                changeQuery(e);
+                debouncedHandleChange(e);
+              }}
+            />
+          </Paper>
+          <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
+            <SearchIcon />
+          </IconButton>
+          {!open ? null : (
+            <Paper className={styles.suggestionsMobile}>
+              <List className={styles.list}>{list}</List>
             </Paper>
-            <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
-              <SearchIcon />
-            </IconButton>
-            {!open ? null : (
-              <Paper className={styles.suggestionsMobile}>
-                <List className={styles.list}>{list}</List>
-              </Paper>
-            )}
-          </Box>
-        </ClickAwayListener>
-      </ThemeProvider>
+          )}
+        </Box>
+      </ClickAwayListener>
     );
   } else {
     return (

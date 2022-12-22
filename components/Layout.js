@@ -33,16 +33,16 @@ const Layout = ({ children }) => {
   const mobile = useMediaQuery(usedTheme.breakpoints.down("sm"));
   console.log("mobile: ", mobile);
 
-  const theme = createTheme({
-    palette: {
-      wordnerdred: {
-        main: "#64748B",
-      },
-      black: {
-        main: "#1B1717",
-      },
-    },
-  });
+  // const theme = createTheme({
+  //   palette: {
+  //     wordnerdred: {
+  //       main: "#64748B",
+  //     },
+  //     black: {
+  //       main: "#1B1717",
+  //     },
+  //   },
+  // });
 
   const [searchbarOpen, setSearchbarOpen] = useState(false);
   const [backdropOpen, setBackdropOpen] = useState(false);
@@ -130,12 +130,7 @@ const Layout = ({ children }) => {
           {!session && (
             <>
               <Link href="/auth/signin">
-                <Button
-                  style={{
-                    whiteSpace: "nowrap",
-                    fontFamily: "Noto Serif",
-                  }}
-                >
+                <Button className={styles.button} variant="contained">
                   Sign in
                 </Button>
               </Link>
@@ -155,7 +150,9 @@ const Layout = ({ children }) => {
           <>
             {searchIconGroup}
             <Link href="/auth/signin">
-              <Button style={{ whiteSpace: "nowrap" }}>Sign in</Button>
+              <Button className={styles.button} variant="contained">
+                Sign in
+              </Button>
             </Link>
           </>
         )}
@@ -190,24 +187,22 @@ const Layout = ({ children }) => {
   );
 
   return (
-    <ThemeProvider theme={theme}>
-      <div className={styles.wrapper}>
-        <nav className={`${mobile ? styles.nav_mobile : styles.nav}`}>
-          <div className={`${mobile ? styles.start_mobile : styles.start}`}>
-            {searchbarOpen ? (mobile ? btn_back : logo) : logo}
-          </div>
-          {searchbarOpen ? searchbar_max : searchbar_coll}
-        </nav>
-        <Backdrop
-          open={backdropOpen}
-          onClick={() => {
-            setSearchbarOpen(false);
-          }}
-          sx={{ zIndex: "50" }}
-        ></Backdrop>
-        <main className={styles.main}>{children}</main>
-      </div>
-    </ThemeProvider>
+    <div className={styles.wrapper}>
+      <nav className={`${mobile ? styles.nav_mobile : styles.nav}`}>
+        <div className={`${mobile ? styles.start_mobile : styles.start}`}>
+          {searchbarOpen ? (mobile ? btn_back : logo) : logo}
+        </div>
+        {searchbarOpen ? searchbar_max : searchbar_coll}
+      </nav>
+      <Backdrop
+        open={backdropOpen}
+        onClick={() => {
+          setSearchbarOpen(false);
+        }}
+        sx={{ zIndex: "50" }}
+      ></Backdrop>
+      <main>{children}</main>
+    </div>
   );
 };
 

@@ -8,8 +8,16 @@
 
 .paper {
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wrapper a {
+  text-decoration: none;
 }
 
 .logo {
-  font-family: "Indie Flower";
+  font-family: "Bree Serif";
+  color: maroon;
 }

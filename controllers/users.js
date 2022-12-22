@@ -3,14 +3,13 @@ import { connectMongoDB } from "../utils/mongoose.js";
 import _ from "lodash";
 
 export const getUserDetails = async (user) => {
-  console.log("in validateUser controller: ", user);
+  console.log("in getUserDetails controller: ", user);
   try {
     await connectMongoDB();
 
     let foundUser = await User.findOne({
       $or: [{ username: user }, { email: user }],
     }).select(`-password`);
-    console.log("foundUser: ", foundUser);
 
     if (foundUser) {
       return foundUser;
