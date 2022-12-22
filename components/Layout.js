@@ -129,7 +129,7 @@ const Layout = ({ children }) => {
           {session && sessionBar}
           {!session && (
             <>
-              <Link href="/login">
+              <Link href="/auth/signin">
                 <Button
                   style={{
                     whiteSpace: "nowrap",
@@ -154,7 +154,7 @@ const Layout = ({ children }) => {
         {!session && (
           <>
             {searchIconGroup}
-            <Link href="/login">
+            <Link href="/auth/signin">
               <Button style={{ whiteSpace: "nowrap" }}>Sign in</Button>
             </Link>
           </>
