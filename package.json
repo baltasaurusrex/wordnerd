@@ -24,7 +24,9 @@
     "next-auth": "^4.12.2",
     "notistack": "^2.0.8",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-pro-sidebar": "^1.0.0-alpha.9",
+    "react-router-dom": "^6.6.1"
   },
   "devDependencies": {
     "eslint": "8.18.0",

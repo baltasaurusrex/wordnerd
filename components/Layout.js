@@ -33,17 +33,6 @@ const Layout = ({ children }) => {
   const mobile = useMediaQuery(usedTheme.breakpoints.down("sm"));
   console.log("mobile: ", mobile);
 
-  // const theme = createTheme({
-  //   palette: {
-  //     wordnerdred: {
-  //       main: "#64748B",
-  //     },
-  //     black: {
-  //       main: "#1B1717",
-  //     },
-  //   },
-  // });
-
   const [searchbarOpen, setSearchbarOpen] = useState(false);
   const [backdropOpen, setBackdropOpen] = useState(false);
 
@@ -105,7 +94,7 @@ const Layout = ({ children }) => {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+        <MenuItem onClick={() => router.push("/profile")}>Profile</MenuItem>
         <MenuItem onClick={handleMenuClose}>My account</MenuItem>
         <MenuItem
           onClick={(e) => {
