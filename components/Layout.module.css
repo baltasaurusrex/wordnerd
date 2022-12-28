@@ -55,6 +55,9 @@
 
 .center {
   flex-basis: 700px;
+  display: flex;
+  align-items: center;
+  height: 100%;
 }
 
 .main {
@@ -62,14 +65,20 @@
 }
 
 .end {
-  flex-basis: 200px;
   display: flex;
+  align-items: center;
+  height: 100%;
+  flex-basis: 200px;
   justify-content: flex-end;
   padding: 0 1rem;
 }
 
 .end .button {
   white-space: nowrap;
+  background-color: maroon;
+}
+
+.end .button:hover {
   background-color: maroon;
 }
 

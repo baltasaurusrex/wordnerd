@@ -1,8 +1,5 @@
-.wrapper h1 {
-  text-align: center;
-  font-weight: 400;
-  margin-inline: 0;
-  font-size: 2em;
+.wrapper > * {
+  margin: 0 1em;
 }
 
 .textfield {

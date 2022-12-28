@@ -1,5 +1,10 @@
 import { useEffect, useState, useRef } from "react";
-import { TextField, InputAdornment, IconButton } from "@mui/material";
+import {
+  TextField,
+  InputAdornment,
+  IconButton,
+  Typography,
+} from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -8,12 +13,6 @@ import "animate.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import styles from "./TitleForm.module.css";
-
-let theme = createTheme({
-  typography: {
-    fontFamily: "Noto Serif, serif",
-  },
-});
 
 const TitleForm = ({
   formData,
@@ -84,38 +83,36 @@ const TitleForm = ({
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <div className={styles.wrapper}>
-        <h1 className="animate__animated animate__fadeIn">
-          What's the phrase?
-        </h1>
-        <TextField
-          error={error}
-          helperText={errorHelperText}
-          className={styles.textfield}
-          variant="standard"
-          multiline
-          name="title"
-          onChange={handleChange}
-          onKeyDown={handleEnter}
-          value={formData.title}
-          InputProps={{
-            classes: {
-              input: styles.textfieldInput,
-            },
-            endAdornment: (
-              <InputAdornment position="end">
-                {formData.title.length > 0 ? (
-                  <IconButton onClick={handleClear}>
-                    <CloseIcon />
-                  </IconButton>
-                ) : null}
-              </InputAdornment>
-            ),
-          }}
-        />
-      </div>
-    </ThemeProvider>
+    <div className={styles.wrapper}>
+      <Typography variant="h4" className="animate__animated animate__fadeIn">
+        What's the phrase?
+      </Typography>
+      <TextField
+        error={error}
+        helperText={errorHelperText}
+        className={styles.textfield}
+        variant="standard"
+        multiline
+        name="title"
+        onChange={handleChange}
+        onKeyDown={handleEnter}
+        value={formData.title}
+        InputProps={{
+          classes: {
+            input: styles.textfieldInput,
+          },
+          endAdornment: (
+            <InputAdornment position="end">
+              {formData.title.length > 0 ? (
+                <IconButton onClick={handleClear}>
+                  <CloseIcon />
+                </IconButton>
+              ) : null}
+            </InputAdornment>
+          ),
+        }}
+      />
+    </div>
   );
 };
 
