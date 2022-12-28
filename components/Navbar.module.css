@@ -1,0 +1,135 @@
+.wrapper {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.nav_mobile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: rgba(0, 0, 0, 0.16) 0 4px 2px -2px;
+  min-height: 50px;
+  z-index: 100;
+  background-color: white;
+}
+
+.nav {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: rgba(0, 0, 0, 0.16) 0 4px 2px -2px;
+  min-height: 75px;
+  z-index: 100;
+  background-color: white;
+}
+
+.start {
+  flex-basis: 200px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 1rem;
+}
+
+.start > * {
+  flex-grow: 1;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  .start h4 {
+    font-size: 1.5rem;
+  }
+}
+
+.start_mobile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 1rem;
+}
+
+.center {
+  flex-basis: 700px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.main {
+  flex-grow: 1;
+}
+
+.end {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  flex-basis: 200px;
+  justify-content: flex-end;
+  padding: 0 1rem;
+}
+
+.end .button {
+  white-space: nowrap;
+  background-color: maroon;
+}
+
+.end .button:hover {
+  background-color: maroon;
+}
+
+.sessionBar {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+}
+
+.sessionBar button {
+  margin: 0 1rem;
+  padding: 10px;
+}
+
+@media (max-width: 1024px) {
+  .sessionBar button {
+    margin: 0 0.5rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .logoSmall {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .logoBig {
+    display: none;
+  }
+  .sessionBar button {
+    margin: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav {
+    /* padding: 0.5rem; */
+    text-align: center;
+  }
+
+  .logoSmall {
+    display: none;
+  }
+  .logoBig {
+    display: block;
+  }
+  .menu {
+    display: inline-block;
+  }
+}
