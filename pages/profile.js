@@ -19,6 +19,11 @@ const Profile = () => {
   );
 };
 
-Profile.getLayout = (page) => page;
-
+Profile.getLayout = (page) => (
+  <div>
+    {" "}
+    "hi"
+    {page}
+  </div>
+);
 export default Profile;

@@ -24,7 +24,7 @@ import Searchbar from "./Searchbar.js";
 
 import styles from "./Navbar.module.css";
 
-function Navbar() {
+function Navbar({ searchbar, sideMenu }) {
   const router = useRouter();
   const { data: session } = useSession();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -180,7 +180,7 @@ function Navbar() {
         <div className={`${mobile ? styles.start_mobile : styles.start}`}>
           {searchbarOpen ? (mobile ? btn_back : logo) : logo}
         </div>
-        {searchbarOpen ? searchbar_max : searchbar_coll}
+        {searchbar && searchbarOpen ? searchbar_max : searchbar_coll}
       </nav>
       <Backdrop
         open={backdropOpen}
