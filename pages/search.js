@@ -2,6 +2,7 @@ import Head from "next/head";
 import styles from "./search.module.css";
 import { searchPhrases } from "../controllers/phrases.js";
 import SearchResult from "../components/SearchResult.js";
+import { Typography } from "@mui/material";
 
 const Search = ({ q, JSONresults }) => {
   console.log("results: ", JSON.parse(JSONresults));
@@ -19,7 +20,9 @@ const Search = ({ q, JSONresults }) => {
         <link rel="icon" href="/wn_logo_transparent.png" />
       </Head>
       <div className={styles.container}>
-        <h3>Search results for: "{q}"</h3>
+        <Typography className={styles.header} variant="h6">
+          Search results for: "{q}"
+        </Typography>
         <div>{mappedResults}</div>
       </div>
     </>

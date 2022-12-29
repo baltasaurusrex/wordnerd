@@ -25,6 +25,7 @@ import Searchbar from "./Searchbar.js";
 import styles from "./Navbar.module.css";
 
 function Navbar() {
+  const router = useRouter();
   const { data: session } = useSession();
   const [anchorEl, setAnchorEl] = useState(null);
   const menu_open = Boolean(anchorEl);
@@ -47,6 +48,13 @@ function Navbar() {
   useEffect(() => {
     setBackdropOpen(false);
   }, [router.asPath]);
+
+  const handleMenuOpen = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
 
   const searchIconGroup = (
     <Tooltip title="Toggle searchbar">
@@ -71,7 +79,7 @@ function Navbar() {
         </IconButton>
       </Tooltip>
       <Tooltip title="Account">
-        <IconButton aria-label="account" onClick={handlemenu_open}>
+        <IconButton aria-label="account" onClick={handleMenuOpen}>
           <AccountCircleIcon />
         </IconButton>
       </Tooltip>
@@ -167,19 +175,21 @@ function Navbar() {
   );
 
   return (
-    <nav className={`${mobile ? styles.nav_mobile : styles.nav}`}>
-      <div className={`${mobile ? styles.start_mobile : styles.start}`}>
-        {searchbarOpen ? (mobile ? btn_back : logo) : logo}
-      </div>
-      {searchbarOpen ? searchbar_max : searchbar_coll}
+    <>
+      <nav className={`${mobile ? styles.nav_mobile : styles.nav}`}>
+        <div className={`${mobile ? styles.start_mobile : styles.start}`}>
+          {searchbarOpen ? (mobile ? btn_back : logo) : logo}
+        </div>
+        {searchbarOpen ? searchbar_max : searchbar_coll}
+      </nav>
       <Backdrop
         open={backdropOpen}
         onClick={() => {
           setSearchbarOpen(false);
         }}
-        sx={{ zIndex: "50" }}
+        sx={{ zIndex: "10" }}
       ></Backdrop>
-    </nav>
+    </>
   );
 }
 

@@ -185,7 +185,8 @@ const Layout = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
       <div className={styles.wrapper}>
-        <nav className={`${mobile ? styles.nav_mobile : styles.nav}`}>
+        <Navbar />
+        {/* <nav className={`${mobile ? styles.nav_mobile : styles.nav}`}>
           <div className={`${mobile ? styles.start_mobile : styles.start}`}>
             {searchbarOpen ? (mobile ? btn_back : logo) : logo}
           </div>
@@ -197,7 +198,7 @@ const Layout = ({ children }) => {
             setSearchbarOpen(false);
           }}
           sx={{ zIndex: "50" }}
-        ></Backdrop>
+        ></Backdrop> */}
         <main className={styles.main}>{children}</main>
       </div>
     </ThemeProvider>
