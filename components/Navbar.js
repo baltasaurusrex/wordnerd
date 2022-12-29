@@ -20,25 +20,17 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { createTheme, useTheme, ThemeProvider } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-import Navbar from "./Navbar.js";
 import Searchbar from "./Searchbar.js";
 
-import styles from "./Layout.module.css";
+import styles from "./Navbar.module.css";
 
-const theme = createTheme({
-  typography: { fontFamily: ["Noto Serif"] },
-});
-
-const Layout = ({ children }) => {
+function Navbar() {
   const router = useRouter();
   const { data: session } = useSession();
   const [anchorEl, setAnchorEl] = useState(null);
   const menu_open = Boolean(anchorEl);
-
-  // const theme = useTheme();
+  const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
-  console.log("mobile: ", mobile);
-
   const [searchbarOpen, setSearchbarOpen] = useState(false);
   const [backdropOpen, setBackdropOpen] = useState(false);
 
@@ -57,7 +49,7 @@ const Layout = ({ children }) => {
     setBackdropOpen(false);
   }, [router.asPath]);
 
-  const handlemenu_open = (e) => {
+  const handleMenuOpen = (e) => {
     setAnchorEl(e.currentTarget);
   };
   const handleMenuClose = () => {
@@ -87,7 +79,7 @@ const Layout = ({ children }) => {
         </IconButton>
       </Tooltip>
       <Tooltip title="Account">
-        <IconButton aria-label="account" onClick={handlemenu_open}>
+        <IconButton aria-label="account" onClick={handleMenuOpen}>
           <AccountCircleIcon />
         </IconButton>
       </Tooltip>
@@ -183,26 +175,22 @@ const Layout = ({ children }) => {
   );
 
   return (
-    <ThemeProvider theme={theme}>
-      <div className={styles.wrapper}>
-        <Navbar />
-        {/* <nav className={`${mobile ? styles.nav_mobile : styles.nav}`}>
-          <div className={`${mobile ? styles.start_mobile : styles.start}`}>
-            {searchbarOpen ? (mobile ? btn_back : logo) : logo}
-          </div>
-          {searchbarOpen ? searchbar_max : searchbar_coll}
-        </nav>
-        <Backdrop
-          open={backdropOpen}
-          onClick={() => {
-            setSearchbarOpen(false);
-          }}
-          sx={{ zIndex: "50" }}
-        ></Backdrop> */}
-        <main className={styles.main}>{children}</main>
-      </div>
-    </ThemeProvider>
+    <>
+      <nav className={`${mobile ? styles.nav_mobile : styles.nav}`}>
+        <div className={`${mobile ? styles.start_mobile : styles.start}`}>
+          {searchbarOpen ? (mobile ? btn_back : logo) : logo}
+        </div>
+        {searchbarOpen ? searchbar_max : searchbar_coll}
+      </nav>
+      <Backdrop
+        open={backdropOpen}
+        onClick={() => {
+          setSearchbarOpen(false);
+        }}
+        sx={{ zIndex: "10" }}
+      ></Backdrop>
+    </>
   );
-};
+}
 
-export default Layout;
+export default Navbar;

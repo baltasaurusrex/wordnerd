@@ -8,6 +8,7 @@ import List from "@mui/material/List";
 import ListItemButton from "@mui/material/ListItemButton";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
+import { Typography } from "@mui/material";
 import { ClickAwayListener } from "@mui/material";
 
 import Link from "next/link";
@@ -22,14 +23,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import cn from "classnames";
 
 const theme = createTheme({
-  palette: {
-    wordnerdred: {
-      main: "#64748B",
-    },
-    black: {
-      main: "#1B1717",
-    },
-  },
+  typography: { fontFamily: ["Noto Serif"], fontSize: 12 },
 });
 
 import styles from "./Searchbar.module.css";
@@ -109,112 +103,115 @@ const Searchbar = ({ mobile }) => {
 
   const list = suggestions.map((suggestion, i) => {
     const text = suggestion.title ? suggestion.title : suggestion;
-    return typeof suggestion === "string" ? (
-      <Link href={`/search?q=${encodeURIComponent(suggestion)}`} key={i}>
-        <ListItemButton
-          style={{ font: "1rem Noto Serif, serif", backgroundColor: "#f5f5f5" }}
-          key={i}
-        >
-          Search for "{suggestion}"
-        </ListItemButton>
-      </Link>
-    ) : (
-      <Link href={`/phrase/${encodeURIComponent(suggestion.id)}`} key={i}>
-        <ListItemButton
-          component="a"
-          style={{ font: "1rem Noto Serif, serif" }}
-          onClick={() => handleClick(text)}
-          key={i}
-        >
-          {text}
-        </ListItemButton>
-      </Link>
-    );
+
+    if (typeof suggestion === "string") {
+      return (
+        <Link href={`/search?q=${encodeURIComponent(suggestion)}`} key={i}>
+          <ListItemButton key={i}>
+            <Typography>Search for "{suggestion}"</Typography>
+          </ListItemButton>
+        </Link>
+      );
+    } else {
+      return (
+        <Link href={`/phrase/${encodeURIComponent(suggestion.id)}`} key={i}>
+          <ListItemButton
+            component="a"
+            onClick={() => handleClick(text)}
+            key={i}
+          >
+            <Typography>{text}</Typography>
+          </ListItemButton>
+        </Link>
+      );
+    }
   });
 
   if (mobile) {
     return (
-      <ClickAwayListener onClickAway={() => setOpen(false)}>
-        <Box className={styles.container_mobile}>
-          <Paper
-            component="form"
-            className={styles.paper_mobile}
-            elevation={0}
-            square={true}
-            onSubmit={handleSubmit}
-          >
-            <InputBase
-              sx={{ "& input": { font: "1rem Noto Serif, serif" } }}
-              className={cn(styles.inputBase)}
-              placeholder="Search for your phrase"
-              inputProps={{ "aria-label": "search for your phrase" }}
-              value={query}
-              onChange={(e) => {
-                changeQuery(e);
-                debouncedHandleChange(e);
-              }}
-            />
-          </Paper>
-          <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
-            <SearchIcon />
-          </IconButton>
-          {!open ? null : (
-            <Paper className={styles.suggestionsMobile}>
-              <List className={styles.list}>{list}</List>
-            </Paper>
-          )}
-        </Box>
-      </ClickAwayListener>
-    );
-  } else {
-    return (
-      <ClickAwayListener onClickAway={() => setOpen(false)}>
-        <Box className={cn(styles.container)}>
-          <Paper
-            component="form"
-            className={styles.search}
-            sx={{
-              borderRadius: !open ? "25px" : "25px 25px 0px 0px",
-            }}
-            onSubmit={handleSubmit}
-          >
-            <InputBase
-              sx={{ "& input": { font: "1rem Noto Serif, serif" } }}
-              className={cn(styles.inputBase)}
-              placeholder="Search for your phrase"
-              inputProps={{ "aria-label": "search for your phrase" }}
-              value={query}
-              onChange={(e) => {
-                changeQuery(e);
-                debouncedHandleChange(e);
-              }}
-            />
-
-            {query && query.length > 0 && (
-              <IconButton
-                onClick={() => {
-                  setQuery("");
-                  setOpen(false);
+      <ThemeProvider theme={theme}>
+        <ClickAwayListener onClickAway={() => setOpen(false)}>
+          <Box className={styles.container_mobile}>
+            <Paper
+              component="form"
+              className={styles.paper_mobile}
+              elevation={0}
+              square={true}
+              onSubmit={handleSubmit}
+            >
+              <InputBase
+                className={cn(styles.inputBase)}
+                placeholder="Search for your phrase"
+                inputProps={{ "aria-label": "search for your phrase" }}
+                value={query}
+                onChange={(e) => {
+                  changeQuery(e);
+                  debouncedHandleChange(e);
                 }}
-              >
-                <CloseIcon />
-              </IconButton>
-            )}
-
+              />
+            </Paper>
             <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
               <SearchIcon />
             </IconButton>
-          </Paper>
-          {!open ? null : (
+            {open && (
+              <Paper className={styles.suggestions_mobile}>
+                <List className={styles.list}>{list}</List>
+              </Paper>
+            )}
+          </Box>
+        </ClickAwayListener>
+      </ThemeProvider>
+    );
+  } else {
+    return (
+      <ThemeProvider theme={theme}>
+        <ClickAwayListener onClickAway={() => setOpen(false)}>
+          <Box className={cn(styles.container)}>
             <Paper
-              className={styles.suggestions}
-              sx={{ borderRadius: "0px 0px 25px 25px" }}
+              component="form"
+              className={styles.paper}
+              sx={{
+                borderRadius: !open ? "25px" : "25px 25px 0px 0px",
+              }}
+              onSubmit={handleSubmit}
             >
-              <List className={styles.list}>{list}</List>
+              <InputBase
+                className={cn(styles.inputBase)}
+                placeholder="Search for your phrase"
+                inputProps={{ "aria-label": "search for your phrase" }}
+                value={query}
+                onChange={(e) => {
+                  changeQuery(e);
+                  debouncedHandleChange(e);
+                }}
+              />
+
+              {query && query.length > 0 && (
+                <IconButton
+                  onClick={() => {
+                    setQuery("");
+                    setOpen(false);
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
+              )}
+
+              <IconButton type="submit" sx={{ p: "10px" }} aria-label="search">
+                <SearchIcon />
+              </IconButton>
             </Paper>
-          )}
-        </Box>
-      </ClickAwayListener>
+            {open && (
+              <Paper
+                className={styles.suggestions}
+                sx={{ borderRadius: "0px 0px 25px 25px" }}
+              >
+                <List className={styles.list}>{list}</List>
+              </Paper>
+            )}
+          </Box>
+        </ClickAwayListener>
+      </ThemeProvider>
     );
   }
 };

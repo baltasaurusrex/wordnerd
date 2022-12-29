@@ -18,21 +18,19 @@ import "animate.css";
 
 import styles from "./new.module.css";
 
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import {
+  createTheme,
+  responsiveFontSizes,
+  ThemeProvider,
+} from "@mui/material/styles";
 
-const theme = createTheme({
+let theme = createTheme({
   typography: {
-    fontFamily: "Noto Serif, serif",
-  },
-  palette: {
-    wordnerdred: {
-      main: "#64748B",
-    },
-    black: {
-      main: "#1B1717",
-    },
+    fontFamily: ["Noto Serif"],
   },
 });
+
+theme = responsiveFontSizes(theme);
 
 import TitleForm from "../components/new/TitleForm.js";
 import TypeForm from "../components/new/TypeForm.js";
