@@ -43,12 +43,13 @@
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
 
-.suggestionsMobile {
+.suggestions_mobile {
   position: absolute;
   top: 50px;
   left: 0;
   right: 0;
   z-index: 999;
+  border-radius: 0 0 10px 10px !important;
 }
 
 .suggestions {
