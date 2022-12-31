@@ -4,15 +4,7 @@ import { useRouter } from "next/router";
 import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
 
-import {
-  Button,
-  IconButton,
-  Tooltip,
-  Menu,
-  MenuItem,
-  Backdrop,
-  Typography,
-} from "@mui/material";
+import { Button, IconButton, Tooltip, Menu, MenuItem } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import SearchIcon from "@mui/icons-material/Search";

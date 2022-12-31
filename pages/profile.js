@@ -1,6 +1,10 @@
 import React from "react";
 import Sidebar from "../components/Sidebar.js";
-import { useProSidebar } from "react-pro-sidebar";
+import Navbar from "../components/Navbar.js";
+import { useProSidebar, ProSidebarProvider } from "react-pro-sidebar";
+import Layout from "../components/Layout.js";
+import ProfileLayout from "../components/Layouts/ProfileLayout.js";
+import { SessionProvider } from "next-auth/react";
 
 import styles from "./profile.module.css";
 
@@ -8,22 +12,15 @@ const Profile = () => {
   const { collapseSidebar, toggleSidebar, collapsed, toggled, broken, rtl } =
     useProSidebar();
 
-  // authenticate
-  // fetch data
-
-  return (
-    <body className={styles.body}>
-      <Sidebar />
-      <main></main>
-    </body>
-  );
+  return <body className={styles.body}></body>;
 };
 
 Profile.getLayout = (page) => (
-  <div>
-    {" "}
-    "hi"
-    {page}
-  </div>
+  <SessionProvider>
+    <Layout>
+      <ProfileLayout>{page}</ProfileLayout>
+    </Layout>
+  </SessionProvider>
 );
+
 export default Profile;
