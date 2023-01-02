@@ -2,6 +2,7 @@ import React from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { getProviders, signIn, useSession } from "next-auth/react";
+import { SessionProvider } from "next-auth/react";
 
 import { Paper, Button } from "@mui/material";
 
@@ -33,7 +34,7 @@ const SignIn = ({ providers }) => {
   );
 };
 
-SignIn.getLayout = (page) => page;
+SignIn.getLayout = (page) => <SessionProvider>{page}</SessionProvider>;
 
 export default SignIn;
 

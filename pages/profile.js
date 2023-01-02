@@ -9,10 +9,7 @@ import { SessionProvider } from "next-auth/react";
 import styles from "./profile.module.css";
 
 const Profile = () => {
-  const { collapseSidebar, toggleSidebar, collapsed, toggled, broken, rtl } =
-    useProSidebar();
-
-  return <body className={styles.body}></body>;
+  return <div className={styles.wrapper}></div>;
 };
 
 Profile.getLayout = (page) => (
