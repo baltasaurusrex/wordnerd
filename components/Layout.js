@@ -4,15 +4,7 @@ import { useRouter } from "next/router";
 import { useSession, signOut } from "next-auth/react";
 import Image from "next/image";
 
-import {
-  Button,
-  IconButton,
-  Tooltip,
-  Menu,
-  MenuItem,
-  Backdrop,
-  Typography,
-} from "@mui/material";
+import { Button, IconButton, Tooltip, Menu, MenuItem } from "@mui/material";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import SearchIcon from "@mui/icons-material/Search";
@@ -185,20 +177,7 @@ const Layout = ({ children }) => {
   return (
     <ThemeProvider theme={theme}>
       <div className={styles.wrapper}>
-        <Navbar />
-        {/* <nav className={`${mobile ? styles.nav_mobile : styles.nav}`}>
-          <div className={`${mobile ? styles.start_mobile : styles.start}`}>
-            {searchbarOpen ? (mobile ? btn_back : logo) : logo}
-          </div>
-          {searchbarOpen ? searchbar_max : searchbar_coll}
-        </nav>
-        <Backdrop
-          open={backdropOpen}
-          onClick={() => {
-            setSearchbarOpen(false);
-          }}
-          sx={{ zIndex: "50" }}
-        ></Backdrop> */}
+        <Navbar searchbar />
         <main className={styles.main}>{children}</main>
       </div>
     </ThemeProvider>

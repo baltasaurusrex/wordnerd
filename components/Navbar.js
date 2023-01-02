@@ -20,15 +20,17 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { createTheme, useTheme, ThemeProvider } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
+import { useProSidebar, ProSidebarProvider } from "react-pro-sidebar";
+
 import Searchbar from "./Searchbar.js";
 
 import styles from "./Navbar.module.css";
 
-function Navbar() {
+function Navbar({ searchbar, toggleSidebarButton }) {
   const router = useRouter();
   const { data: session } = useSession();
   const [anchorEl, setAnchorEl] = useState(null);
-  const menu_open = Boolean(anchorEl);
+  const profileMenuOpen = Boolean(anchorEl);
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [searchbarOpen, setSearchbarOpen] = useState(false);
@@ -69,7 +71,7 @@ function Navbar() {
 
   const sessionBar = (
     <div className={styles.sessionBar}>
-      {!searchbarOpen && mobile && searchIconGroup}
+      {searchbar && !searchbarOpen && mobile && searchIconGroup}
       <Tooltip title="Add new entry">
         <IconButton
           aria-label="add new entry"
@@ -86,7 +88,7 @@ function Navbar() {
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
-        open={menu_open}
+        open={profileMenuOpen}
         onClose={handleMenuClose}
         // sx={{ "& .MuiMenuItem-root": { fontFamily: "Noto Serif" } }}
         MenuListProps={{
@@ -150,13 +152,22 @@ function Navbar() {
 
   const logo = (
     <Link href="/" passHref>
-      <a className={styles.logo}>
-        <Image
-          src="/wn_logo_transparent.png"
-          width={40}
-          height={40}
-          layout="fixed"
-        />
+      <a style={{ textDecoration: "none", color: "maroon" }}>
+        {mobile ? (
+          <Image
+            src="/wn_logo_transparent.png"
+            width={40}
+            height={40}
+            layout="fixed"
+          />
+        ) : (
+          <Typography
+            variant="h5"
+            sx={{ fontFamily: "Bree Serif", textDecoration: "none" }}
+          >
+            WordNerd
+          </Typography>
+        )}
       </a>
     </Link>
   );
@@ -180,7 +191,7 @@ function Navbar() {
         <div className={`${mobile ? styles.start_mobile : styles.start}`}>
           {searchbarOpen ? (mobile ? btn_back : logo) : logo}
         </div>
-        {searchbarOpen ? searchbar_max : searchbar_coll}
+        {searchbar && searchbarOpen ? searchbar_max : searchbar_coll}
       </nav>
       <Backdrop
         open={backdropOpen}

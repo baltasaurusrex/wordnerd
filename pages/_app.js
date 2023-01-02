@@ -6,26 +6,16 @@ import { ProSidebarProvider } from "react-pro-sidebar";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const getLayout =
-    Component.getLayout ??
+    Component.getLayout ||
     ((page) => (
       <SessionProvider session={session}>
-        <ProSidebarProvider>
-          <SnackbarProvider maxStack={3}>
-            <Layout>{page}</Layout>
-          </SnackbarProvider>
-        </ProSidebarProvider>
+        <SnackbarProvider maxStack={3}>
+          <Layout>{page}</Layout>
+        </SnackbarProvider>
       </SessionProvider>
     ));
 
-  return getLayout(
-    <SessionProvider session={session}>
-      <ProSidebarProvider>
-        <SnackbarProvider maxStack={3}>
-          <Component {...pageProps} />
-        </SnackbarProvider>
-      </ProSidebarProvider>
-    </SessionProvider>
-  );
+  return getLayout(<Component {...pageProps} />);
 }
 
 export default MyApp;
