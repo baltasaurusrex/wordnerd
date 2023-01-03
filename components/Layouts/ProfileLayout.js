@@ -7,10 +7,11 @@ import IntersectionObserverWrapper from "./IntersectionObserverWrapper";
 
 import styles from "./ProfileLayout.module.css";
 
-function MenuItem({ title, link, active }) {
+function MenuItem({ key, title, link, active, className }) {
   return (
     <li
-      className={cn(styles.li, { [styles.active]: active })}
+      key={key}
+      className={cn(styles.li, { [styles.active]: active }, className)}
       data-targetid={title}
     >
       <a href={link}>
@@ -38,6 +39,7 @@ function ProfileNavbar({}) {
             key={i}
             title={title}
             link={link}
+            data-targetid={title}
             active={link === router.asPath}
           />
         ))}
