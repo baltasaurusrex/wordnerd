@@ -1,5 +1,6 @@
 import React from "react";
 import { Typography } from "@mui/material";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import cn from "classnames";
 import { useRouter } from "next/router";
 
@@ -21,6 +22,8 @@ function ProfileNavbar({}) {
   const menuItems = [
     { title: "Home", link: "/profile" },
     { title: "Phrases", link: "/profile/phrases" },
+    { title: "Relations", link: "/profile/relations" },
+    { title: "Likes", link: "/profile/likes" },
   ];
 
   return (
@@ -33,6 +36,9 @@ function ProfileNavbar({}) {
           active={link === router.asPath}
         />
       ))}
+      <li className={styles.li}>
+        <MoreHorizIcon />
+      </li>
     </ul>
   );
 }
