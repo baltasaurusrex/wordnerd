@@ -1,9 +1,61 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useMemo } from "react";
 import cn from "classnames";
-import { makeStyles } from "@mui/material";
-// import OverflowMenu from "./overflow-menu";
+import { Menu, MenuItem, IconButton } from "@mui/material";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 import styles from "./IntersectionObserverWrapper.module.css";
+
+function OverflowMenu({ visibilityMap, children, className }) {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const shouldShowMenu = useMemo(
+    () => Object.values(visibilityMap).some((v) => v === false),
+    [visibilityMap]
+  );
+  if (!shouldShowMenu) {
+    return null;
+  }
+
+  return (
+    <div className={className}>
+      <IconButton
+        aria-label="more"
+        aria-controls="long-menu"
+        aria-haspopup="true"
+        onClick={handleClick}
+      >
+        <MoreHorizIcon />
+      </IconButton>
+      <Menu
+        id="long-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={open}
+        onClose={handleClose}
+      >
+        {React.Children.map(children, (child) => {
+          if (!visibilityMap[child.props["data-targetid"]]) {
+            return (
+              <MenuItem key={child} onClick={handleClose}>
+                {React.cloneElement(child, {
+                  className: cn(child.className, styles.inOverflowMenu),
+                })}
+              </MenuItem>
+            );
+          }
+          return null;
+        })}
+      </Menu>
+    </div>
+  );
+}
 
 export default function IntersectionObserverWrapper({ children }) {
   const navRef = useRef(null);
@@ -70,6 +122,9 @@ export default function IntersectionObserverWrapper({ children }) {
           }),
         });
       })}
+      <OverflowMenu visibilityMap={visibilityMap} className={styles.li}>
+        {children}
+      </OverflowMenu>
     </div>
   );
 }

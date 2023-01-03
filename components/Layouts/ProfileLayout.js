@@ -44,9 +44,6 @@ function ProfileNavbar({}) {
           />
         ))}
       </IntersectionObserverWrapper>
-      <li className={styles.li}>
-        <MoreHorizIcon />
-      </li>
     </ul>
   );
 }
