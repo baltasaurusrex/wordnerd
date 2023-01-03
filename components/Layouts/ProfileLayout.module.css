@@ -22,6 +22,10 @@
   color: black;
 }
 
+.li:hover {
+  color: maroon;
+}
+
 .li a:hover {
   color: maroon;
 }
