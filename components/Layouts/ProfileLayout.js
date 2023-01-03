@@ -3,12 +3,16 @@ import { Typography } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import cn from "classnames";
 import { useRouter } from "next/router";
+import IntersectionObserverWrapper from "./IntersectionObserverWrapper";
 
 import styles from "./ProfileLayout.module.css";
 
 function MenuItem({ title, link, active }) {
   return (
-    <li className={cn(styles.li, { [styles.active]: active })}>
+    <li
+      className={cn(styles.li, { [styles.active]: active })}
+      data-targetid={title}
+    >
       <a href={link}>
         <Typography>{title}</Typography>
       </a>
@@ -28,14 +32,16 @@ function ProfileNavbar({}) {
 
   return (
     <ul className={styles.navbar}>
-      {menuItems.map(({ title, link }, i) => (
-        <MenuItem
-          key={i}
-          title={title}
-          link={link}
-          active={link === router.asPath}
-        />
-      ))}
+      <IntersectionObserverWrapper>
+        {menuItems.map(({ title, link }, i) => (
+          <MenuItem
+            key={i}
+            title={title}
+            link={link}
+            active={link === router.asPath}
+          />
+        ))}
+      </IntersectionObserverWrapper>
       <li className={styles.li}>
         <MoreHorizIcon />
       </li>

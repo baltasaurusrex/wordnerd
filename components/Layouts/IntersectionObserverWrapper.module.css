@@ -1,0 +1,24 @@
+.visible {
+  order: 0;
+  visibility: "visible";
+  opacity: 1;
+}
+
+.inVisible {
+  order: 100;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.toolbarWrapper {
+  display: flex;
+  overflow: hidden;
+  height: 100%;
+}
+
+.overflowStyle {
+  order: 99;
+  position: "sticky";
+  right: "0";
+  background-color: "white";
+}
