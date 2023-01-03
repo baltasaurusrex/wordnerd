@@ -29,6 +29,10 @@ function ProfileNavbar({}) {
     { title: "Phrases", link: "/profile/phrases" },
     { title: "Relations", link: "/profile/relations" },
     { title: "Likes", link: "/profile/likes" },
+    // { title: "Likes2", link: "/profile/likes2" },
+    // { title: "Likes3", link: "/profile/likes3" },
+    // { title: "Likes4", link: "/profile/likes4" },
+    // { title: "Likes5", link: "/profile/likes5" },
   ];
 
   return (

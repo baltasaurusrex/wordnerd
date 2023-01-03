@@ -24,7 +24,7 @@ function OverflowMenu({ visibilityMap, children, className }) {
   }
 
   return (
-    <div className={className}>
+    <li className={className}>
       <IconButton
         aria-label="more"
         aria-controls="long-menu"
@@ -53,7 +53,7 @@ function OverflowMenu({ visibilityMap, children, className }) {
           return null;
         })}
       </Menu>
-    </div>
+    </li>
   );
 }
 
@@ -95,7 +95,7 @@ export default function IntersectionObserverWrapper({ children }) {
   useEffect(() => {
     const observer = new IntersectionObserver(handleIntersection, {
       root: navRef.current,
-      threshold: 0.75,
+      threshold: 1,
     });
     // We are adding observers to child elements of the container div
     // with ref as navRef. Notice that we are adding observers
