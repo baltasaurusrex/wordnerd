@@ -32,6 +32,7 @@ export async function get_authors(q) {
 
 export async function create_phrase(data) {
   try {
+    console.log("in create_phrase API");
     const res = await axios.post("/api/phrase", { ...data });
     return res;
   } catch (err) {

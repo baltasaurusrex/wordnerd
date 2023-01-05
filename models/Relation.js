@@ -15,13 +15,14 @@ export const RelationSchema = new mongoose.Schema(
 );
 
 // When a relation is saved (from its origin), push that relation to the related entry
-RelationSchema.pre("save", async function () {
+RelationSchema.pre("save", async function (next) {
   console.log("in RelationSchema.pre('save')");
   console.log("this: ", this);
   const { entry, creator } = this;
   console.log("entry: ", entry);
 
-  const relatedPhrase = await Phrase.findById(entry).select("creator");
+  const relatedPhrase = await Phrase.findById(entry).select("title creator");
+
   console.log("relatedPhrase: ", relatedPhrase);
 
   // if that other entry is the same creator, no issue
