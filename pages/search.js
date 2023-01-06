@@ -3,6 +3,9 @@ import styles from "./search.module.css";
 import { searchPhrases } from "../controllers/phrases.js";
 import SearchResult from "../components/SearchResult.js";
 import { Typography } from "@mui/material";
+import { SessionProvider } from "next-auth/react";
+import Layout from "../components/Layout.js";
+import SearchLayout from "../components/Layouts/SearchLayout.js";
 
 const Search = ({ q, JSONresults }) => {
   console.log("results: ", JSON.parse(JSONresults));
@@ -20,8 +23,9 @@ const Search = ({ q, JSONresults }) => {
         <link rel="icon" href="/wn_logo_transparent.png" />
       </Head>
       <div className={styles.container}>
-        <Typography className={styles.header} variant="h6">
-          Search results for: "{q}"
+        <Typography className={styles.header} variant="caption">
+          {mappedResults.length}{" "}
+          {mappedResults.length > 1 ? `results` : `result`} for: "{q}"
         </Typography>
         <div>{mappedResults}</div>
       </div>
@@ -44,5 +48,13 @@ export async function getServerSideProps(ctx) {
     props: { q: query.q, JSONresults: JSON.stringify(results) },
   };
 }
+
+Search.getLayout = (page) => (
+  <SessionProvider>
+    <Layout>
+      <SearchLayout>{page}</SearchLayout>
+    </Layout>
+  </SessionProvider>
+);
 
 export default Search;

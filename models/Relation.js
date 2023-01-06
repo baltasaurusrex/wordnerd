@@ -15,13 +15,14 @@ export const RelationSchema = new mongoose.Schema(
 );
 
 // When a relation is saved (from its origin), push that relation to the related entry
-RelationSchema.pre("save", async function () {
+RelationSchema.pre("save", async function (next) {
   console.log("in RelationSchema.pre('save')");
   console.log("this: ", this);
   const { entry, creator } = this;
   console.log("entry: ", entry);
 
-  const relatedPhrase = await Phrase.findById(entry).select("creator");
+  const relatedPhrase = await Phrase.findById(entry).select("title creator");
+
   console.log("relatedPhrase: ", relatedPhrase);
 
   // if that other entry is the same creator, no issue
@@ -53,6 +54,8 @@ RelationSchema.pre("save", async function () {
     console.log("updatedRelatedPhrase: ", updatedRelatedPhrase);
   }
 
+  next();
+
   // but if not, send a notification instead to that owner requesting for a relation, and only when the owner accepts, should it successfully save
 
   // note: should this be a middleware? or in the controller?
@@ -62,13 +65,12 @@ RelationSchema.pre("save", async function () {
 });
 
 RelationSchema.post("save", async function (relation) {
-  console.log("in Phrase > .post(save) middleware");
+  console.log("in Phrase > .post(save) middleware: ", relation);
   // update the User's relations, and relations_count properties
   const user = await User.findByIdAndUpdate(
-    phrase.creator,
+    relation.creator,
     {
       $push: { relations: relation },
-      $inc: { relations_count: 1 },
     },
     { new: true }
   );
